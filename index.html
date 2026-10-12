@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jocelyne Audrey Tando — Game Dev, 3D & UI/UX</title>
+  <meta name="description" content="Portfolio of Jocelyne Audrey Tando (Celyne): Digital Media Technology student at Xiamen University Malaysia. Game development, 3D environments, UI/UX design and animation.">
+  <meta name="theme-color" content="#0a0a0b">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230a0a0b'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%23e8e8ea' font-family='monospace'>c</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a href="#top" class="nav-brand">celyne<span class="accent">.</span></a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#work">Work</a>
+      <a href="#awards">Awards</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="nav-cmd" id="cmdOpen" aria-label="Open quick search">
+      <span>Search</span><kbd>Ctrl K</kbd>
+    </button>
+  </header>
+
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <p class="eyebrow reveal"><span class="dot"></span> Open to internships &amp; collaborations</p>
+      <h1 class="reveal">Jocelyne Audrey Tando</h1>
+      <p class="hero-role reveal">I build <span class="rotator" id="rotator">games</span><span class="caret">_</span></p>
+      <p class="hero-bio reveal">
+        Digital Media Technology engineering student at Xiamen University Malaysia (Class of 2027).
+        I turn creative concepts into interactive worlds, combining game development, 3D modeling and UI/UX design.
+      </p>
+      <div class="hero-actions reveal">
+        <a href="#work" class="btn btn-primary">View work <span aria-hidden="true">↓</span></a>
+        <a href="#contact" class="btn">Get in touch</a>
+        <a href="https://jocelyneat.github.io/portofolio/" class="btn btn-ghost" target="_blank" rel="noopener">Interactive version ↗</a>
+      </div>
+
+      <dl class="stats reveal">
+        <div><dt>19</dt><dd>Projects</dd></div>
+        <div><dt>7</dt><dd>Awards</dd></div>
+        <div><dt>3×</dt><dd>Dean's List</dd></div>
+        <div><dt>#1</dt><dd>CGPA in DMT</dd></div>
+      </dl>
+    </section>
+
+    <!-- Work -->
+    <section id="work" class="section">
+      <div class="section-head">
+        <h2><span class="num">01</span> Selected work</h2>
+        <div class="filters" role="tablist" aria-label="Filter projects" id="filters">
+          <span class="filter-indicator" id="filterIndicator"></span>
+          <button role="tab" class="filter active" data-filter="all" aria-selected="true">All</button>
+          <button role="tab" class="filter" data-filter="game" aria-selected="false">Games</button>
+          <button role="tab" class="filter" data-filter="environment" aria-selected="false">3D Env</button>
+          <button role="tab" class="filter" data-filter="uiux" aria-selected="false">UI/UX</button>
+          <button role="tab" class="filter" data-filter="animation" aria-selected="false">Animation</button>
+        </div>
+      </div>
+      <div class="grid" id="projectGrid"></div>
+    </section>
+
+    <!-- Awards -->
+    <section id="awards" class="section">
+      <div class="section-head">
+        <h2><span class="num">02</span> Awards &amp; honors</h2>
+      </div>
+      <ol class="awards" id="awardList"></ol>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills" class="section">
+      <div class="section-head">
+        <h2><span class="num">03</span> Toolkit</h2>
+      </div>
+      <div class="skills">
+        <div class="skill-group spot">
+          <h3>Game &amp; 3D</h3>
+          <ul><li>Unity</li><li>Autodesk Maya</li><li>Level design</li><li>Multiplayer</li></ul>
+        </div>
+        <div class="skill-group spot">
+          <h3>UI/UX &amp; Visual</h3>
+          <ul><li>Figma</li><li>Illustrator</li><li>Canva</li><li>Prototyping</li></ul>
+        </div>
+        <div class="skill-group spot">
+          <h3>Motion &amp; Audio</h3>
+          <ul><li>Adobe Animate</li><li>CapCut</li><li>Audition</li><li>Lip-sync</li></ul>
+        </div>
+        <div class="skill-group spot">
+          <h3>Data &amp; Office</h3>
+          <ul><li>Tableau</li><li>Excel</li><li>PowerPoint</li><li>Word</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section contact">
+      <div class="section-head">
+        <h2><span class="num">04</span> Contact</h2>
+      </div>
+      <p class="contact-lead">Have a game project, UI/UX role or collaboration in mind? I'd love to hear from you.</p>
+      <button class="email-copy" id="emailCopy" data-email="jocelyneaudreytando@gmail.com">
+        <span class="email-text">jocelyneaudreytando@gmail.com</span>
+        <span class="email-hint" id="emailHint">Click to copy</span>
+      </button>
+      <ul class="socials">
+        <li><a href="https://www.linkedin.com/in/jocelyne-audrey-tando-7a840b379/" target="_blank" rel="noopener">LinkedIn ↗</a></li>
+        <li><a href="mailto:jocelyneaudreytando@gmail.com">Email ↗</a></li>
+        <li><a href="https://wa.me/60165432530" target="_blank" rel="noopener">WhatsApp ↗</a></li>
+        <li><a href="https://www.instagram.com/jocelyneaudrey_/" target="_blank" rel="noopener">Instagram ↗</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>© <span id="year"></span> Jocelyne Audrey Tando</span>
+    <a href="https://jocelyneat.github.io/portofolio/" target="_blank" rel="noopener">Try the interactive desk version ↗</a>
+  </footer>
+
+  <!-- Project modal -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" data-close aria-label="Close">✕</button>
+      <div class="modal-media" id="modalMedia"></div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Command palette -->
+  <div class="cmd" id="cmd" aria-hidden="true">
+    <div class="modal-backdrop" data-cmd-close></div>
+    <div class="cmd-panel" role="dialog" aria-modal="true" aria-label="Quick search">
+      <input type="text" id="cmdInput" placeholder="Search projects or jump to a section…" autocomplete="off">
+      <ul id="cmdList" role="listbox"></ul>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
