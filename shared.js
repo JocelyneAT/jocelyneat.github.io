@@ -53,9 +53,6 @@ const projects = [
   { id: 'asian-cuisine', cat: 'uiux', title: 'Asian Cuisine', subtitle: 'Pixel-art restaurant sim UI/UX', badge: 'Game UI',
     img: 'asiancuisine', video: 'uiux_videos/asiancuisine_video.mp4',
     desc: 'UI/UX for a pixel-art restaurant simulation and cooking game.', facts: { Tool: 'Canva' } },
-  { id: 'nba-infovis', cat: 'uiux', title: 'The Shift Toward International NBA Players', subtitle: 'Tableau data visualization dashboard', badge: 'Data Viz',
-    img: 'infovis', video: 'uiux_videos/infovis_video.mp4', tableau: 'https://public.tableau.com/app/profile/jocelyne.audrey/viz/Group14_17835961965340/Dashboard3',
-    desc: 'An interactive dashboard comparing USA and international NBA player performance from 2000 to 2022.', facts: { Tool: 'Tableau' } },
 
   // Animation
   { id: 'inner-thoughts', cat: 'animation', title: 'Inner Thoughts', subtitle: '3D character animation & lip-sync short', badge: 'Final Project',
@@ -92,7 +89,6 @@ const TOOLS = {
   'best-rate': ['Figma', 'Design system'],
   'codu': ['Figma', 'Gamified UX'],
   'asian-cuisine': ['Canva', 'Game UI', 'Pixel art'],
-  'nba-infovis': ['Tableau', 'Data viz'],
   'inner-thoughts': ['Autodesk Maya', 'Lip-sync', 'Team of 4'],
   'lily': ['Adobe Animate', '2D animation'],
   'ball-study': ['Autodesk Maya', 'Keyframe'],
@@ -101,7 +97,7 @@ const TOOLS = {
 };
 
 // Team projects (everything else is individual work)
-const TEAM = new Set(['sea-vagabond', 'code-eternis', 'we-were-mummies', 'pirate-harbor', 'nba-infovis', 'inner-thoughts']);
+const TEAM = new Set(['sea-vagabond', 'code-eternis', 'we-were-mummies', 'pirate-harbor', 'inner-thoughts']);
 const isTeam = p => TEAM.has(p.id);
 const mediaUrl = p => MEDIA + p.video.split('/').map(encodeURIComponent).join('/');
 

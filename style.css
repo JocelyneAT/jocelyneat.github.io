@@ -433,7 +433,6 @@ kbd { font-family: var(--mono); font-size: .72rem; }
 .hr-ball-s { fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; }
 .hr-obj { cursor: pointer; transform-box: fill-box; transform-origin: 50% 100%; transition: transform .3s cubic-bezier(.3, 1.6, .5, 1), filter .3s; outline: none; }
 .hr-obj:hover, .hr-obj:focus-visible { transform: translateY(-4px) scale(1.06); filter: drop-shadow(0 4px 6px rgba(80, 50, 30, .25)); }
-.hr-ball:hover { transform: none; }
 .room-tip { position: fixed; left: 0; top: 0; z-index: 70; pointer-events: none; font-family: var(--mono); font-size: .7rem; padding: 5px 10px; border-radius: 999px; background: var(--fg); color: var(--bg); opacity: 0; transition: opacity .2s; white-space: nowrap; }
 .room-tip.on { opacity: 1; }
 
@@ -1468,3 +1467,32 @@ kbd { font-family: var(--mono); font-size: .72rem; }
 .plist-all { font-family: var(--sans); font-size: .86rem; }
 .pp-title { font-size: 2.1rem; line-height: 1.1; letter-spacing: -0.01em; border-top: 1px solid var(--fg); padding-top: 16px; margin: 18px 0 22px; }
 .pp-name { font-family: var(--sans); font-weight: 500; font-size: 1.08rem; line-height: 1.3; margin-top: 6px; }
+
+/* Hero: her roles in one line, split by thin bars */
+.hero-roles { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; max-width: none; }
+.hero-roles .sep { width: 1px; height: 1.05em; background: currentColor; opacity: .35; }
+.hero-intro.big.hero-roles { max-width: none; }
+/* Smaller role line under the name */
+.hero-intro.big.hero-roles { font-size: clamp(.95rem, 1.2vw, 1.08rem); gap: 4px 12px; margin-top: 12px; }
+.hero h1 { font-size: clamp(2.8rem, 7vw, 5.6rem); }
+
+/* Contact fits on one screen: compact text, the living room fills the rest at the bedroom's scale */
+#contact.contact { padding-top: 28px; }
+#contact .contact-grid { padding-top: 16px; gap: 40px; }
+#contact .contact-intro h2 { font-size: clamp(2.4rem, 4vw, 3.2rem); }
+#contact .contact-lead { font-size: 1.25rem; margin-top: 10px; }
+#contact .contact-intro .muted { font-size: .92rem; }
+#contact .status { margin-top: 14px; }
+#contact .c-row { padding: 9px 6px; gap: 14px; grid-template-columns: 38px minmax(0, 1fr) 24px; }
+#contact .c-icon { width: 38px; height: 38px; border-radius: 10px; }
+#contact .c-icon svg { width: 17px; height: 17px; }
+#contact .c-value { font-size: .95rem; }
+.scene-home { height: max(280px, calc(100svh - 400px)); }
+.scene-home { height: max(260px, min(440px, calc(100svh - 400px))); }
+
+/* Education: the campus is drawn at the same size as the rooms, and the section fits on one screen */
+.edu-block { --campus-h: max(260px, min(460px, calc(100svh - 400px))); padding-bottom: calc(var(--campus-h) * .86); }
+.scene-campus { height: var(--campus-h); }
+
+/* the ball has no focus ring when clicked or grabbed */
+.hr-ball { outline: none; }

@@ -452,7 +452,7 @@
       <rect class="r-skirting" x="-400" y="${B - 7}" width="2240" height="7"/>
 
       <!-- front door: frame, arched glass, two panels, brass knob, a plant by the door -->
-      <g transform="translate(150 0)">
+      <g transform="translate(70 0)">
       <g ${obj('Back to top', 'data-go="home"', 'hr-hit')}>
       <rect class="hr-wood-l" x="98" y="${B - 236}" width="152" height="236" rx="4"/>
       <rect class="hr-wood" x="110" y="${B - 224}" width="128" height="224" rx="3"/>
@@ -466,7 +466,7 @@
       <g ${obj('Water the plant', 'data-act="plant"')}>${plant(278, B, 1.9)}</g>
       </g>
 
-      <g transform="translate(-190 0)">
+      <g transform="translate(-150 0)">
       <!-- above the sofa: diploma, the digital clock, a little picture, the calendar -->
       <g ${obj('Education', 'data-go="education"')}>
       <rect class="hr-frame" x="726" y="126" width="64" height="48" rx="2"/><rect class="hr-paper" x="731" y="131" width="54" height="38"/>
@@ -500,6 +500,7 @@
       <rect class="hr-wood-d" x="718" y="${B - 8}" width="8" height="8" rx="2"/><rect class="hr-wood-d" x="1022" y="${B - 8}" width="8" height="8" rx="2"/>
 
       <!-- nightstand beside the sofa: the same lamp, mug and phone -->
+      <g transform="translate(30 0)">
       <rect class="hr-wood" x="1074" y="${B - 74}" width="62" height="74" rx="3"/>
       <rect class="hr-wood-l" x="1070" y="${B - 78}" width="70" height="7" rx="2"/>
       <path class="hr-drawer" d="M1078 ${B - 42} H1132"/><path class="hr-knob" d="M1100 ${B - 56} h10 M1100 ${B - 24} h10"/>
@@ -510,7 +511,9 @@
       </g>
       <g ${obj('Ring ring', 'data-act="phone"')}><rect class="hr-phone" x="1112" y="${B - 92}" width="12" height="14" rx="2"/><path class="hr-phone-h" d="M1109 ${B - 92} q9 -8 18 0"/></g>
 
+      </g>
       <!-- the same bookshelf: books, bunny, a picture and her trophy on top -->
+      <g transform="translate(70 0)">
       <rect class="hr-wood" x="1170" y="${B - 168}" width="120" height="168" rx="3"/>
       <rect class="hr-shelf-in" x="1177" y="${B - 161}" width="106" height="154" rx="2"/>
       <rect class="hr-wood" x="1177" y="${B - 112}" width="106" height="6"/><rect class="hr-wood" x="1177" y="${B - 58}" width="106" height="6"/>
@@ -527,8 +530,9 @@
       </g>
       ${books(1184, 1224, B - 168, 14, 6)}
 
+      </g>
       <!-- a tall plant in the corner, the poodle's bed in front of the sofa -->
-      <g ${obj('Water the plant', 'data-act="plant"')}>${plant(1352, B, 3.2)}</g>
+      <g transform="translate(100 0)"><g ${obj('Water the plant', 'data-act="plant"')}>${plant(1352, B, 3.2)}</g></g>
       <ellipse class="hr-dogbed" cx="1000" cy="${B - 4}" rx="42" ry="12"/><ellipse class="hr-dogbed-in" cx="1000" cy="${B - 7}" rx="31" ry="6"/>
       </g>
       <g class="pairs"></g>`]]
@@ -550,6 +554,18 @@
       set('.hr-cal-wd', d.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase());
     };
     tick(); setInterval(tick, 1000);
+  }
+  // Draw a scene at the same size as the bedroom at the top (same scale rule as fitRoom), ground along the bottom
+  function fitScene(el, svg) {
+    const fit = () => {
+      const Wd = el.clientWidth, Hd = el.clientHeight;
+      if (!Wd || !Hd) return;
+      const s = max(0.6, min(Wd / 1440, innerHeight / 860));
+      const w = Wd / s, h = Hd / s;
+      svg.setAttribute('viewBox', `${f(720 - w / 2)} ${f(420 - h)} ${f(w)} ${f(h)}`);
+    };
+    fit();
+    addEventListener('resize', fit);
   }
 
   /* ---------- Characters ---------- */
@@ -918,7 +934,9 @@
     // poodle: trots along a little behind her, sits when she stops
     const dTarget = c.dogX ?? (a.x - 44 * a.dir);
     const dPrev = a.dx;
-    a.dx = still ? dTarget : a.dx + (dTarget - a.dx) * min(1, dt * 3.4);
+    a.dx = still ? dTarget
+      : c.dogSpeed ? a.dx + Math.sign(dTarget - a.dx) * min(abs(dTarget - a.dx), c.dogSpeed * dt)   // a steady walk
+      : a.dx + (dTarget - a.dx) * min(1, dt * 3.4);
     const dMoved = a.dx - dPrev, dv = abs(dMoved) / max(dt, 1e-3);
     a.dPhase += abs(dMoved) / 40 * 2 * PI;
     a.dS += (min(1, dv / 90) - a.dS) * min(1, dt * 8);
@@ -983,7 +1001,7 @@
           `<rect class="g-meadow" x="-200" y="${G + 10}" width="${W + 400}" height="400"/>` +
           `<path class="g-path" d="M-200 ${G - 8} Q360 ${G - 12} 720 ${G - 8} T1640 ${G - 8} V${G + 18} Q1080 ${G + 22} 720 ${G + 18} T-200 ${G + 18} Z"/>` +
           `<g class="pairs"></g>` + fore],
-        ...(front ? [[-0.2, leafClump(-10, H + 40, 1.6, 1) + leafClump(1460, H + 40, 1.4, -1)]] : [])
+        ...(front ? [[-0.2, leafClump(-90, H + 40, 1.15, 1) + leafClump(1530, H + 40, 1.05, -1)]] : [])
       ]
     };
   }
@@ -992,7 +1010,9 @@
   /* ---------- Hero: her room, a little playroom ---------- */
   // Drag her onto the bed to sleep or onto the chair to work, throw the ball for the poodle,
   // click the lamp for night mode; the laptop, trophy, diploma and phone link to sections.
-  const CHAIR = 300, BED = [1004, 1420], DOG_BED = 884, BEANBAG = 1225;
+  // the desk side sits SPREAD units further left and the bed side SPREAD units further right, so the room fills wide screens
+  const SPREAD = 100, MID = -80;            // MID: the window, wall clock and dog bed in the middle
+  const CHAIR = 300 - SPREAD, BED = [1004 + SPREAD, 1420 + SPREAD], DOG_BED = 884 + MID, BEANBAG = 1225;
   const CLOCK = [668, 162];
   function heroRoom() {
     const B = G;
@@ -1036,6 +1056,7 @@
       <rect class="r-floor" x="-400" y="${B}" width="2240" height="400"/>
       <path class="r-plank" d="${planks}"/>
       <rect class="r-skirting" x="-400" y="${B - 7}" width="2240" height="7"/>
+      <g transform="translate(${MID} 0)">
       <path class="hr-floorlight" d="M640 ${B} L940 ${B} L860 ${B + 70} L520 ${B + 70} Z"/>
 
       <!-- window: the sky follows the visitor's real time of day; click to open / close the curtains -->
@@ -1071,6 +1092,8 @@
         <text class="hr-dclock-s" x="${CLOCK[0] + 40}" y="${CLOCK[1] + 10}" text-anchor="middle"></text>
       </g></g>
 
+      </g>
+      <g transform="translate(${SPREAD} 0)">
       <!-- wall calendar with today's date; diploma above the bed -->
       <g ${obj("Today's date", 'data-act="calendar"', 'hr-hit hr-cal')}>
         <rect class="hr-cal-paper" x="1182" y="98" width="72" height="80" rx="5"/>
@@ -1085,6 +1108,8 @@
         <path class="hr-paper-line" d="M1094 128 h36 M1098 136 h28 M1101 144 h22"/><circle class="g-cert-seal" cx="1129" cy="151" r="4"/>
       </g>
 
+      </g>
+      <g transform="translate(${-SPREAD} 0)">
       <!-- desk corner -->
       <g class="hr-bin"><path d="M222 ${B} l-6 -40 h40 l-6 40 Z"/><circle class="hr-bin-face" cx="236" cy="${B - 22}" r="8"/><circle class="hr-bin-face" cx="230" cy="${B - 30}" r="3"/><circle class="hr-bin-face" cx="242" cy="${B - 30}" r="3"/></g>
       <rect class="hr-wood-d" x="320" y="${B - 58}" width="7" height="58"/>
@@ -1126,9 +1151,11 @@
       </g>
       ${books(500, 540, B - 168, 14, 6)}
 
+      </g>
       <!-- dog bed on the floor -->
       <g ${obj('Nap time for the pup', 'data-act="dogbed"', 'hr-hit')}><ellipse class="hr-dogbed" cx="${DOG_BED}" cy="${B - 4}" rx="42" ry="12"/><ellipse class="hr-dogbed-in" cx="${DOG_BED}" cy="${B - 7}" rx="31" ry="6"/></g>
 
+      <g transform="translate(${SPREAD} 0)">
       <!-- nightstand: lamp is the room's light switch (dark mode), real digital clock, phone -->
       <rect class="hr-wood" x="936" y="${B - 74}" width="62" height="74" rx="3"/>
       <rect class="hr-wood-l" x="932" y="${B - 78}" width="70" height="7" rx="2"/>
@@ -1151,7 +1178,7 @@
       <path class="hr-plaid" d="M1130 ${B - 80} Q1140 ${B - 84} 1160 ${B - 82} H1444 V${B - 30} H1170 Q1146 ${B - 34} 1130 ${B - 44} Z"/>
       <path class="hr-plaid-line" d="M1180 ${B - 82} V${B - 30} M1220 ${B - 82} V${B - 30} M1260 ${B - 82} V${B - 30} M1300 ${B - 82} V${B - 30} M1340 ${B - 82} V${B - 30} M1380 ${B - 82} V${B - 30} M1140 ${B - 64} H1444 M1150 ${B - 48} H1444"/>
       <rect class="hr-wood-d" x="1022" y="${B - 26}" width="10" height="26"/><rect class="hr-wood-d" x="1430" y="${B - 26}" width="10" height="26"/>
-
+      </g>
       `;
   }
 
@@ -1201,9 +1228,9 @@
     const layer = svg.querySelector('.pairs');
     layer.insertAdjacentHTML('beforeend',
       `<g class="hr-ball" data-tip="Grab and throw the ball!" tabindex="0" role="button" aria-label="Throw the ball"><circle class="hr-ball-c" r="8"/><path class="hr-ball-s" d="M-8 -1 Q0 5 8 -1"/></g>` +
-      `<path class="hr-plaid hr-cover" d="M1134 ${G - 52} Q1128 ${G - 104} 1156 ${G - 112} H1444 V${G - 30} H1166 Q1138 ${G - 34} 1134 ${G - 52} Z"/>` +
+      `<g transform="translate(${SPREAD} 0)"><path class="hr-plaid hr-cover" d="M1134 ${G - 52} Q1128 ${G - 104} 1156 ${G - 112} H1444 V${G - 30} H1166 Q1138 ${G - 34} 1134 ${G - 52} Z"/>` +
       `<path class="hr-plaid-line hr-cover" d="M1150 ${G - 109} Q1142 ${G - 70} 1146 ${G - 36} M1196 ${G - 112} V${G - 30} M1240 ${G - 112} V${G - 30} M1284 ${G - 112} V${G - 30} M1328 ${G - 112} V${G - 30} M1150 ${G - 84} H1444 M1146 ${G - 60} H1444"/>` +
-      `<g class="hr-zzz"><text x="1066" y="${G - 112}">z</text><text x="1078" y="${G - 128}">z</text><text x="1092" y="${G - 146}">Z</text></g>`);
+      `<g class="hr-zzz"><text x="1066" y="${G - 112}">z</text><text x="1078" y="${G - 128}">z</text><text x="1092" y="${G - 146}">Z</text></g></g>`);
     const ball = layer.querySelector('.hr-ball');
     const R = { state: c.mode === 'type' ? 'type' : 'idle', down: null, drag: null, fall: null, idle: 0, pending: null,
       ball: { x: 590, y: G - 8, st: 'rest', vx: 0, vy: 0, spin: 0, back: false, pick: 0, trail: [] } };
@@ -1225,7 +1252,7 @@
       say(a.heroEl, 'Working on a project 💻', 2200);
     }
     function sleep() {
-      wake(1190); R.state = 'sleep'; c.mode = 'sleep';
+      wake(1190 + SPREAD); R.state = 'sleep'; c.mode = 'sleep';
       sc.el.classList.add('sleeping'); a.heroEl.classList.add('asleep'); settleDog();
       say(a.dogEl, '…zz', 1400);
     }
@@ -1233,6 +1260,7 @@
     function launch(vx, vy) {
       const b = R.ball;
       Object.assign(b, { st: 'fly', vx, vy, back: false });
+      c.dogSpeed = undefined;              // chase the ball at full speed; only the walk back is slow
       c.dogFace = undefined;
       if (Math.random() < 0.6) say(a.dogEl, 'Ball!!', 1100);
     }
@@ -1247,14 +1275,14 @@
       ball.setPointerCapture(e.pointerId);
       R.ballDown = { x: e.clientX, y: e.clientY };
       b.st = 'held'; b.back = false; b.trail = [{ x: p.x, y: p.y, t: performance.now() }];
-      c.dogX = a.dx; c.dogFace = undefined;
+      c.dogX = a.dx; c.dogFace = undefined; c.dogSpeed = undefined;
       sc.el.classList.add('holding-ball');
     });
     ball.addEventListener('pointermove', e => {
       const b = R.ball;
       if (b.st !== 'held') return;
       const p = toSvg(e), now = performance.now();
-      b.x = clamp(p.x, 50, 1390); b.y = clamp(p.y, -240, FLOOR);
+      b.x = clamp(p.x, -40, 1500); b.y = clamp(p.y, -240, FLOOR);
       b.trail.push({ x: b.x, y: b.y, t: now });
       while (b.trail.length > 2 && now - b.trail[0].t > 90) b.trail.shift();
       c.dogFace = b.x > a.dx ? 1 : -1;
@@ -1280,7 +1308,7 @@
     // a.onClick lets the room take over clicks on her (no jump while asleep or right after a drag)
     a.onClick = () => {
       if (R.dragged) { R.dragged = false; return false; }
-      if (R.state === 'sleep') { wake(1000); say(a.heroEl, 'Good morning! ☀', 1800); return false; }
+      if (R.state === 'sleep') { wake(1000 + SPREAD); say(a.heroEl, 'Good morning! ☀', 1800); return false; }
       return true;
     };
 
@@ -1293,7 +1321,7 @@
       if (R.state !== 'drag' && Math.hypot(e.clientX - R.down.x, e.clientY - R.down.y) < 6) return;
       if (R.state !== 'drag') { wake(); R.state = 'drag'; sc.el.classList.add('dragging'); }
       const p = toSvg(e);
-      R.drag = { x: clamp(p.x, 40, W - 40), y: min(p.y, G - 40) };
+      R.drag = { x: clamp(p.x, -40, W + 60), y: min(p.y, G - 40) };
       a.x = a.tx = R.drag.x;
     });
     a.heroEl.addEventListener('pointerup', () => {
@@ -1320,7 +1348,7 @@
       if (pt.y < G - 60) return;
       if (R.state === 'sleep' || R.state === 'type') wake();
       c.wave = false;
-      a.tx = clamp(pt.x, 120, 1300);
+      a.tx = clamp(pt.x, 40, 1460);
       sc.el.classList.add('walked');
     });
     svg.addEventListener('keydown', e => {
@@ -1360,7 +1388,7 @@
       const below = sel => { const el = heroBox.querySelector(sel); return el ? el.getBoundingClientRect().bottom - top : 0; };
       const nameBottom = below('h1'), textBottom = below('.hero-links');
       // the window and calendar reach up to y≈30, the shelf, trophy and clock up to y≈138 (room units, floor at 420)
-      let s = Math.min(W / 1180, Hh / 680, (Hh - textBottom - 14) / (420 - 138), (Hh - nameBottom - 14) / (420 - 30));
+      let s = Math.min(W / 1580, Hh / 860, (Hh - textBottom - 14) / (420 - 138), (Hh - nameBottom - 14) / (420 - 30));
       s = Math.max(s, 0.6);
       const w = W / s, h = Hh / s;
       svg.setAttribute('viewBox', `${f(720 - w / 2)} ${f(420 - h)} ${f(w)} ${f(h)}`);
@@ -1409,32 +1437,32 @@
     return function step(dt, t) {
       R.idle += dt;
       // after a quiet while she gets sleepy and goes to bed on her own
-      if (R.state === 'idle' && R.idle > 45 && !R.pending) { R.pending = 'sleep'; a.tx = 1000; c.wave = false; }
-      if (R.pending === 'sleep' && abs(a.x - 1000) < 3) sleep();
+      if (R.state === 'idle' && R.idle > 45 && !R.pending) { R.pending = 'sleep'; a.tx = 1000 + SPREAD; c.wave = false; }
+      if (R.pending === 'sleep' && abs(a.x - 1000 - SPREAD) < 3) sleep();
 
       // ball: held, flying and bouncing, waiting for the poodle, carried back to her, dropped at her feet
       const b = R.ball;
       if (b.st === 'fly') {
         const h = min(dt, 0.04);
         b.vy += 1900 * h; b.x += b.vx * h; b.y += b.vy * h; b.spin += b.vx * h * 3;
-        if (b.x < 50 || b.x > 1390) { b.x = clamp(b.x, 50, 1390); b.vx *= -0.6; }
+        if (b.x < -40 || b.x > 1500) { b.x = clamp(b.x, -40, 1500); b.vx *= -0.6; }
         if (b.y < -240) { b.y = -240; b.vy = abs(b.vy) * 0.3; }
         if (b.y >= FLOOR) {
           b.y = FLOOR;
           if (b.vy > 140) { b.vy *= -0.45; b.vx *= 0.82; } else b.vy = 0;
           if (!b.vy) b.vx *= max(0, 1 - 3.5 * h);
         }
-        if (!b.back) c.dogX = clamp(fetchFrom(b.x), 30, 1410);
+        if (!b.back) c.dogX = clamp(fetchFrom(b.x), -60, 1520);
         if (b.y >= FLOOR && !b.vy && abs(b.vx) < 18) {
           b.vx = 0;
           if (b.back) { b.st = 'rest'; setTimeout(settleDog, 900); }
-          else { b.st = 'wait'; b.pick = c.dogX = clamp(fetchFrom(b.x), 30, 1410); }
+          else { b.st = 'wait'; b.pick = c.dogX = clamp(fetchFrom(b.x), -60, 1520); }
         }
       } else if (b.st === 'wait') {
         if (abs(a.dx - b.pick) < 8) {
           b.st = 'carry';
           const side = a.dx < a.x ? -1 : 1;
-          c.dogX = a.x + side * (R.state === 'sleep' ? 70 : 52); c.dogFace = -side;
+          c.dogX = a.x + side * (R.state === 'sleep' ? 70 : 52); c.dogFace = -side; c.dogSpeed = 120;
         }
       } else if (b.st === 'carry') {
         b.x = a.dx + 24 * DSC * a.dDir; b.y = G - 22 * DSC;
@@ -1452,7 +1480,7 @@
         a.heroEl.classList.remove('facing');
         a.flip.setAttribute('transform', 'scale(1 1)');
         poseHero(a, 0, 0, 0, t * 0.4);
-        a.heroEl.setAttribute('transform', `translate(1210 ${G - 86}) rotate(-90) scale(${sc_})`);
+        a.heroEl.setAttribute('transform', `translate(${1210 + SPREAD} ${G - 86}) rotate(-90) scale(${sc_})`);
       } else if (R.state === 'drag') {
         a.heroEl.classList.add('facing');
         const sway = sin(t * 7) * 6;
@@ -1544,7 +1572,7 @@
     hero: () => ({
       viewBox: '40 -300 1360 720', room: true,
       layers: [[0, heroRoom() + '<g class="pairs"></g>']],
-      pairs: [{ x: 300, y: G, scale: 1.3, mode: 'type' }]
+      pairs: [{ x: 300 - SPREAD, y: G, scale: 1.3, mode: 'type' }]
     }),
     // After Projects: her desk; she types on the laptop, the poodle naps by the chair
     desk: () => ({
@@ -1559,6 +1587,7 @@
     }),
     // Before Awards: walking up to her university
     campus: () => ({
+      fit: true,
       ...landscape(2, { landmark: school('karangturi', karangturi(300), 300, G - 222, 'SMA Karangturi', 'High school · Semarang, Indonesia') +
         school('xmum', campus(930), 930, G - 252, 'Xiamen University Malaysia', 'Digital Media Technology · Class of 2027'), lamps: [560] }),
       pairs: [{ x: 300, y: G, leash: true, mode: 'walk', path: [300, 700, 0.15, 0.65] }]
@@ -1577,7 +1606,7 @@
     // Contact: home, sitting on the sofa; the poodle sits on the rug
     livingroom: () => ({
       ...livingRoom(),
-      pairs: [{ x: 648, y: G + 2, scale: 1.3, mode: 'sit', dogX: 810, dogFace: -1 }]
+      pairs: [{ x: 688, y: G + 2, scale: 1.3, mode: 'sit', dogX: 850, dogFace: -1 }]
     }),
     // Contact: walking the poodle to the post box on a little town street
     street: () => ({
@@ -1603,6 +1632,7 @@
     const sc = { el, svg, layers: [...svg.querySelectorAll('.px')].map(g => ({ g, d: +g.dataset.depth })), pairs, on: false, p: 0 };
     if (def.room) sc.step = setupRoom(sc);
     if (def.live) { liveRoom(el, svg); roomPlay(svg); }
+    if (def.live || def.fit) fitScene(el, svg);
     scenes.push(sc);
   });
 
