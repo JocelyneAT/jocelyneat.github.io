@@ -1,16 +1,14 @@
-# Jocelyne Audrey Tando: Portfolio (simple version)
+# Jocelyne Audrey Tando: Portfolio
 
-A one-page portfolio with illustrated scenes between the sections. Plain HTML/CSS/JS, no build step.
+An illustrated, interactive one-page portfolio plus a searchable projects page. Plain HTML/CSS/JS, no build step.
 
-- `index.html`: page structure (Hero, Projects, About, Organizations & Education, Awards, Contact)
-- `style.css`: design tokens and page layout
-- `world.css`: colors and shapes for the illustrations (light + dark)
-- `world.js`: the illustrated scenes and the chibi Celyne + poodle that walk, sit and react as you scroll
-- `script.js`: project data, awards, organizations, project popup, certificate viewer, search (Ctrl+K)
-- `img/`: project thumbnails, `me.jpg`, `tools/` (software logos), `awards/` (certificate photos)
+- `index.html`: home (interactive bedroom, About, Education & Organizations, Projects by category, Contact in her living room)
+- `projects.html` + `projects.js`: all projects with category tabs, search and a Team / Individual filter (`?cat=game&q=unity&collab=team`)
+- `shared.js`: project data (`projects`, `TOOLS`, `TEAM`), helpers, the project popup and the theme switch, used by both pages
+- `script.js`: home-page logic (project categories, organizations, search palette, scroll progress)
+- `world.js` + `world.css`: the illustrated scenes and the chibi Celyne + poodle
+- `style.css`: design tokens and layout
+- `img/`: thumbnails, `me.jpg`, `tools/` (software logos), `logos/` (school and organization logos)
 
-Videos are not stored here. They stream from the interactive portfolio at
-https://jocelyneat.github.io/portofolio/ (see `MEDIA` at the top of `script.js`).
-
-To edit content, change the lists near the top of `script.js`:
-`projects`, `TOOLS` (tools line under each project), `awards`, `experience` (organizations & clubs) and `tools` (software logos).
+Videos stream from the desk-version portfolio (see `MEDIA` in `shared.js`).
+To add or edit a project, change `projects` in `shared.js`; mark team projects in `TEAM`.

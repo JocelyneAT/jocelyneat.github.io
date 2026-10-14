@@ -282,9 +282,279 @@
       `<ellipse class="g-rug" cx="${x + 10}" cy="${G + 6}" rx="120" ry="9"/>`;
   }
 
+  // Winners' podium for the strip before Awards: steps 2 · 1 · 3, bunting between two poles, a few confetti
+  function podium(x) {
+    const B = G - 6;
+    const flags = Array.from({ length: 11 }, (_, i) => {
+      const fx = x - 250 + i * 50, fy = B - 196 + Math.sin(i / 10 * PI) * 26;
+      return `<path class="pd-flag${i % 3}" d="M${f(fx - 11)} ${f(fy)} L${f(fx + 11)} ${f(fy)} L${f(fx)} ${f(fy + 22)} Z"/>`;
+    }).join('');
+    const confetti = Array.from({ length: 14 }, (_, i) =>
+      `<rect class="pd-conf${i % 3}" x="${f(x - 230 + i * 34)}" y="${f(B - 168 + (i * 37) % 70)}" width="6" height="3" rx="1" transform="rotate(${(i * 47) % 180} ${f(x - 227 + i * 34)} ${f(B - 166 + (i * 37) % 70)})"/>`).join('');
+    return `<g class="pd">
+      <path class="pd-pole" d="M${x - 270} ${B} V${B - 206} M${x + 270} ${B} V${B - 206}"/><circle class="pd-knob" cx="${x - 270}" cy="${B - 208}" r="5"/><circle class="pd-knob" cx="${x + 270}" cy="${B - 208}" r="5"/>
+      <path class="pd-string" d="M${x - 270} ${B - 200} Q${x} ${B - 140} ${x + 270} ${B - 200}"/>${flags}${confetti}
+      <rect class="pd-step2" x="${x - 150}" y="${B - 46}" width="96" height="46" rx="4"/><text class="pd-num" x="${x - 102}" y="${B - 16}">2</text>
+      <rect class="pd-step3" x="${x + 54}" y="${B - 32}" width="96" height="32" rx="4"/><text class="pd-num" x="${x + 102}" y="${B - 9}">3</text>
+      <rect class="pd-step1" x="${x - 58}" y="${B - 72}" width="116" height="72" rx="4"/><rect class="pd-top" x="${x - 58}" y="${B - 72}" width="116" height="8" rx="3"/>
+      <text class="pd-num one" x="${x}" y="${B - 26}">1</text>
+    </g>`;
+  }
+
+  // Awards night: an indoor stage with curtains, spotlights, a garland and the 2 · 1 · 3 podium
+  function awardStage() {
+    const x = 720, B = G + 4;
+    let planks = '';
+    for (let px = -200; px < 1660; px += 74) planks += `M${px} ${G - 4} L${f(720 + (px - 720) * 1.35)} ${H + 80} `;
+    const curtain = side => {
+      const s = side, x0 = side < 0 ? -60 : 1500, x1 = side < 0 ? 300 : 1140;
+      const tie = side < 0 ? 170 : 1270;
+      const folds = [0.2, 0.42, 0.64].map(k => { const fx = f(x0 + (x1 - x0) * k * 0.7); return `M${fx} 30 Q${f(+fx + s * 10)} 200 ${f(tie + s * (1 - k) * -40)} 236 Q${f(+fx - s * 6)} 290 ${fx} ${G}`; }).join(' ');
+      return `<path class="st-curtain" d="M${x0} 0 H${x1} Q${f(x1 - s * -30)} 150 ${tie} 236 Q${f(x1 + s * 30)} 300 ${f(x1 + s * 40)} ${G} H${x0} Z"/>` +
+        `<path class="st-fold" d="${folds}"/>` +
+        `<ellipse class="st-tie" cx="${tie}" cy="238" rx="12" ry="7"/>`;
+    };
+    let scallops = '';
+    for (let sx = -60; sx < 1500; sx += 60) scallops += `Q${sx + 30} 74 ${sx + 60} 46 `;
+    const garland = Array.from({ length: 13 }, (_, i) => {
+      const gx = 420 + i * 50, gy = 104 + Math.sin(i / 12 * PI) * 30;
+      return `<path class="st-star${i % 2}" d="M${gx} ${f(gy - 8)} l2.4 5 l5.4 .6 l-4 3.7 l1.1 5.3 l-4.9 -2.7 l-4.9 2.7 l1.1 -5.3 l-4 -3.7 l5.4 -.6 Z"/>`;
+    }).join('');
+    const confetti = Array.from({ length: 22 }, (_, i) =>
+      `<rect class="pd-conf${i % 3} st-conf" x="${380 + (i * 61) % 680}" y="-20" width="7" height="3.5" rx="1" style="animation-delay:${f(-i * 0.55)}s;animation-duration:${f(5 + (i % 5) * 0.9)}s"/>`).join('');
+    const bulbs = Array.from({ length: 16 }, (_, i) => `<circle class="st-bulb" cx="${130 + i * 78}" cy="${G + 30}" r="4"/>`).join('');
+    return {
+      viewBox: `0 0 ${W} ${H}`,
+      layers: [
+        [0.12, `<rect class="st-wall" x="-200" y="-200" width="1840" height="${G + 200}"/>` +
+          `<path class="st-drape" d="M400 40 H1040 V${G} H400 Z"/><path class="st-drape-fold" d="M480 40 V${G} M560 40 V${G} M640 40 V${G} M800 40 V${G} M880 40 V${G} M960 40 V${G}"/>` +
+          `<path class="st-string" d="M400 98 Q720 158 1040 98"/>${garland}`],
+        [0, `<rect class="st-floor" x="-200" y="${G - 4}" width="1840" height="200"/><path class="st-plank" d="${planks}"/>` +
+          `<rect class="st-lip" x="-200" y="${G + 22}" width="1840" height="18"/>${bulbs}` +
+          `<path class="st-beam" d="M560 0 L620 0 L820 ${B} L470 ${B} Z"/><path class="st-beam" d="M820 0 L880 0 L970 ${B} L640 ${B} Z"/>` +
+          `<ellipse class="st-pool" cx="${x}" cy="${B}" rx="230" ry="18"/>` +
+          `<rect class="pd-step2" x="${x - 150}" y="${B - 46}" width="96" height="46" rx="4"/><text class="pd-num" x="${x - 102}" y="${B - 16}">2</text>` +
+          `<rect class="pd-step3" x="${x + 54}" y="${B - 32}" width="96" height="32" rx="4"/><text class="pd-num" x="${x + 102}" y="${B - 9}">3</text>` +
+          `<rect class="pd-step1" x="${x - 58}" y="${B - 72}" width="116" height="72" rx="4"/><rect class="pd-top" x="${x - 58}" y="${B - 72}" width="116" height="8" rx="3"/>` +
+          `<text class="pd-num one" x="${x}" y="${B - 26}">1</text>` +
+          `<g class="pairs"></g>${confetti}` +
+          curtain(-1) + curtain(1) +
+          `<path class="st-valance" d="M-60 0 V46 ${scallops} V0 Z"/><path class="st-trim" d="M-60 46 ${scallops}"/>`]
+      ]
+    };
+  }
+
+  // Contact: a little town street; she walks the poodle to the post box outside the post office
+  function townStreet() {
+    const S = G - 8;                       // pavement line
+    let far = '';
+    const r = rng(77);
+    for (let x = -120; x < W + 120;) {
+      const w = 60 + r() * 70, hgt = 90 + r() * 110;
+      far += `<rect class="tn-far" x="${f(x)}" y="${f(S - 60 - hgt)}" width="${f(w)}" height="${f(hgt + 60)}"/>`;
+      if (r() < 0.5) far += `<path class="tn-far" d="M${f(x - 4)} ${f(S - 60 - hgt)} L${f(x + w / 2)} ${f(S - 90 - hgt)} L${f(x + w + 4)} ${f(S - 60 - hgt)} Z"/>`;
+      for (let wy = S - 40 - hgt; wy < S - 70; wy += 26) for (let wx = x + 12; wx < x + w - 14; wx += 22)
+        far += `<rect class="tn-far-win" x="${f(wx)}" y="${f(wy)}" width="8" height="11" rx="1"/>`;
+      x += w + 8;
+    }
+    const awning = (x, w, y, cls) => {
+      // striped canopy: each stripe has its own scalloped bottom edge
+      const n = Math.round(w / 24), sw = w / n;
+      let st = '';
+      for (let i = 0; i < n; i++) st += `<path class="${cls}${i % 2 ? '-b' : ''}" d="M${f(x + i * sw)} ${y} H${f(x + (i + 1) * sw)} V${y + 24} Q${f(x + i * sw + sw / 2)} ${y + 36} ${f(x + i * sw)} ${y + 24} Z"/>`;
+      return `<path class="${cls}" d="M${x - 8} ${y - 8} H${x + w + 8} L${x + w} ${y} H${x} Z"/>` + st;
+    };
+    const windows = (x, w, y0, rows, cls = 'tn-win') => {
+      let s = '';
+      for (let ry = 0; ry < rows; ry++) for (let wx = x + 18; wx < x + w - 30; wx += 46)
+        s += `<rect class="${cls}" x="${wx}" y="${y0 + ry * 46}" width="26" height="32" rx="3"/><path class="tn-sill" d="M${wx - 3} ${y0 + ry * 46 + 33} h32"/>`;
+      return s;
+    };
+    // café
+    const cafe = `<rect class="tn-wall1" x="120" y="${S - 230}" width="300" height="230"/><rect class="tn-cornice" x="112" y="${S - 238}" width="316" height="12" rx="2"/>` +
+      windows(120, 300, S - 214, 1) +
+      `<rect class="tn-shop" x="132" y="${S - 112}" width="276" height="112"/>` + awning(132, 276, S - 120, 'tn-awn1') +
+      `<rect class="tn-glass" x="146" y="${S - 84}" width="150" height="70" rx="3"/><rect class="tn-door" x="318" y="${S - 86}" width="74" height="86" rx="3"/>` +
+      `<rect class="tn-sign" x="210" y="${S - 160}" width="120" height="30" rx="15"/><text class="tn-sign-t" x="270" y="${S - 140}">café</text>` +
+      `<rect class="tn-table" x="70" y="${S - 34}" width="36" height="5" rx="2"/><path class="tn-table-leg" d="M88 ${S - 30} V${S}"/>`;
+    // flower shop
+    const flowers = `<rect class="tn-wall2" x="440" y="${S - 190}" width="230" height="190"/><rect class="tn-cornice" x="432" y="${S - 198}" width="246" height="12" rx="2"/>` +
+      windows(440, 230, S - 174, 1) +
+      `<rect class="tn-shop" x="452" y="${S - 104}" width="206" height="104"/>` + awning(452, 206, S - 112, 'tn-awn2') +
+      `<rect class="tn-glass" x="466" y="${S - 78}" width="110" height="64" rx="3"/><rect class="tn-door2" x="590" y="${S - 80}" width="56" height="80" rx="3"/>` +
+      [478, 506, 534].map((bx, i) => `<rect class="tn-bucket" x="${bx}" y="${S - 18}" width="22" height="18" rx="2"/>` +
+        [-6, 0, 6].map(d => `<circle class="tn-bloom${(i + d / 6 + 3) % 3}" cx="${bx + 11 + d}" cy="${S - 24 - Math.abs(d)}" r="6"/>`).join('')).join('');
+    // post office
+    const post = `<rect class="tn-wall3" x="1000" y="${S - 250}" width="320" height="250"/><path class="tn-roof3" d="M988 ${S - 250} L1160 ${S - 300} L1332 ${S - 250} Z"/>` +
+      windows(1000, 320, S - 228, 2) +
+      `<rect class="tn-sign2" x="1080" y="${S - 128}" width="160" height="30" rx="4"/><text class="tn-sign-t2" x="1160" y="${S - 107}">POST OFFICE</text>` +
+      `<path class="tn-arch" d="M1120 ${S} V${S - 64} Q1160 ${S - 96} 1200 ${S - 64} V${S} Z"/>` +
+      `<rect class="tn-glass" x="1024" y="${S - 86}" width="70" height="62" rx="3"/><rect class="tn-glass" x="1226" y="${S - 86}" width="70" height="62" rx="3"/>` +
+      `<path class="tn-env" d="M1040 ${S - 70} h38 v26 h-38 Z M1040 ${S - 70} l19 14 l19 -14"/>`;
+    // round red post box
+    const box = `<g class="tn-box"><rect class="tn-box-post" x="950" y="${S - 16}" width="12" height="16"/><rect class="tn-box-body" x="932" y="${S - 86}" width="48" height="72" rx="8"/>` +
+      `<path class="tn-box-top" d="M930 ${S - 80} Q956 ${S - 108} 982 ${S - 80} Z"/><rect class="tn-box-slot" x="942" y="${S - 66}" width="28" height="4" rx="2"/><rect class="tn-box-band" x="932" y="${S - 40}" width="48" height="6"/></g>`;
+    const planes = [0, 1, 2].map(i => `<g class="tn-plane" style="animation-delay:${-i * 3}s"><path d="M0 0 L22 -8 L8 4 Z M8 4 L6 10 L11 5 Z"/></g>`).join('');
+    return {
+      viewBox: `0 0 ${W} ${H}`,
+      layers: [
+        [0.5, `<circle class="w-sun" cx="820" cy="120" r="30"/>` + bigCloud(140, 110, 1.3) + bigCloud(1120, 80, 1.1)],
+        [0.3, far],
+        [0.1, cafe + flowers + post + lampPost(760, S) + lampPost(1380, S)],
+        [0, `<rect class="tn-walk" x="-200" y="${S}" width="1840" height="30"/><path class="tn-slab" d="${Array.from({ length: 30 }, (_, i) => `M${-200 + i * 64} ${S} V${S + 30}`).join(' ')}"/>` +
+          `<rect class="tn-curb" x="-200" y="${S + 30}" width="1840" height="8"/><rect class="tn-road" x="-200" y="${S + 38}" width="1840" height="200"/>` +
+          `<path class="tn-lane" d="${Array.from({ length: 16 }, (_, i) => `M${-100 + i * 110} ${S + 70} h60`).join(' ')}"/>` +
+          box + `<g class="tn-planes" transform="translate(960 ${S - 96})">${planes}</g><g class="pairs"></g>`]
+      ]
+    };
+  }
+
+  // Contact: home again. Her living room uses the very same pieces as the bedroom at the top
+  // (window with the real sky, digital clock, calendar, diploma, bookshelf, nightstand lamp, plants, dog bed),
+  // arranged around the sofa she sits on, with the front door on the left.
+  function livingRoom() {
+    const B = G;
+    const r = rng(31);
+    const colors = ['#c96a55', '#8ea47a', '#e3bb72', '#7d8fa6', '#d9a58e', '#5d7a6a', '#b58ab0'];
+    const books = (x0, x1, y, hMin = 22, hVar = 12) => {
+      let s = '';
+      for (let x = x0; x < x1 - 6;) {
+        const w = 5 + r() * 5, h = hMin + r() * hVar;
+        s += `<rect x="${f(x)}" y="${f(y - h)}" width="${f(w)}" height="${f(h)}" rx="1" fill="${colors[Math.floor(r() * colors.length)]}"/>`;
+        x += w + 1.2;
+      }
+      return s;
+    };
+    const pot = (x, y, w, h) => `<path class="hr-pot" d="M${f(x - w / 2)} ${f(y - h)} h${w} l${f(-w * 0.12)} ${h} h${f(-w * 0.76)} Z"/>`;
+    const plant = (x, y, s = 1) => pot(x, y, 18 * s, 15 * s) +
+      [-50, -22, 0, 22, 50].map((a, i) => `<ellipse class="hr-leaf${i % 2 ? '2' : ''}" cx="${x}" cy="${f(y - 15 * s - 9 * s)}" rx="${f(4 * s)}" ry="${f(11 * s)}" transform="rotate(${a} ${x} ${f(y - 15 * s)})"/>`).join('');
+    const picture = (x, y, w, h) => `<rect class="hr-frame" x="${x}" y="${y}" width="${w}" height="${h}" rx="2"/>` +
+      `<rect class="hr-pic-sky" x="${x + 4}" y="${y + 4}" width="${w - 8}" height="${h - 8}"/>` +
+      `<path class="hr-pic-mtn" d="M${x + 4} ${y + h - 4} L${f(x + w * 0.35)} ${f(y + h * 0.45)} L${f(x + w * 0.55)} ${f(y + h * 0.7)} L${f(x + w * 0.75)} ${f(y + h * 0.5)} L${x + w - 4} ${y + h - 4} Z"/>`;
+    let planks = '';
+    for (let x = -400; x < 1840; x += 70) planks += `M${x} ${B} v400 `;
+    const curtain = side => side < 0
+      ? `<path class="hr-curtain" d="M598 -46 H684 Q676 60 664 120 Q682 190 694 300 H604 Q616 190 622 120 Q606 50 598 -46 Z"/><path class="hr-curtain-fold" d="M626 -40 Q634 60 640 118 M650 130 Q656 210 660 296"/><rect class="hr-tieback" x="612" y="114" width="58" height="8" rx="4"/>`
+      : `<path class="hr-curtain" d="M982 -46 H896 Q904 60 916 120 Q898 190 886 300 H976 Q964 190 958 120 Q974 50 982 -46 Z"/><path class="hr-curtain-fold" d="M954 -40 Q946 60 940 118 M930 130 Q924 210 920 296"/><rect class="hr-tieback" x="910" y="114" width="58" height="8" rx="4"/>`;
+    const CK = [884, 150];
+    const obj = (t, extra, cls = 'hr-obj') => `class="${cls}" data-tip="${t}" ${extra} tabindex="0" role="button" aria-label="${t}"`;
+    return {
+      viewBox: `0 0 ${W} ${H}`,
+      live: true,
+      layers: [[0, `
+      <defs>
+        <linearGradient id="lrGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="ws-top"/><stop offset="1" class="ws-bot"/></linearGradient>
+        <clipPath id="lrClip"><rect x="662" y="-18" width="256" height="238"/></clipPath>
+      </defs>
+      <rect class="r-wall" x="-400" y="-600" width="2240" height="${B + 600}"/>
+      <rect class="r-floor" x="-400" y="${B}" width="2240" height="400"/>
+      <path class="r-plank" d="${planks}"/>
+      <rect class="r-skirting" x="-400" y="${B - 7}" width="2240" height="7"/>
+
+      <!-- front door: frame, arched glass, two panels, brass knob, a plant by the door -->
+      <g transform="translate(150 0)">
+      <g ${obj('Back to top', 'data-go="home"', 'hr-hit')}>
+      <rect class="hr-wood-l" x="98" y="${B - 236}" width="152" height="236" rx="4"/>
+      <rect class="hr-wood" x="110" y="${B - 224}" width="128" height="224" rx="3"/>
+      <path class="r-window-frame" d="M136 ${B - 150} V${B - 184} a38 38 0 0 1 76 0 V${B - 150} Z"/>
+      <path class="hr-sky" d="M142 ${B - 156} V${B - 184} a32 32 0 0 1 64 0 V${B - 156} Z"/>
+      <path class="r-mullion" d="M174 ${B - 214} V${B - 156} M142 ${B - 182} H206"/>
+      <rect class="hr-wood-d" x="130" y="${B - 134}" width="38" height="112" rx="3"/><rect class="hr-wood-d" x="180" y="${B - 134}" width="38" height="112" rx="3"/>
+      <rect class="hr-wood" x="134" y="${B - 130}" width="30" height="104" rx="2"/><rect class="hr-wood" x="184" y="${B - 130}" width="30" height="104" rx="2"/>
+      <rect class="lr-plate" x="221" y="${B - 124}" width="8" height="26" rx="3"/><circle class="lr-knob" cx="225" cy="${B - 108}" r="4.5"/>
+      </g>
+      <g ${obj('Water the plant', 'data-act="plant"')}>${plant(278, B, 1.9)}</g>
+      </g>
+
+      <g transform="translate(-190 0)">
+      <!-- above the sofa: diploma, the digital clock, a little picture, the calendar -->
+      <g ${obj('Education', 'data-go="education"')}>
+      <rect class="hr-frame" x="726" y="126" width="64" height="48" rx="2"/><rect class="hr-paper" x="731" y="131" width="54" height="38"/>
+      <path class="hr-paper-line" d="M740 140 h36 M744 148 h28 M747 156 h22"/><circle class="g-cert-seal" cx="775" cy="163" r="4"/>
+      </g>
+      <g transform="translate(${CK[0]} ${CK[1]}) scale(0.7) translate(${-CK[0]} ${-CK[1]})"><g ${obj('What time is it?', 'data-act="clock"', 'hr-hit')}>
+        <rect class="hr-dclock" x="${CK[0] - 58}" y="${CK[1] - 30}" width="116" height="60" rx="12"/>
+        <rect class="hr-dclock-screen" x="${CK[0] - 50}" y="${CK[1] - 22}" width="100" height="44" rx="7"/>
+        <text class="hr-dclock-t" x="${CK[0] - 6}" y="${CK[1] + 10}" text-anchor="middle"></text>
+        <text class="hr-dclock-ap" x="${CK[0] + 40}" y="${CK[1] - 6}" text-anchor="middle"></text>
+        <text class="hr-dclock-s" x="${CK[0] + 40}" y="${CK[1] + 10}" text-anchor="middle"></text>
+      </g></g>
+      <g ${obj('About me', 'data-go="about"')}>${picture(966, 128, 40, 46)}</g>
+      <g ${obj("Today's date", 'data-act="calendar"', 'hr-hit hr-cal')}>
+        <rect class="hr-cal-paper" x="1028" y="110" width="72" height="80" rx="5"/>
+        <path class="hr-cal-top" d="M1028 127 V115 a5 5 0 0 1 5 -5 h62 a5 5 0 0 1 5 5 V127 Z"/>
+        <circle class="hr-cal-ring" cx="1044" cy="110" r="3.5"/><circle class="hr-cal-ring" cx="1084" cy="110" r="3.5"/>
+        <text class="hr-cal-month" x="1064" y="123" text-anchor="middle"></text>
+        <text class="hr-cal-day" x="1064" y="164" text-anchor="middle"></text>
+        <text class="hr-cal-wd" x="1064" y="180" text-anchor="middle"></text>
+      </g>
+
+      <!-- sofa (she sits here) -->
+      <g transform="translate(0 8)">
+      <rect class="lr-sofa-back" x="724" y="${B - 118}" width="300" height="78" rx="26"/>
+      <rect class="lr-cushion" x="752" y="${B - 100}" width="56" height="44" rx="14" transform="rotate(-8 780 ${B - 78})"/>
+      <rect class="lr-cushion2" x="940" y="${B - 100}" width="52" height="42" rx="14" transform="rotate(7 966 ${B - 79})"/>
+      <rect class="lr-sofa" x="716" y="${B - 54}" width="316" height="38" rx="14"/>
+      <rect class="lr-sofa-arm" x="696" y="${B - 88}" width="44" height="76" rx="20"/><rect class="lr-sofa-arm" x="1008" y="${B - 88}" width="44" height="76" rx="20"/>
+      </g>
+      <rect class="hr-wood-d" x="718" y="${B - 8}" width="8" height="8" rx="2"/><rect class="hr-wood-d" x="1022" y="${B - 8}" width="8" height="8" rx="2"/>
+
+      <!-- nightstand beside the sofa: the same lamp, mug and phone -->
+      <rect class="hr-wood" x="1074" y="${B - 74}" width="62" height="74" rx="3"/>
+      <rect class="hr-wood-l" x="1070" y="${B - 78}" width="70" height="7" rx="2"/>
+      <path class="hr-drawer" d="M1078 ${B - 42} H1132"/><path class="hr-knob" d="M1100 ${B - 56} h10 M1100 ${B - 24} h10"/>
+      <g ${obj('Lights on / off', 'data-act="lamp"')}>
+      <circle class="hr-lamp-glow" cx="1090" cy="${B - 114}" r="42"/>
+      <path class="hr-lamp-pole" d="M1090 ${B - 78} V${B - 98} M1082 ${B - 78} H1098"/>
+      <path class="hr-shade" d="M1074 ${B - 98} L1106 ${B - 98} L1100 ${B - 124} L1080 ${B - 124} Z"/>
+      </g>
+      <g ${obj('Ring ring', 'data-act="phone"')}><rect class="hr-phone" x="1112" y="${B - 92}" width="12" height="14" rx="2"/><path class="hr-phone-h" d="M1109 ${B - 92} q9 -8 18 0"/></g>
+
+      <!-- the same bookshelf: books, bunny, a picture and her trophy on top -->
+      <rect class="hr-wood" x="1170" y="${B - 168}" width="120" height="168" rx="3"/>
+      <rect class="hr-shelf-in" x="1177" y="${B - 161}" width="106" height="154" rx="2"/>
+      <rect class="hr-wood" x="1177" y="${B - 112}" width="106" height="6"/><rect class="hr-wood" x="1177" y="${B - 58}" width="106" height="6"/>
+      <g ${obj('Pick a book', 'data-act="book"')}>${books(1180, 1244, B - 112, 26, 14)}</g><g ${obj('About me', 'data-go="about"')}>${picture(1250, B - 146, 28, 32)}</g>
+      <g ${obj('Pick a book', 'data-act="book"')}>${books(1180, 1224, B - 58, 26, 14)}</g>
+      <g ${obj('Boop the bunny', 'data-act="bunny"')}><ellipse class="hr-bunny" cx="1244" cy="${B - 68}" rx="9" ry="11"/><ellipse class="hr-bunny" cx="1239" cy="${B - 84}" rx="3" ry="8"/><ellipse class="hr-bunny" cx="1249" cy="${B - 84}" rx="3" ry="8"/></g>
+      <rect class="hr-box" x="1258" y="${B - 82}" width="22" height="24" rx="2"/>
+      <rect class="hr-box" x="1182" y="${B - 34}" width="34" height="27" rx="2"/>
+      <g class="hr-pad"><rect x="1228" y="${B - 22}" width="34" height="15" rx="7"/><circle class="hr-pad-b" cx="1236" cy="${B - 15}" r="2.2"/><circle class="hr-pad-b" cx="1254" cy="${B - 15}" r="2.2"/></g>
+      <g>
+      <path class="h-gold" d="M1256 ${B - 200} h26 q0 22 -13 24 q-13 -2 -13 -24 Z"/>
+      <path class="h-handle" d="M1256 ${B - 196} q-9 2 -5 10 q2 3 6 2 M1282 ${B - 196} q9 2 5 10 q-2 3 -6 2"/>
+      <rect class="h-gold" x="1266" y="${B - 176}" width="6" height="5"/><rect class="h-gold" x="1258" y="${B - 171}" width="22" height="5" rx="1.5"/>
+      </g>
+      ${books(1184, 1224, B - 168, 14, 6)}
+
+      <!-- a tall plant in the corner, the poodle's bed in front of the sofa -->
+      <g ${obj('Water the plant', 'data-act="plant"')}>${plant(1352, B, 3.2)}</g>
+      <ellipse class="hr-dogbed" cx="1000" cy="${B - 4}" rx="42" ry="12"/><ellipse class="hr-dogbed-in" cx="1000" cy="${B - 7}" rx="31" ry="6"/>
+      </g>
+      <g class="pairs"></g>`]]
+    };
+  }
+
+  // Real time for any room that shows the window, clock and calendar (the bedroom has its own)
+  function liveRoom(el, svg) {
+    const q = sel => svg.querySelector(sel);
+    const set = (sel, t) => { const n = q(sel); if (n) n.textContent = t; };
+    const tick = () => {
+      const d = new Date(), h = d.getHours(), m = d.getMinutes(), hf = h + m / 60;
+      el.dataset.sky = hf < 6 || hf >= 19.5 ? 'night' : hf < 11 ? 'morning' : hf < 16.5 ? 'day' : 'evening';
+      set('.hr-dclock-t', `${h % 12 || 12}:${String(m).padStart(2, '0')}`);
+      set('.hr-dclock-ap', h < 12 ? 'AM' : 'PM');
+      set('.hr-dclock-s', String(d.getSeconds()).padStart(2, '0'));
+      set('.hr-cal-month', d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase() + ' ' + d.getFullYear());
+      set('.hr-cal-day', d.getDate());
+      set('.hr-cal-wd', d.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase());
+    };
+    tick(); setInterval(tick, 1000);
+  }
+
   /* ---------- Characters ---------- */
-  // Celyne: one design shared by every view. Long brown hair with blunt bangs, black long-sleeve top,
-  // black A-line skirt, cream backpack, black socks and boots. Soft flat colors, no outlines.
+  // Celyne: one design shared by every view. Long straight brown hair with curtain bangs and an orange clip,
+  // orange hoodie, pink skirt, white sneakers, cream backpack. Soft light colors, no outlines.
   // Side view (walking/sitting) has limbs posed every frame; front view is used when she stands still.
   const LIMB = () => '';
   const HERO = `<g class="hero-flip">
@@ -292,85 +562,70 @@
     <g class="hero-body">
       <g class="view-side">
         <path class="g-sleeve far" data-limb="armB" d=""/><circle class="g-skin far" data-limb="handB" r="2.4"/>
-        <path class="g-leg far" data-limb="legB" d=""/><path class="g-sock" data-limb="sockB" d=""/><path class="g-boot far" data-limb="bootB" d=""/>
-        <path class="g-leg" data-limb="legA" d=""/><path class="g-sock" data-limb="sockA" d=""/><path class="g-boot" data-limb="bootA" d=""/>
+        <path class="g-leg far" data-limb="legB" d=""/><path class="g-leg far" data-limb="sockB" d=""/><path class="g-shoe far" data-limb="bootB" d=""/>
+        <path class="g-leg" data-limb="legA" d=""/><path class="g-leg" data-limb="sockA" d=""/><path class="g-shoe" data-limb="bootA" d=""/>
         <g class="torso">
           <rect class="g-pack2" x="-15.5" y="-55" width="9" height="15" rx="3.5"/>
-          <path class="g-skirt" d="M-8 -42 L8 -42 Q10.5 -34 12 -27.5 Q0 -25 -12 -27.5 Q-10.5 -34 -8 -42 Z"/>
-          <path class="g-skirt-pleats" d="M-4.5 -42 L-6 -27.2 M-0.5 -42 L-0.5 -26.5 M3.8 -42 L4.8 -27.2"/>
-          <path class="g-jacket" d="M-8.5 -55.5 Q1 -58.5 8 -55 L9 -41 L-9 -41 Q-10 -48 -8.5 -55.5 Z"/>
+          <path class="g-skirtp" d="M-8 -42 L8 -42 Q10.5 -34 12.5 -27 Q0 -24.5 -12.5 -27 Q-10.5 -34 -8 -42 Z"/>
+          <path class="g-skirtp-fold" d="M-4 -38 L-5.5 -26.2 M0.5 -38 L0.5 -25.4 M4.8 -38 L6 -26.2"/>
+          <path class="g-jacket" d="M-9 -56 Q1 -59 8.5 -55.5 Q10.6 -47 10 -38.5 Q0 -37 -10 -38.5 Q-10.6 -47 -9 -56 Z"/>
+          <path class="g-jacket-hem" d="M-9.6 -40.5 Q0 -39 9.8 -40.5"/>
+          <path class="g-pocket" d="M2 -46 h6 v4"/>
           <path class="g-top" d="M-1.5 -57.5 C3 -57.5 7.5 -55.5 7 -52.5 C2.5 -52.5 -0.5 -54.5 -1.5 -57.5 Z"/>
           <path class="g-pack-strap2" d="M-6 -56 Q-3 -50 -6.5 -43"/>
           <rect class="g-skin" x="-1.6" y="-58.5" width="5" height="5" rx="1.5"/>
+          <g class="g-head" transform="translate(2 -57) scale(1.2) translate(-2 57)">
           <path class="g-hair hair-back" d=""/>
           <circle class="g-skin" cx="2.5" cy="-70" r="14.6"/>
           <ellipse class="g-skin" cx="6.5" cy="-66" rx="8" ry="7.5"/>
-          <!-- Wavy front & side curls -->
-          <path class="g-hair" d="M-14 -64 C-17.5 -88 -9.5 -98 3 -98 C15 -98 20.5 -88 18 -74 Q17 -70.5 14.5 -67.5 Q13 -72.5 10 -69 Q7 -73.5 4.5 -68.5 Q1 -71.5 -1.2 -65.5 Q3.5 -59 2.5 -49 Q4.2 -43 1.2 -41 Q-1 -43 0.2 -48 Q1.5 -56 -0.5 -63.5 Q-6.5 -59 -10.5 -60.5 Q-13 -61.5 -14 -64 Z"/>
-          <path class="g-hair-curl" d="M2.5 -57 Q4.2 -51 2.2 -44"/>
-          <path class="g-hair-curl" d="M15 -72 Q11.5 -69 7.5 -71.5"/>
+          <!-- Straight hair with blunt bangs; a lock falls in front of the ear -->
+          <path class="g-hair" d="M-14.5 -62 C-17.5 -82 -9 -90.5 3 -90.5 C14 -90.5 19.8 -84 19.2 -73 Q15.5 -74.6 11.5 -74 Q7 -72 5.8 -64 Q5.2 -59.5 3.4 -56.5 L-15 -56.5 Q-15.6 -59 -14.5 -62 Z"/>
           <path class="g-hair-shine" d="M-3.5 -91.5 Q3.5 -94.5 11 -91"/>
-          <circle cx="12.5" cy="-90.2" r="0.8" fill="#fff" opacity=".65"/>
-          <!-- Cute hairpin -->
-          <g class="g-hairpin" transform="translate(6 -84)"><circle cx="0" cy="0" r="2.2" fill="#f8d578"/><circle cx="0" cy="0" r="1.1" fill="#fff"/><line x1="-2.5" y1="1.5" x2="2.5" y2="-1.5" stroke="#df9b28" stroke-width="0.8" stroke-linecap="round"/></g>
-          <!-- Ear & earring -->
-          <ellipse class="g-skin" cx="0.8" cy="-66.2" rx="2.2" ry="2.7"/>
-          <circle cx="0.8" cy="-64.2" r="1" fill="#f8d578"/><circle cx="0.8" cy="-64.2" r="0.4" fill="#fff"/>
-          <!-- Expressive eye, lashes & brow -->
-          <path class="g-eyebrow" d="M9.2 -71.2 Q12 -73 14.2 -70.8"/>
-          <path class="g-eyelash" d="M9.2 -67.8 Q11.8 -70 14.5 -66.8"/>
-          <path class="g-eyelash-flick" d="M14.2 -67.2 L15.4 -67.8"/>
-          <g class="blink">
-            <ellipse class="g-eye" cx="11.8" cy="-65.4" rx="2.0" ry="2.6"/>
-            <ellipse cx="11.8" cy="-64.5" rx="1.5" ry="1.4" fill="#7a4634" opacity="0.65"/>
+
+          <!-- Orange hair clip -->
+          <rect class="g-clip" x="3" y="-87" width="8" height="3" rx="1.5" transform="rotate(-18 10 -80.5)"/>
+          <g class="blink"><ellipse class="g-eye" cx="12" cy="-64.4" rx="2.1" ry="2.8"/></g>
+          <circle class="g-eye-hi" cx="12.7" cy="-65.6" r="0.8"/><circle class="g-eye-hi" cx="11.3" cy="-63.2" r="0.38"/>
+          <ellipse class="g-blush" cx="9.2" cy="-61.2" rx="2.5" ry="1.5"/>
+          <path class="g-smile" d="M11.4 -60.6 Q12.6 -59.4 13.8 -60.8"/>
           </g>
-          <circle class="g-eye-hi" cx="12.6" cy="-66.6" r="0.9"/>
-          <circle class="g-eye-hi2" cx="10.8" cy="-64.6" r="0.45"/>
-          <ellipse class="g-blush" cx="10.8" cy="-61.6" rx="3.2" ry="1.7"/>
-          <line class="g-blush-h" x1="9.6" y1="-61.8" x2="11.8" y2="-61.2"/>
-          <path class="g-smile" d="M13.2 -59.6 Q14.6 -58.4 15.8 -59.8"/>
         </g>
         <path class="g-sleeve" data-limb="armA" d=""/><circle class="g-skin" data-limb="handA" r="2.4"/>
       </g>
       <g class="view-front">
-        <!-- Wavy curly hair cascading on both shoulders -->
-        <path class="g-hair" d="M-18 -68 C-21 -88 -13 -98 0 -98 C13 -98 21 -88 18 -68 C20.5 -58 24 -47 20 -37 C17 -29 11 -31 13 -40 Q15.5 -48 11.5 -54 L10.5 -55 L-10.5 -55 L-11.5 -54 Q-15.5 -48 -13 -40 C-11 -31 -17 -29 -20 -37 C-24 -47 -20.5 -58 -18 -68 Z"/>
-        <path class="g-boot2" d="M-8.6 0 C-9 -4.6 -7 -6.6 -4.4 -6.6 C-2 -6.6 -1 -5 -1.2 -2.2 L-1.2 0 Z M8.6 0 C9 -4.6 7 -6.6 4.4 -6.6 C2 -6.6 1 -5 1.2 -2.2 L1.2 0 Z"/>
-        <path class="g-skin" d="M-6 -28 H-1.8 V-12 H-6 Z M1.8 -28 H6 V-12 H1.8 Z"/>
-        <path class="g-sock2" d="M-6.2 -13 H-1.6 V-5.5 H-6.2 Z M1.6 -13 H6.2 V-5.5 H1.6 Z"/>
-        <path class="g-skirt" d="M-10 -42 L10 -42 Q12.5 -34 14.5 -27.5 Q0 -25 -14.5 -27.5 Q-12.5 -34 -10 -42 Z"/>
-        <path class="g-skirt-pleats" d="M-6 -42 L-9 -27 M-2 -42 L-3 -26.2 M2 -42 L3 -26.2 M6 -42 L9 -27"/>
-        <path class="g-jacket" d="M-9.5 -55.5 Q0 -58.5 9.5 -55.5 L10.6 -41 L-10.6 -41 Z"/>
+        <!-- Long straight hair down the back -->
+        <path class="g-hair" transform="translate(0 -57) scale(1.2) translate(0 57)" d="M-18.6 -66 C-20.5 -83 -12 -89.5 0 -89.5 C12 -89.5 20.5 -83 18.6 -66 L19.4 -42 Q15.5 -40.6 11.6 -42 L11.6 -54 L-11.6 -54 L-11.6 -42 Q-15.5 -40.6 -19.4 -42 Z"/>
+        <path class="g-shoe2" d="M-9 0 C-9.4 -4.2 -7.4 -6 -4.6 -6 C-2 -6 -0.8 -4.6 -1 -2 L-1 0 Z M9 0 C9.4 -4.2 7.4 -6 4.6 -6 C2 -6 0.8 -4.6 1 -2 L1 0 Z"/>
+        <path class="g-skin" d="M-6 -29 H-1.8 V-5 H-6 Z M1.8 -29 H6 V-5 H1.8 Z"/>
+        <path class="g-skirtp" d="M-10 -42 L10 -42 Q12.5 -34 14.5 -27.5 Q0 -25 -14.5 -27.5 Q-12.5 -34 -10 -42 Z"/>
+        <path class="g-skirtp-fold" d="M-6 -38.5 L-8.4 -27 M-2 -38.5 L-2.8 -26.2 M2 -38.5 L2.8 -26.2 M6 -38.5 L8.4 -27"/>
+        <path class="g-jacket" d="M-9.5 -55.5 Q0 -58.5 9.5 -55.5 Q11.4 -47 11 -38.5 Q0 -37 -11 -38.5 Q-11.4 -47 -9.5 -55.5 Z"/>
+        <path class="g-jacket-hem" d="M-10.6 -40.5 Q0 -39 10.6 -40.5"/>
         <path class="g-top" d="M-6 -56 Q0 -52.5 6 -56 Q3.5 -51 0 -52 Q-3.5 -51 -6 -56 Z"/>
         <g class="arm-l"><path class="g-sleeve-f" d="M-9.6 -54.6 Q-13.6 -51 -14.4 -39"/><circle class="g-skin" cx="-14.5" cy="-37" r="2.4"/></g>
         <path class="g-pack-strap2" d="M-6.2 -56 L-5.6 -44.5 M6.2 -56 L5.6 -44.5"/>
         <rect class="g-skin" x="-2.4" y="-59" width="4.8" height="5" rx="1.5"/>
         <path class="g-neck" d="M-3.6 -56.4 Q0 -53.4 3.6 -56.4 Z"/>
-        <circle class="g-skin" cx="-15" cy="-67.5" r="2.4"/><circle class="g-skin" cx="15" cy="-67.5" r="2.4"/>
-        <circle cx="-15" cy="-65.5" r="0.9" fill="#f8d578"/><circle cx="15" cy="-65.5" r="0.9" fill="#f8d578"/>
-        <ellipse class="g-skin" cx="0" cy="-69.5" rx="15.4" ry="14.4"/>
-        <!-- Soft wavy curtain bangs -->
-        <path class="g-hair" d="M-18 -62 C-21 -88 -13 -98 0 -98 C13 -98 21 -88 18 -62 L15 -62 Q14.5 -68 12 -72 Q8 -70 4 -72.5 Q1 -69 -2 -72 Q-6 -70 -10 -72.5 Q-13.5 -68 -14.5 -62 Z"/>
-        <path class="g-hair-shine" d="M-8 -89 Q0 -92.5 8 -89"/>
-        <g class="g-hairpin" transform="translate(10 -80)"><circle cx="0" cy="0" r="2.2" fill="#f8d578"/><circle cx="0" cy="0" r="1.1" fill="#fff"/><line x1="-2" y1="1.5" x2="2" y2="-1.5" stroke="#df9b28" stroke-width="0.8" stroke-linecap="round"/></g>
-        <!-- Eyebrows & eyelashes -->
-        <path class="g-eyebrow" d="M-8.5 -71.5 Q-6 -73.5 -3.5 -71.8"/>
-        <path class="g-eyebrow" d="M3.5 -71.8 Q6 -73.5 8.5 -71.5"/>
-        <path class="g-eyelash" d="M-8.2 -67.2 Q-5.8 -69.2 -3.8 -67"/>
-        <path class="g-eyelash" d="M3.8 -67 Q5.8 -69.2 8.2 -67.2"/>
-        <g class="blink">
-          <ellipse class="g-eye" cx="-6" cy="-65.5" rx="2.1" ry="2.8"/>
-          <ellipse class="g-eye" cx="6" cy="-65.5" rx="2.1" ry="2.8"/>
-          <ellipse cx="-6" cy="-64.6" rx="1.6" ry="1.5" fill="#7a4634" opacity="0.65"/>
-          <ellipse cx="6" cy="-64.6" rx="1.6" ry="1.5" fill="#7a4634" opacity="0.65"/>
+        <g class="g-head" transform="translate(0 -57) scale(1.2) translate(0 57)">
+          <ellipse class="g-skin" cx="0" cy="-69" rx="15.8" ry="13.8"/>
+          <!-- side-swept bangs parted on her right, long straight locks framing the face -->
+          <path class="g-hair" d="M-18.8 -48 C-20.8 -81 -12 -89.5 0 -89.5 C12 -89.5 20.8 -81 18.8 -48 L15.4 -48 Q15.8 -59 14.8 -64.5 Q9.5 -66.2 4.5 -70.2 Q-0.5 -74.4 -4 -79.2 Q-6.4 -73.8 -9.6 -70.6 Q-13.2 -67.4 -14.8 -63.5 Q-15.8 -58 -15.4 -48 Z"/>
+          <rect class="g-clip" x="6.5" y="-84.5" width="8.5" height="3.2" rx="1.6" transform="rotate(-22 10.75 -82.9)"/>
+          <g class="blink">
+            <ellipse class="g-eye" cx="-6.3" cy="-63.8" rx="2.3" ry="2.9"/>
+            <ellipse class="g-eye" cx="6.3" cy="-63.8" rx="2.3" ry="2.9"/>
+          </g>
+          <circle class="g-eye-hi" cx="-5.5" cy="-65" r=".85"/><circle class="g-eye-hi" cx="7.1" cy="-65" r=".85"/>
+          <circle class="g-eye-hi" cx="-7.1" cy="-62.6" r=".4"/><circle class="g-eye-hi" cx="5.5" cy="-62.6" r=".4"/>
+          <ellipse class="g-blush" cx="-10.4" cy="-60" rx="2.6" ry="1.5"/><ellipse class="g-blush" cx="10.4" cy="-60" rx="2.6" ry="1.5"/>
+          <path class="g-smile" d="M-1.9 -60 Q0 -58 1.9 -60"/>
         </g>
-        <circle class="g-eye-hi" cx="-5.2" cy="-66.7" r=".85"/><circle class="g-eye-hi" cx="6.8" cy="-66.7" r=".85"/>
-        <circle class="g-eye-hi2" cx="-6.8" cy="-64.8" r=".42"/><circle class="g-eye-hi2" cx="5.2" cy="-64.8" r=".42"/>
-        <ellipse class="g-blush" cx="-9.8" cy="-60.6" rx="3.0" ry="1.7"/><ellipse class="g-blush" cx="9.8" cy="-60.6" rx="3.0" ry="1.7"/>
-        <path class="g-smile" d="M-2.2 -60.2 Q0 -58.2 2.2 -60.2"/>
         <g class="cert-hold"><path class="g-sleeve-f" d="M-9.6 -54.6 Q-13 -46 -5.5 -42.5"/><path class="g-sleeve-f" d="M9.6 -54.6 Q13 -46 5.5 -42.5"/>
-          <rect class="g-cert" x="-9.5" y="-51" width="19" height="14" rx="1.5"/><path class="g-cert-line" d="M-5.5 -47 h11 M-5.5 -44 h8"/>
-          <circle class="g-cert-seal" cx="5.5" cy="-40.5" r="2.1"/><circle class="g-skin" cx="-5.5" cy="-42.5" r="2.4"/><circle class="g-skin" cx="5.5" cy="-42.5" r="2.4"/></g>
+          <path class="g-trophy-h" d="M-5.6 -52 q-4.6 0.6 -3.4 4.6 q0.8 2 3.6 2 M5.6 -52 q4.6 0.6 3.4 4.6 q-0.8 2 -3.6 2"/>
+          <path class="g-trophy" d="M-6.4 -53.5 H6.4 Q6.6 -44.6 0 -43.4 Q-6.6 -44.6 -6.4 -53.5 Z"/>
+          <rect class="g-trophy" x="-1.3" y="-43.8" width="2.6" height="3.4"/><rect class="g-trophy-d" x="-4.6" y="-40.6" width="9.2" height="2.6" rx="1"/>
+          <path class="g-trophy-star" d="M0 -51.4 l0.9 1.9 l2 .2 l-1.5 1.4 l.4 2 l-1.8 -1 l-1.8 1 l.4 -2 l-1.5 -1.4 l2 -.2 Z"/>
+          <circle class="g-skin" cx="-5.5" cy="-42.5" r="2.4"/><circle class="g-skin" cx="5.5" cy="-42.5" r="2.4"/></g>
         <g class="wave-arm"><path class="g-sleeve-f" d="M9.6 -54.6 Q13.6 -51 14.4 -39"/><circle class="g-skin" cx="14.5" cy="-37" r="2.4"/></g>
       </g>
     </g>
@@ -392,8 +647,8 @@
     <g class="dog-body">
       <g class="dog-sil">${DOG_SHAPE}</g>
       <g class="dog-fill">${DOG_SHAPE}</g>
+      <g class="dog-collar"><path class="g-collar" d="M4.5 -25 Q10 -21 16.5 -23.6"/><circle class="g-collar-tag" cx="10.6" cy="-20.2" r="1.7"/></g>
       <g class="dog-face">
-        <path class="g-bandana ol" d="M4 -19.5 L17 -19 L11 -11 Z"/>
         <circle class="g-poodle-nose" cx="27" cy="-28.5" r="1.7"/>
         <g class="blink"><circle class="g-eye" cx="17" cy="-32" r="1.9"/></g><circle class="g-eye-hi" cx="17.6" cy="-32.7" r=".6"/>
         <ellipse class="g-dog-blush" cx="18" cy="-26.5" rx="2.2" ry="1.4"/>
@@ -438,68 +693,51 @@
     }).join('') + '</g>';
   }
 
+  // Grand hall behind the Awards: arched windows and pillars at the sides, long banners,
+  // big potted plants, and a podium with a red carpet at the bottom where she stands.
+  // Scene units: x 0–1440, y -400–620, floor at 560.
   function hallSVG() {
-    const laurel = (cx, cy, r, side) => {
+    const F = 560;
+    const laurel = (cx, cy, r, side, cls = 'h-gold') => {
       let s = '';
       for (let i = 0; i < 7; i++) {
         const a = (side < 0 ? 200 : -20) + side * i * 24, rad = a * PI / 180;
         const x = cx + Math.cos(rad) * r, y = cy + Math.sin(rad) * r;
-        s += `<ellipse class="h-gold" cx="${f(x)}" cy="${f(y)}" rx="3.2" ry="7" transform="rotate(${f(a + 90 * side)} ${f(x)} ${f(y)})"/>`;
+        s += `<ellipse class="${cls}" cx="${f(x)}" cy="${f(y)}" rx="${f(r * 0.14)}" ry="${f(r * 0.3)}" transform="rotate(${f(a + 90 * side)} ${f(x)} ${f(y)})"/>`;
       }
       return s;
     };
-    const banner = x => `<path class="h-rod" d="M${x - 44} 292 H${x + 44}"/><circle class="h-rod-knob" cx="${x - 46}" cy="292" r="4"/><circle class="h-rod-knob" cx="${x + 46}" cy="292" r="4"/>` +
-      `<path class="h-banner" d="M${x - 34} 294 H${x + 34} V438 L${x} 466 L${x - 34} 438 Z"/><path class="h-banner-edge" d="M${x - 28} 300 V434 L${x} 458 L${x + 28} 434 V300"/>` +
-      laurel(x - 2, 366, 22, -1) + laurel(x + 2, 366, 22, 1) + `<path class="h-gold" d="M${x} 430 l5 7 l-5 7 l-5 -7 Z"/>`;
-    const win = x => `<path class="h-window" d="M${x} 600 V200 Q${x + 80} 70 ${x + 160} 200 V600 Z"/>` +
-      `<path class="h-frame" d="M${x} 600 V200 Q${x + 80} 70 ${x + 160} 200 V600 M${x + 80} 112 V600 M${x} 330 H${x + 160} M${x} 460 H${x + 160}"/>`;
-    const vase = x => `<rect class="h-pedestal" x="${x - 22}" y="552" width="44" height="58" rx="3"/><rect class="h-pedestal-top" x="${x - 26}" y="546" width="52" height="8" rx="2"/>` +
-      `<path class="h-vase" d="M${x - 14} 546 Q${x - 18} 526 ${x - 8} 518 H${x + 8} Q${x + 18} 526 ${x + 14} 546 Z"/>` +
-      `<path class="h-leaf" d="M${x} 518 Q${x - 30} 500 ${x - 36} 470 Q${x - 10} 486 ${x} 518 M${x} 518 Q${x + 30} 500 ${x + 36} 470 Q${x + 10} 486 ${x} 518 M${x} 518 Q${x - 6} 480 ${x} 452 Q${x + 6} 480 ${x} 518"/>` +
-      [[-20, 486], [0, 470], [18, 488], [-8, 500], [10, 504], [-26, 504], [26, 506]].map(([dx, y], i) =>
-        `<circle class="${i % 2 ? 'h-bloom2' : 'h-bloom'}" cx="${x + dx}" cy="${y}" r="${i % 3 ? 6 : 7.5}"/><circle class="h-bloom-c" cx="${x + dx}" cy="${y}" r="2"/>`).join('');
-    const plant = x => `<path class="h-pot" d="M${x - 24} 600 L${x - 18} 640 H${x + 18} L${x + 24} 600 Z"/>` +
-      [-60, -35, -12, 12, 35, 60].map((a, i) => `<path class="${i % 2 ? 'h-leaf' : 'h-leaf2'}" transform="rotate(${a} ${x} 600)" d="M${x} 600 Q${x + 16} 560 ${x} ${520 - (i % 3) * 10} Q${x - 16} 560 ${x} 600 Z"/>`).join('');
-    const seat = (x, y, s) => `<g transform="translate(${f(x)} ${f(y)}) scale(${s})"><rect class="h-seat-back" x="-34" y="-58" width="68" height="52" rx="12"/>` +
-      `<rect class="h-seat" x="-36" y="-12" width="72" height="22" rx="8"/><rect class="h-seat-shade" x="-34" y="-58" width="68" height="10" rx="6"/></g>`;
-    let seats = '';
-    [[790, 1, [-195, -110, -25, 60, 145, 230, 315]], [860, 1.15, [-284, -186, -88, 10, 108, 206, 304, 402]], [940, 1.32, [-366, -254, -142, -30, 82, 194, 306, 418]]].forEach(([y, s, xs]) => {
-      for (const x of xs) seats += seat(x, y, s) + seat(1440 - x, y, s);
-    });
+    const banner = x => `<path class="h-rod" d="M${x - 50} -232 H${x + 50}"/><circle class="h-rod-knob" cx="${x - 52}" cy="-232" r="5"/><circle class="h-rod-knob" cx="${x + 52}" cy="-232" r="5"/>` +
+      `<path class="h-banner" d="M${x - 38} -230 H${x + 38} V60 L${x} 98 L${x - 38} 60 Z"/><path class="h-banner-edge" d="M${x - 31} -222 V56 L${x} 88 L${x + 31} 56 V-222"/>` +
+      laurel(x - 2, -100, 26, -1, 'h-laurel') + laurel(x + 2, -100, 26, 1, 'h-laurel') + `<path class="h-laurel" d="M${x} -62 l5 7 l-5 7 l-5 -7 Z"/>`;
+    const win = x => `<path class="h-window" d="M${x} ${F} V-180 Q${x + 100} -330 ${x + 200} -180 V${F} Z"/>` +
+      `<path class="h-frame" d="M${x} ${F} V-180 Q${x + 100} -330 ${x + 200} -180 V${F} M${x + 100} -255 V${F} M${x} -40 H${x + 200} M${x} 160 H${x + 200} M${x} 360 H${x + 200}"/>`;
+    const plant = (x, s) => `<path class="h-pot" d="M${x - 34 * s} ${F - 62 * s} H${x + 34 * s} L${x + 27 * s} ${F} H${x - 27 * s} Z"/>` +
+      `<rect class="h-pot-rim" x="${f(x - 37 * s)}" y="${f(F - 66 * s)}" width="${f(74 * s)}" height="${f(10 * s)}" rx="3"/>` +
+      [-64, -40, -18, 6, 28, 50, 70].map((a, i) => `<path class="${i % 2 ? 'h-leaf' : 'h-leaf2'}" transform="rotate(${a} ${x} ${f(F - 66 * s)})" d="M${x} ${f(F - 66 * s)} Q${f(x + 30 * s)} ${f(F - 140 * s)} ${x} ${f(F - (210 - (i % 3) * 30) * s)} Q${f(x - 30 * s)} ${f(F - 140 * s)} ${x} ${f(F - 66 * s)} Z"/>`).join('');
     let petals = '';
     const r = rng(91);
-    for (let i = 0; i < 18; i++) petals += `<ellipse class="h-petal" cx="${f(r() * 1440)}" cy="-20" rx="5" ry="3" style="animation-delay:${f(-r() * 9)}s;animation-duration:${f(7 + r() * 5)}s;--dx:${f((r() - 0.5) * 160)}px"/>`;
-
-    const svgHall = `
-      <g class="hall-g"><rect class="h-wall" x="-1200" y="-900" width="3840" height="1510"/>
-      <rect class="h-floor" x="-1200" y="600" width="3840" height="700"/>
-      <path class="h-arch" d="M250 150 Q720 -20 1190 150"/>
-      ${win(-330)}${win(-150)}${win(36)}${win(1244)}${win(1430)}${win(1610)}
-      <rect class="h-pillar" x="-30" y="90" width="44" height="520"/><rect class="h-pillar" x="1426" y="90" width="44" height="520"/>
-      <path class="h-beam" d="M196 220 L560 900 H400 L60 330 Z"/><path class="h-beam" d="M1244 220 L880 900 H1040 L1380 330 Z"/>
-      <rect class="h-pillar" x="222" y="90" width="44" height="520"/><rect class="h-pillar-cap" x="212" y="84" width="64" height="16" rx="3"/>
-      <rect class="h-pillar" x="1174" y="90" width="44" height="520"/><rect class="h-pillar-cap" x="1164" y="84" width="64" height="16" rx="3"/>
+    for (let i = 0; i < 16; i++) petals += `<ellipse class="h-petal" cx="${f(r() * 1440)}" cy="-380" rx="5" ry="3" style="animation-delay:${f(-r() * 9)}s;animation-duration:${f(9 + r() * 6)}s;--dx:${f((r() - 0.5) * 160)}px"/>`;
+    return `
+      <g class="hall-g"><rect class="h-wall" x="-1200" y="-1400" width="3840" height="${1400 + F}"/>
+      <path class="h-panel" d="M260 -330 H1180 M260 -322 H1180"/>
+      ${win(-150)}${win(1390)}
+      <rect class="h-pillar" x="44" y="-420" width="58" height="${420 + F}"/><rect class="h-pillar-cap" x="34" y="-420" width="78" height="18" rx="3"/>
+      <rect class="h-pillar" x="1338" y="-420" width="58" height="${420 + F}"/><rect class="h-pillar-cap" x="1328" y="-420" width="78" height="18" rx="3"/>
       ${banner(150)}${banner(1290)}
-      <path class="h-alcove" d="M548 612 V470 Q720 312 892 470 V612 Z"/>
-      <path class="h-niche" d="M606 612 V482 Q720 372 834 482 V612 Z"/>
-      <circle class="h-trophy-glow" cx="720" cy="430" r="70"/>
-      <g class="h-trophy"><path class="h-gold" d="M694 388 h52 q0 40 -26 44 q-26 -4 -26 -44 Z"/>
-        <path class="h-handle" d="M694 396 q-18 3 -11 19 q4 7 14 6 M746 396 q18 3 11 19 q-4 7 -14 6"/>
-        <rect class="h-gold" x="714" y="432" width="12" height="12"/><rect class="h-gold" x="700" y="444" width="40" height="10" rx="3"/>
-        <path class="h-shine" d="M704 396 q0 18 9 28"/></g>
-      ${laurel(720, 436, 62, -1)}${laurel(720, 436, 62, 1)}
-      <path class="h-sparkle" d="M612 520 l5 9 l-5 9 l-5 -9 Z M828 520 l5 9 l-5 9 l-5 -9 Z"/>
-      ${vase(520)}${vase(920)}${plant(150)}${plant(1290)}
-      <path class="h-step" d="M420 610 H1020 V660 H420 Z"/>
-      <path class="h-step2" d="M380 660 H1060 L1072 692 H368 Z"/>
-      <path class="h-step3" d="M340 692 H1100 L1114 728 H326 Z"/>
-      <path class="h-step-edge" d="M420 610 H1020 M380 660 H1060 M340 692 H1100"/>
-      <path class="h-carpet" d="M656 610 H784 L1010 900 H430 Z"/>
-      <path class="h-carpet-edge" d="M666 610 L452 900 M774 610 L988 900"/>
+      <rect class="h-skirting" x="-1200" y="${F - 18}" width="3840" height="18"/>
+      <rect class="h-floor" x="-1200" y="${F}" width="3840" height="700"/>
+      <path class="h-floor-line" d="M-1200 ${F + 26} H2640"/>
+      ${plant(150, 1.15)}${plant(1290, 1.15)}
+      <path class="h-carpet" d="M640 ${F} H800 L1010 ${F + 260} H430 Z"/>
+      <path class="h-carpet-edge" d="M652 ${F} L462 ${F + 260} M788 ${F} L978 ${F + 260}"/>
+      <rect class="h-step2" x="458" y="${F - 62}" width="170" height="64" rx="4"/>
+      <rect class="h-step2" x="812" y="${F - 62}" width="170" height="64" rx="4"/>
+      <rect class="h-step" x="600" y="${F - 96}" width="240" height="98" rx="4"/>
+      <path class="h-step-edge" d="M604 ${F - 94} H836 M462 ${F - 60} H624 M816 ${F - 60} H978"/>
+      ${laurel(720, F - 40, 24, -1, 'h-laurel')}${laurel(720, F - 40, 24, 1, 'h-laurel')}
       <g class="h-stars">${petals}</g>
-      ${seats}
     </g>`;
-    return svgHall;
   }
 
   // Tiny paintings of her own projects for the room wall
@@ -588,13 +826,10 @@
     a.torso.setAttribute('transform', `translate(0 ${f(hipY + 29 + breathe)}) rotate(${f(lean)} 0 -29)`);
     const sw = -s * (4 + 2 * sin(phase * 2)) + (1 - s) * sin(t * 1.3);
     a.hairBack.setAttribute('d',
-      `M8 -96.5 Q-15 -100 -18 -80 ` +
-      `Q${f(-22 + sw * 0.3)} -68 ${f(-19 + sw * 0.5)} -58 ` +
-      `Q${f(-23 + sw * 0.8)} -48 ${f(-18 + sw * 1.0)} -38 ` +
-      `Q${f(-13 + sw * 1.1)} -29 ${f(-6 + sw * 0.8)} -33 ` +
-      `Q${f(-1 + sw * 0.6)} -37 ${f(-6 + sw * 0.7)} -43 ` +
-      `Q${f(-11 + sw * 0.5)} -48 ${f(-4 + sw * 0.3)} -54 ` +
-      `L-1 -56 Z`);
+      `M8 -89.5 Q-15 -92 -18 -76 ` +
+      `L${f(-19 + sw * 0.4)} -56 L${f(-19 + sw * 0.9)} -40 ` +
+      `Q${f(-12 + sw)} -38.5 ${f(-5 + sw * 0.8)} -40 ` +
+      `L-3 -56 L-1 -57 Z`);
     // arms swing opposite to the legs; hands rest on her lap when seated, or type on the laptop
     const shY = hipY - 25.5 + breathe;
     for (const [k, ph] of [['A', phase + PI], ['B', phase]]) {
@@ -708,7 +943,9 @@
   /* ---------- Speech bubbles ---------- */
   const FACTS = ['Hi, I\'m Celyne!', 'This is my black poodle 🐩', 'Currently binge-watching a drama…', 'Psst: Ctrl K to search', 'I love dogs, obviously'];
   let fact = 1;
-  function say(who, text, ms = 2600) {
+  // Speech bubbles are switched off: the rooms speak through their links instead
+  function say() {}
+  function sayOld(who, text, ms = 2600) {
     const b = who.querySelector('.bubble'), tx = b.querySelector('text'), rect = b.querySelector('rect');
     tx.textContent = text;
     const w = max(44, tx.getComputedTextLength() + 26);
@@ -719,7 +956,7 @@
 
   /* ---------- Outdoor landscape in layers (far → near), parallax by data-depth ---------- */
   const W = 1440;
-  function landscape(seed, { trees = [], lamps = [], landmark = '', front = true, sky = '' } = {}) {
+  function landscape(seed, { trees = [], lamps = [], landmark = '', onPath = '', front = true, sky = '' } = {}) {
     const r = rng(seed);
     let mid = '', back = '', fore = '';
     for (let x = -120; x < W + 120; x += 46 + r() * 120) {
@@ -742,7 +979,7 @@
           `<path class="g-mtn3" d="${hills({ seed: 11 + seed, from: -200, to: W + 200, base: 318, amp: 18, step: 110,
           peaks: [{ x: 240, h: 44, w: 220 }, { x: 900, h: 52, w: 260 }] })}"/>`],
         [0.14, `<path class="g-hill" d="${hills({ seed: 9 + seed, from: -200, to: W + 200, base: 334, amp: 16, step: 120 })}"/>` + mid],
-        [0, `<rect class="g-meadow2" x="-200" y="${G - 30}" width="${W + 400}" height="40"/>` + landmark + near + back +
+        [0, `<rect class="g-meadow2" x="-200" y="${G - 30}" width="${W + 400}" height="40"/>` + landmark + near + back + onPath +
           `<rect class="g-meadow" x="-200" y="${G + 10}" width="${W + 400}" height="400"/>` +
           `<path class="g-path" d="M-200 ${G - 8} Q360 ${G - 12} 720 ${G - 8} T1640 ${G - 8} V${G + 18} Q1080 ${G + 22} 720 ${G + 18} T-200 ${G + 18} Z"/>` +
           `<g class="pairs"></g>` + fore],
@@ -843,7 +1080,7 @@
         <text class="hr-cal-day" x="1218" y="152" text-anchor="middle"></text>
         <text class="hr-cal-wd" x="1218" y="168" text-anchor="middle"></text>
       </g>
-      <g ${obj('Education →', 'data-go="education"')}>
+      <g ${obj('Education', 'data-go="education"')}>
         <rect class="hr-frame" x="1080" y="114" width="64" height="48" rx="2"/><rect class="hr-paper" x="1085" y="119" width="54" height="38"/>
         <path class="hr-paper-line" d="M1094 128 h36 M1098 136 h28 M1101 144 h22"/><circle class="g-cert-seal" cx="1129" cy="151" r="4"/>
       </g>
@@ -854,7 +1091,7 @@
       <rect class="hr-wood" x="404" y="${B - 58}" width="62" height="58" rx="2"/>
       <path class="hr-drawer" d="M408 ${B - 39} H462 M408 ${B - 20} H462"/><path class="hr-knob" d="M430 ${B - 49} h10 M430 ${B - 30} h10 M430 ${B - 11} h10"/>
       <rect class="hr-wood-l" x="306" y="${B - 66}" width="166" height="9" rx="2"/>
-      <g ${obj('My projects →', 'data-go="projects"')}>
+      <g ${obj('Projects', 'data-go="projects"')}>
         <ellipse class="r-glow" cx="334" cy="${B - 84}" rx="26" ry="20"/>
         <path class="r-lid" d="M350 ${B - 67} L378 ${B - 67} L386 ${B - 108} L358 ${B - 108} Z"/><circle class="r-logo" cx="368" cy="${B - 88}" r="2.6"/>
         <rect class="r-base" x="334" y="${B - 69}" width="46" height="3.5" rx="1.5"/>
@@ -876,13 +1113,13 @@
       <rect class="hr-wood" x="486" y="${B - 168}" width="120" height="168" rx="3"/>
       <rect class="hr-shelf-in" x="493" y="${B - 161}" width="106" height="154" rx="2"/>
       <rect class="hr-wood" x="493" y="${B - 112}" width="106" height="6"/><rect class="hr-wood" x="493" y="${B - 58}" width="106" height="6"/>
-      <g ${obj('Pick a book', 'data-act="book"')}>${books(496, 560, B - 112, 26, 14)}</g>${picture(566, B - 146, 28, 32)}
+      <g ${obj('Pick a book', 'data-act="book"')}>${books(496, 560, B - 112, 26, 14)}</g><g ${obj('About me', 'data-go="about"')}>${picture(566, B - 146, 28, 32)}</g>
       <g ${obj('Pick a book', 'data-act="book"')}>${books(496, 540, B - 58, 26, 14)}</g>
       <g ${obj('Boop the bunny', 'data-act="bunny"')}><ellipse class="hr-bunny" cx="560" cy="${B - 68}" rx="9" ry="11"/><ellipse class="hr-bunny" cx="555" cy="${B - 84}" rx="3" ry="8"/><ellipse class="hr-bunny" cx="565" cy="${B - 84}" rx="3" ry="8"/></g>
       <rect class="hr-box" x="574" y="${B - 82}" width="22" height="24" rx="2"/>
       <rect class="hr-box" x="498" y="${B - 34}" width="34" height="27" rx="2"/>
       <g class="hr-pad"><rect x="544" y="${B - 22}" width="34" height="15" rx="7"/><circle class="hr-pad-b" cx="552" cy="${B - 15}" r="2.2"/><circle class="hr-pad-b" cx="570" cy="${B - 15}" r="2.2"/></g>
-      <g ${obj('My awards →', 'data-go="awards"')}>
+      <g>
         <path class="h-gold" d="M572 ${B - 200} h26 q0 22 -13 24 q-13 -2 -13 -24 Z"/>
         <path class="h-handle" d="M572 ${B - 196} q-9 2 -5 10 q2 3 6 2 M598 ${B - 196} q9 2 5 10 q-2 3 -6 2"/>
         <rect class="h-gold" x="582" y="${B - 176}" width="6" height="5"/><rect class="h-gold" x="574" y="${B - 171}" width="22" height="5" rx="1.5"/>
@@ -901,7 +1138,7 @@
         <path class="hr-lamp-pole" d="M950 ${B - 78} V${B - 98} M942 ${B - 78} H958"/>
         <path class="hr-shade" d="M934 ${B - 98} L966 ${B - 98} L960 ${B - 124} L940 ${B - 124} Z"/>
       </g>
-      <g ${obj('Contact me →', 'data-go="contact"')}>
+      <g ${obj('Contact', 'data-go="contact"')}>
         <rect class="hr-phone" x="972" y="${B - 92}" width="12" height="14" rx="2"/><path class="hr-phone-h" d="M969 ${B - 92} q9 -8 18 0"/>
       </g>
 
@@ -919,17 +1156,58 @@
   }
 
 
+  // Hover label: only for things that take you somewhere (white, with an arrow) and the light switch (a moon)
+  const TIP_ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>';
+  const TIP_MOON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg>';
+  function roomTips(svg, busy = () => false) {
+    const tip = document.createElement('div');
+    tip.className = 'room-tip';
+    document.body.append(tip);
+    svg.addEventListener('pointermove', e => {
+      const t = e.target.closest('[data-go], [data-act="lamp"]');
+      if (!t || busy()) { tip.classList.remove('on'); return; }
+      const link = !!t.dataset.go;
+      tip.innerHTML = link ? `<span>${t.dataset.tip}</span>${TIP_ARROW}` : TIP_MOON;
+      tip.classList.toggle('icon', !link);
+      tip.style.transform = `translate(${e.clientX + 14}px, ${e.clientY - 38}px)`;
+      tip.classList.add('on');
+    });
+    svg.addEventListener('pointerleave', () => tip.classList.remove('on'));
+  }
+  // The living room: the same things react as in the bedroom (links, light switch, little wiggles)
+  function roomPlay(svg) {
+    const pop = (el, cls = 'pop') => { el.classList.remove(cls); el.getBoundingClientRect(); el.classList.add(cls); };
+    const acts = {
+      lamp: () => document.getElementById('themeToggle')?.click(),
+      calendar: el => pop(el, 'flip'), mug: el => pop(el, 'puff'), bunny: el => pop(el, 'hop'),
+      clock: el => pop(el), plant: el => pop(el), book: el => pop(el), trophy: el => pop(el), phone: el => pop(el)
+    };
+    svg.addEventListener('click', e => {
+      const obj = e.target.closest('[data-go], [data-act]');
+      if (!obj) return;
+      if (obj.dataset.go) document.getElementById(obj.dataset.go)?.scrollIntoView({ behavior: still ? 'auto' : 'smooth' });
+      else acts[obj.dataset.act]?.(obj);
+    });
+    svg.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const obj = e.target.closest('[data-act], [data-go]');
+      if (obj) { e.preventDefault(); obj.dispatchEvent(new MouseEvent('click', { bubbles: true })); }
+    });
+    roomTips(svg);
+  }
+
   function setupRoom(sc) {
     const a = sc.pairs[0], svg = sc.svg, c = a.cfg, sc_ = a.sc;
     const layer = svg.querySelector('.pairs');
     layer.insertAdjacentHTML('beforeend',
-      `<g class="hr-ball" data-tip="Throw the ball!" tabindex="0" role="button" aria-label="Throw the ball"><circle class="hr-ball-c" r="8"/><path class="hr-ball-s" d="M-8 -1 Q0 5 8 -1"/></g>` +
+      `<g class="hr-ball" data-tip="Grab and throw the ball!" tabindex="0" role="button" aria-label="Throw the ball"><circle class="hr-ball-c" r="8"/><path class="hr-ball-s" d="M-8 -1 Q0 5 8 -1"/></g>` +
       `<path class="hr-plaid hr-cover" d="M1134 ${G - 52} Q1128 ${G - 104} 1156 ${G - 112} H1444 V${G - 30} H1166 Q1138 ${G - 34} 1134 ${G - 52} Z"/>` +
       `<path class="hr-plaid-line hr-cover" d="M1150 ${G - 109} Q1142 ${G - 70} 1146 ${G - 36} M1196 ${G - 112} V${G - 30} M1240 ${G - 112} V${G - 30} M1284 ${G - 112} V${G - 30} M1328 ${G - 112} V${G - 30} M1150 ${G - 84} H1444 M1146 ${G - 60} H1444"/>` +
       `<g class="hr-zzz"><text x="1066" y="${G - 112}">z</text><text x="1078" y="${G - 128}">z</text><text x="1092" y="${G - 146}">Z</text></g>`);
     const ball = layer.querySelector('.hr-ball');
     const R = { state: c.mode === 'type' ? 'type' : 'idle', down: null, drag: null, fall: null, idle: 0, pending: null,
-      ball: { x: 590, y: G - 8, st: 'rest', t: 0, from: 0, to: 0, spin: 0 } };
+      ball: { x: 590, y: G - 8, st: 'rest', vx: 0, vy: 0, spin: 0, back: false, pick: 0, trail: [] } };
+    const FLOOR = G - 8, DSC = sc_ * 0.88;
     const toSvg = e => new DOMPoint(e.clientX, e.clientY).matrixTransform(svg.getScreenCTM().inverse());
     const dogHome = () => R.state === 'type' ? CHAIR + 196 : R.state === 'sleep' ? DOG_BED : undefined;
     const settleDog = () => { if (R.ball.st === 'rest') { c.dogX = dogHome(); c.dogFace = R.state === 'type' ? -1 : 1; } };
@@ -951,14 +1229,53 @@
       sc.el.classList.add('sleeping'); a.heroEl.classList.add('asleep'); settleDog();
       say(a.dogEl, '…zz', 1400);
     }
+    // a click tosses it across the room; a drag lets you carry it, fling it or just set it down
+    function launch(vx, vy) {
+      const b = R.ball;
+      Object.assign(b, { st: 'fly', vx, vy, back: false });
+      c.dogFace = undefined;
+      if (Math.random() < 0.6) say(a.dogEl, 'Ball!!', 1100);
+    }
     function throwBall() {
       const b = R.ball;
       if (b.st !== 'rest') return;
-      const dir = b.x < 700 ? 1 : -1;
-      Object.assign(b, { st: 'air', t: 0, from: b.x, to: clamp(b.x + dir * (240 + Math.random() * 260), 360, 960) });
-      c.dogX = b.to - 22; c.dogFace = undefined;
-      if (Math.random() < 0.6) say(a.dogEl, 'Ball!!', 1100);
+      launch((b.x < 700 ? 1 : -1) * (420 + Math.random() * 260), -620 - Math.random() * 120);
     }
+    ball.addEventListener('pointerdown', e => {
+      e.stopPropagation(); R.idle = 0;
+      const b = R.ball, p = toSvg(e);
+      ball.setPointerCapture(e.pointerId);
+      R.ballDown = { x: e.clientX, y: e.clientY };
+      b.st = 'held'; b.back = false; b.trail = [{ x: p.x, y: p.y, t: performance.now() }];
+      c.dogX = a.dx; c.dogFace = undefined;
+      sc.el.classList.add('holding-ball');
+    });
+    ball.addEventListener('pointermove', e => {
+      const b = R.ball;
+      if (b.st !== 'held') return;
+      const p = toSvg(e), now = performance.now();
+      b.x = clamp(p.x, 50, 1390); b.y = clamp(p.y, -240, FLOOR);
+      b.trail.push({ x: b.x, y: b.y, t: now });
+      while (b.trail.length > 2 && now - b.trail[0].t > 90) b.trail.shift();
+      c.dogFace = b.x > a.dx ? 1 : -1;
+    });
+    const release = e => {
+      const b = R.ball;
+      if (b.st !== 'held') return;
+      sc.el.classList.remove('holding-ball');
+      const moved = Math.hypot(e.clientX - R.ballDown.x, e.clientY - R.ballDown.y) > 6;
+      if (!moved) { b.st = 'rest'; throwBall(); }
+      else {
+        const t0 = b.trail[0], t1 = b.trail[b.trail.length - 1], dt = max(16, t1.t - t0.t) / 1000;
+        const sp = (v, m) => clamp(v, -m, m);
+        launch(sp((t1.x - t0.x) / dt, 1800), sp((t1.y - t0.y) / dt, 1800));
+      }
+      R.ballDragged = true;
+    };
+    ball.addEventListener('pointerup', release);
+    ball.addEventListener('pointercancel', release);
+    // where the poodle has to stand so the ball ends up in its mouth
+    const fetchFrom = x => x - 24 * DSC * (x >= a.dx ? 1 : -1);
 
     // a.onClick lets the room take over clicks on her (no jump while asleep or right after a drag)
     a.onClick = () => {
@@ -995,7 +1312,7 @@
     svg.addEventListener('click', e => {
       R.idle = 0;
       const obj = e.target.closest('[data-go], [data-act], .hr-ball');
-      if (obj?.classList.contains('hr-ball')) { throwBall(); return; }
+      if (obj?.classList.contains('hr-ball')) { if (R.ballDragged) R.ballDragged = false; else throwBall(); return; }
       if (obj?.dataset.go) { document.getElementById(obj.dataset.go)?.scrollIntoView({ behavior: still ? 'auto' : 'smooth' }); return; }
       if (obj?.dataset.act) { ACTS[obj.dataset.act]?.(obj); return; }
       if (e.target.closest('.hero, .dog')) return;
@@ -1013,18 +1330,7 @@
     });
     svg.addEventListener('pointerdown', () => { R.idle = 0; });
 
-    // Tooltip for the clickable things
-    const tipEl = document.createElement('div');
-    tipEl.className = 'room-tip';
-    document.body.append(tipEl);
-    svg.addEventListener('pointermove', e => {
-      const t = e.target.closest('[data-tip]');
-      if (!t || R.state === 'drag') { tipEl.classList.remove('on'); return; }
-      tipEl.textContent = t.dataset.tip;
-      tipEl.style.transform = `translate(${e.clientX + 14}px, ${e.clientY - 34}px)`;
-      tipEl.classList.add('on');
-    });
-    svg.addEventListener('pointerleave', () => tipEl.classList.remove('on'));
+    roomTips(svg, () => R.state === 'drag');
 
     /* ----- real time: wall clock, nightstand clock, calendar and the sky in the window ----- */
     const q = sel => svg.querySelector(sel);
@@ -1086,6 +1392,7 @@
       plant: el => { pop(el); say(a.heroEl, 'Grow, little plant 🌱', 1500); },
       book: el => { pop(el); say(a.heroEl, BOOKS[bookI++ % BOOKS.length], 1800); },
       bunny: el => { pop(el, 'hop'); },
+      trophy: el => pop(el),
       beanbag: el => {
         pop(el, 'squish');
         if (R.ball.st === 'rest') { c.dogX = BEANBAG; c.dogFace = -1; }
@@ -1105,19 +1412,37 @@
       if (R.state === 'idle' && R.idle > 45 && !R.pending) { R.pending = 'sleep'; a.tx = 1000; c.wave = false; }
       if (R.pending === 'sleep' && abs(a.x - 1000) < 3) sleep();
 
-      // ball: flight, waiting for the poodle, carried back
+      // ball: held, flying and bouncing, waiting for the poodle, carried back to her, dropped at her feet
       const b = R.ball;
-      if (b.st === 'air') {
-        b.t += dt; const k = min(1, b.t / 0.85);
-        b.x = lerp(b.from, b.to, k); b.y = G - 8 - 120 * 4 * k * (1 - k); b.spin += dt * 900;
-        if (k >= 1) { b.st = 'wait'; b.y = G - 8; }
+      if (b.st === 'fly') {
+        const h = min(dt, 0.04);
+        b.vy += 1900 * h; b.x += b.vx * h; b.y += b.vy * h; b.spin += b.vx * h * 3;
+        if (b.x < 50 || b.x > 1390) { b.x = clamp(b.x, 50, 1390); b.vx *= -0.6; }
+        if (b.y < -240) { b.y = -240; b.vy = abs(b.vy) * 0.3; }
+        if (b.y >= FLOOR) {
+          b.y = FLOOR;
+          if (b.vy > 140) { b.vy *= -0.45; b.vx *= 0.82; } else b.vy = 0;
+          if (!b.vy) b.vx *= max(0, 1 - 3.5 * h);
+        }
+        if (!b.back) c.dogX = clamp(fetchFrom(b.x), 30, 1410);
+        if (b.y >= FLOOR && !b.vy && abs(b.vx) < 18) {
+          b.vx = 0;
+          if (b.back) { b.st = 'rest'; setTimeout(settleDog, 900); }
+          else { b.st = 'wait'; b.pick = c.dogX = clamp(fetchFrom(b.x), 30, 1410); }
+        }
       } else if (b.st === 'wait') {
-        if (abs(a.dx - (b.x - 22)) < 10) { b.st = 'carry'; c.dogX = R.state === 'idle' ? a.x - 50 : dogHome(); }
+        if (abs(a.dx - b.pick) < 8) {
+          b.st = 'carry';
+          const side = a.dx < a.x ? -1 : 1;
+          c.dogX = a.x + side * (R.state === 'sleep' ? 70 : 52); c.dogFace = -side;
+        }
       } else if (b.st === 'carry') {
-        const dsc = sc_ * 0.88;
-        b.x = a.dx + 24 * dsc * a.dDir; b.y = G - 22 * dsc;
-        const target = c.dogX ?? a.x - 50;
-        if (abs(a.dx - target) < 6) { b.st = 'rest'; b.y = G - 8; say(a.dogEl, 'Woof! Again?', 1500); settleDog(); }
+        b.x = a.dx + 24 * DSC * a.dDir; b.y = G - 22 * DSC;
+        if (abs(a.dx - c.dogX) < 6) {
+          // drop it in front of her with a little bounce
+          Object.assign(b, { st: 'fly', back: true, vx: a.dDir * 28, vy: -120 });
+          say(a.dogEl, 'Woof! Again?', 1500);
+        }
       }
       ball.setAttribute('transform', `translate(${f(b.x)} ${f(b.y)}) rotate(${f(b.spin % 360)})`);
 
@@ -1140,8 +1465,81 @@
     };
   }
 
+  /* ---------- Projects TV room: she and the poodle watch my projects on TV ---------- */
+  // Scene units: x 0–1440, y -140–420 (floor at G). The TV screen itself is HTML laid over x 846–1274, y 32–270.
+  function tvRoom() {
+    const B = G;
+    let planks = '';
+    for (let x = 0; x < 1460; x += 70) planks += `M${x} ${B} v80 `;
+    const frame = (x, y, art) => `<rect class="hr-frame" x="${x - 30}" y="${y - 24}" width="60" height="48" rx="2"/><rect class="r-canvas" x="${x - 25}" y="${y - 19}" width="50" height="38"/><g transform="translate(${x} ${y}) scale(.85)">${art}</g>`;
+    const bulbs = Array.from({ length: 16 }, (_, i) => `<circle class="tvr-bulb" cx="${40 + i * 88}" cy="${f(-92 + Math.sin(i * 1.2) * 6 + (i % 2) * 8)}" r="5" style="animation-delay:${-i * 0.3}s"/>`).join('');
+    const pot = (x, y, w, h) => `<path class="hr-pot" d="M${f(x - w / 2)} ${f(y - h)} h${w} l${f(-w * 0.12)} ${h} h${f(-w * 0.76)} Z"/>`;
+    const plant = (x, y, s) => pot(x, y, 26 * s, 22 * s) + [-58, -32, -10, 12, 34, 58].map((a, i) =>
+      `<ellipse class="hr-leaf${i % 2 ? '2' : ''}" cx="${x}" cy="${f(y - 22 * s - 16 * s)}" rx="${f(6 * s)}" ry="${f(19 * s)}" transform="rotate(${a} ${x} ${f(y - 22 * s)})"/>`).join('');
+    return `
+      <rect class="r-wall" x="0" y="-140" width="1440" height="${B + 140}"/>
+      <rect class="r-floor" x="0" y="${B}" width="1440" height="80"/>
+      <path class="r-plank" d="${planks}"/>
+      <rect class="r-skirting" x="0" y="${B - 7}" width="1440" height="7"/>
+      <path class="tvr-string" d="M0 -98 Q90 -78 180 -92 T360 -90 T540 -92 T720 -90 T900 -92 T1080 -90 T1260 -92 T1440 -96"/>
+      ${bulbs}
+      <ellipse class="tvr-wallglow" cx="1060" cy="150" rx="330" ry="210"/>
+      ${frame(330, 150, ART_SHIP)}${frame(420, 140, ART_PHONE)}${frame(510, 150, ART_TOMATO)}
+      <circle class="hr-lamp-glow" cx="120" cy="170" r="70"/>
+      <path class="hr-lamp-pole" d="M120 ${B} V196 M100 ${B} H140"/><path class="hr-shade" d="M92 196 H148 L138 150 H102 Z"/>
+      <ellipse class="hr-rug" cx="640" cy="${B + 26}" rx="380" ry="30"/><ellipse class="hr-rug2" cx="640" cy="${B + 26}" rx="320" ry="20"/>
+      <ellipse class="tvr-floorglow" cx="1000" cy="${B + 20}" rx="300" ry="34"/>
+      <!-- sofa -->
+      <rect class="tvr-sofa-d" x="236" y="232" width="368" height="80" rx="28"/>
+      <rect class="tvr-sofa" x="230" y="292" width="380" height="40" rx="14"/>
+      <rect class="tvr-sofa-d" x="214" y="266" width="48" height="76" rx="20"/><rect class="tvr-sofa-d" x="578" y="266" width="48" height="76" rx="20"/>
+      <rect class="hr-wood-d" x="246" y="${B - 12}" width="8" height="12"/><rect class="hr-wood-d" x="586" y="${B - 12}" width="8" height="12"/>
+      <rect class="tvr-cushion" x="262" y="250" width="46" height="44" rx="14" transform="rotate(-8 285 272)"/>
+      <path class="hr-plaid" d="M500 244 h70 v80 l-10 10 -10 -8 -10 8 -10 -8 -10 8 -10 -8 -10 8 Z"/>
+      <path class="hr-plaid-line" d="M500 270 h70 M500 296 h70 M523 244 v84 M546 244 v84"/>
+      <!-- side table with popcorn, plant -->
+      <rect class="hr-wood" x="660" y="290" width="70" height="62" rx="3"/><rect class="hr-wood-l" x="654" y="284" width="82" height="8" rx="2"/>
+      <path class="tvr-bowl" d="M674 284 h42 q-3 -20 -21 -20 q-18 0 -21 20 Z"/>
+      <circle class="tvr-corn" cx="684" cy="266" r="6"/><circle class="tvr-corn" cx="695" cy="260" r="7"/><circle class="tvr-corn" cx="707" cy="266" r="6"/>
+      ${plant(1370, B, 1.5)}
+      <!-- TV and stand (the screen is HTML on top) -->
+      <rect class="tvr-bezel" x="830" y="18" width="460" height="266" rx="14"/>
+      <rect class="tvr-neck" x="1040" y="282" width="40" height="10"/>
+      <rect class="hr-wood" x="800" y="290" width="520" height="62" rx="4"/>
+      <rect class="hr-wood-l" x="794" y="284" width="532" height="9" rx="3"/>
+      <path class="hr-drawer" d="M974 296 V348 M1146 296 V348"/><path class="hr-knob" d="M880 320 h14 M1052 320 h14 M1224 320 h14"/>
+      <rect class="tvr-speaker" x="796" y="214" width="26" height="70" rx="5"/><rect class="tvr-speaker" x="1298" y="214" width="26" height="70" rx="5"/>
+      <circle class="tvr-cone" cx="809" cy="240" r="7"/><circle class="tvr-cone" cx="1311" cy="240" r="7"/>`;
+  }
+
+  // Full-screen TV room background (the TV, cabinet and sofa are drawn by HTML/SVG on top)
+  function tvRoomBg() {
+    const B = 640;
+    let planks = '';
+    for (let x = 0; x < 1460; x += 80) planks += `M${x} ${B} v160 `;
+    const bulbs = Array.from({ length: 18 }, (_, i) => `<circle class="tvr-bulb" cx="${30 + i * 80}" cy="${f(58 + Math.sin(i * 1.2) * 7 + (i % 2) * 9)}" r="5.5" style="animation-delay:${-i * 0.3}s"/>`).join('');
+    const pot = (x, y, w2, h2) => `<path class="hr-pot" d="M${f(x - w2 / 2)} ${f(y - h2)} h${w2} l${f(-w2 * 0.12)} ${h2} h${f(-w2 * 0.76)} Z"/>`;
+    const plant = (x, y, s) => pot(x, y, 34 * s, 28 * s) + [-60, -36, -14, 10, 32, 58].map((ang, i) =>
+      `<ellipse class="hr-leaf${i % 2 ? '2' : ''}" cx="${x}" cy="${f(y - 28 * s - 22 * s)}" rx="${f(8 * s)}" ry="${f(26 * s)}" transform="rotate(${ang} ${x} ${f(y - 28 * s)})"/>`).join('');
+    return `<rect class="r-wall" width="1440" height="${B}"/><rect class="r-floor" y="${B}" width="1440" height="160"/>
+      <path class="r-plank" d="${planks}"/><rect class="r-skirting" y="${B - 8}" width="1440" height="8"/>
+      <path class="tvr-string" d="M0 52 Q120 82 240 62 T480 64 T720 62 T960 64 T1200 62 T1440 56"/>${bulbs}
+      <ellipse class="tvr-wallglow" cx="720" cy="330" rx="560" ry="300"/>
+      <g class="tv-lamp" role="button" tabindex="0" aria-label="Lamp: switch the lights (dark mode)">
+        <circle class="hr-lamp-glow tv-lamp-glow" cx="170" cy="330" r="110"/>
+        <path class="hr-lamp-pole" d="M170 ${B} V352 M134 ${B} H206"/>
+        <path class="hr-shade" d="M122 352 H218 L200 276 H140 Z"/>
+        <path class="tv-lamp-cord" d="M190 352 V392"/><circle class="tv-lamp-knob" cx="190" cy="396" r="5"/>
+        <rect x="110" y="260" width="120" height="${B - 250}" fill="transparent"/>
+      </g>
+      ${plant(1330, B, 2.2)}${plant(70, B, 1.4)}
+      <ellipse class="hr-rug" cx="720" cy="${B + 70}" rx="620" ry="56"/><ellipse class="hr-rug2" cx="720" cy="${B + 70}" rx="520" ry="38"/>
+      <ellipse class="tvr-floorglow" cx="720" cy="${B + 30}" rx="460" ry="50"/>`;
+  }
+
   /* ---------- The scenes between sections ---------- */
   const SCENES = {
+    tvroom: () => ({ viewBox: '0 0 1440 800', layers: [[0, tvRoomBg()]] }),
     // Home: her room, where you can play with her and the poodle
     hero: () => ({
       viewBox: '40 -300 1360 720', room: true,
@@ -1165,11 +1563,26 @@
         school('xmum', campus(930), 930, G - 252, 'Xiamen University Malaysia', 'Digital Media Technology · Class of 2027'), lamps: [560] }),
       pairs: [{ x: 300, y: G, leash: true, mode: 'walk', path: [300, 700, 0.15, 0.65] }]
     }),
-    // Awards: the grand hall, holding her certificate on stage
+    // Awards: the grand hall behind the list, holding her certificate on the podium
     hall: () => ({
-      viewBox: `0 380 ${W} 440`,
+      viewBox: `0 -400 ${W} 1020`,
       layers: [[0, `${hallSVG()}<g class="pairs"></g>`]],
-      pairs: [{ x: 720, y: 658, scale: 1.75, mode: 'hold', dogX: 664, dogFace: 1 }]
+      pairs: [{ x: 706, y: 464, scale: 1.55, mode: 'hold', dogX: 770, dogFace: -1 }]
+    }),
+    // Before Awards: she stands on the winners' podium with her trophy, the poodle right beside her
+    podium: () => ({
+      ...awardStage(),
+      pairs: [{ x: 704, y: G - 68, scale: 1.15, mode: 'hold', dogX: 748, dogFace: -1 }]
+    }),
+    // Contact: home, sitting on the sofa; the poodle sits on the rug
+    livingroom: () => ({
+      ...livingRoom(),
+      pairs: [{ x: 648, y: G + 2, scale: 1.3, mode: 'sit', dogX: 810, dogFace: -1 }]
+    }),
+    // Contact: walking the poodle to the post box on a little town street
+    street: () => ({
+      ...townStreet(),
+      pairs: [{ x: 300, y: G - 8, leash: true, mode: 'walk', path: [240, 880, 0.05, 0.7] }]
     }),
     // After Contact: walking home at the end of the day
     home: () => ({
@@ -1189,6 +1602,7 @@
     const pairs = (def.pairs || []).map(cfg => makePair(pairsLayer, cfg));
     const sc = { el, svg, layers: [...svg.querySelectorAll('.px')].map(g => ({ g, d: +g.dataset.depth })), pairs, on: false, p: 0 };
     if (def.room) sc.step = setupRoom(sc);
+    if (def.live) { liveRoom(el, svg); roomPlay(svg); }
     scenes.push(sc);
   });
 
@@ -1211,7 +1625,8 @@
     mx += (tmx - mx) * min(1, dt * 4); my += (tmy - my) * min(1, dt * 4);
     const t = now / 1000, vh = innerHeight;
     for (const sc of scenes) {
-      if (!sc.on) continue;
+      if (!sc.on && sc.placed) continue;             // off-screen scenes still get placed once
+      sc.placed = true;
       const r = sc.el.getBoundingClientRect();
       sc.p = clamp((vh - r.top) / (vh + r.height));            // 0 entering at the bottom → 1 leaving at the top
       if (!still) for (const { g, d } of sc.layers) g.setAttribute('transform', `translate(${f(-mx * d * 60)} ${f((sc.p - 0.5) * d * -90 - my * d * 14)})`);
@@ -1231,6 +1646,15 @@
   });
   document.addEventListener('focusin', e => { const el = e.target.closest('[data-school]'); if (el) focusSchool(el.dataset.school); });
   document.addEventListener('focusout', () => focusSchool(null));
+
+  // Changing TV channel: she comments, the poodle hops
+  document.addEventListener('tvchannel', e => {
+    const tv = scenes.find(s => s.el.dataset.scene === 'tvroom');
+    const a = tv?.pairs[0];
+    if (!a) return;
+    say(a.heroEl, e.detail.line, 1800);
+    if (a.hop < 0) a.hop = 0;
+  });
 
   // Say hello once the page has loaded
   setTimeout(() => { const h = scenes.find(s => s.el.dataset.scene === 'hero'); if (h?.pairs[0]) say(h.pairs[0].heroEl, 'Hi, welcome! ☺'); }, 1200);

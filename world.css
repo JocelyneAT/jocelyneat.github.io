@@ -434,3 +434,117 @@ path.g-boot.ol-fill { fill: var(--g-boot); }
 @keyframes collect { 0% { transform: none; opacity: 1; } 100% { transform: translateY(-34px) scale(1.4); opacity: 0; } }
 @keyframes respawn { from { opacity: 0; transform: scale(.3); } }
 @keyframes bump { 40% { transform: scale(1.1); } }
+
+/* Celyne's outfit: orange hoodie, cream wide-leg pants, white sneakers (no dark colors) */
+:root { --g-jacket: #e07a52; --g-jacket-d: #c9643f; --g-pants: #f3e6cf; --g-pants-d: #e3d2b5; --g-shoe: #ffffff; --g-sole: #d9cfc1; --g-clip: #ef8a4c; --g-hair: #6b4430; }
+:root[data-theme="dark"] { --g-jacket: #c96b48; --g-jacket-d: #ad5838; --g-pants: #d9ccb6; --g-pants-d: #c4b59c; --g-shoe: #ece6dc; --g-sole: #b8ad9e; --g-clip: #e07a40; --g-hair: #5a3826; }
+.g-pants { fill: none; stroke: var(--g-pants); stroke-width: 6.4; stroke-linecap: round; stroke-linejoin: round; }
+.g-pants.far, .g-hem.far { stroke: var(--g-pants-d); }
+.g-hem { fill: none; stroke: var(--g-pants); stroke-width: 7.6; stroke-linecap: butt; }
+.g-pants-top { fill: var(--g-pants); }
+.g-pants-line { fill: none; stroke: var(--g-pants-d); stroke-width: .8; }
+.g-shoe { fill: none; stroke: var(--g-shoe); stroke-width: 5.6; stroke-linecap: round; filter: drop-shadow(0 .9px 0 var(--g-sole)); }
+.g-shoe.far { stroke: color-mix(in srgb, var(--g-shoe) 88%, var(--g-sole)); }
+.g-shoe2 { fill: var(--g-shoe); filter: drop-shadow(0 .9px 0 var(--g-sole)); }
+.g-jacket-hem { fill: none; stroke: var(--g-jacket-d); stroke-width: 1.6; stroke-linecap: round; }
+.g-pocket { fill: none; stroke: var(--g-jacket-d); stroke-width: .9; stroke-linecap: round; }
+.g-clip { fill: var(--g-clip); }
+:root[data-theme="dark"] { --g-top: #efe4d4; }
+.hero .g-hair-shine { display: none; }
+.g-shoe { stroke-width: 5; }
+
+/* pink skirt */
+:root { --g-skirtp: #f2a9b7; --g-skirtp-d: #e38d9f; }
+:root[data-theme="dark"] { --g-skirtp: #d98d9c; --g-skirtp-d: #c27585; }
+.g-skirtp { fill: var(--g-skirtp); }
+.g-skirtp-fold { fill: none; stroke: var(--g-skirtp-d); stroke-width: 1; stroke-linecap: round; }
+
+/* chibi face: solid dot eyes, soft pink cheeks */
+.hero .g-eye { fill: #2e2220; }
+.hero .g-blush { fill: #f6a3a0; opacity: .75; }
+.hero .g-smile { stroke-width: 1.1; }
+
+/* poodle bandana tied around the neck */
+.g-bandana-band { fill: none; stroke: var(--g-bandana); stroke-width: 3.4; stroke-linecap: round; }
+/* awards hall extras */
+:root { --h-skirting: #eadccb; --h-pot-rim: #c98f72; --h-laurel: #e3c08a; }
+:root[data-theme="dark"] { --h-skirting: #2e2a31; --h-pot-rim: #7a4d3a; --h-laurel: #b8955a; }
+.h-skirting { fill: var(--h-skirting); }
+.h-floor-line { fill: none; stroke: var(--h-line); stroke-width: 3; }
+.h-pot-rim { fill: var(--h-pot-rim); }
+.h-laurel { fill: var(--h-laurel); }
+.h-panel { fill: none; stroke: var(--h-line); stroke-width: 2; opacity: .6; }
+
+/* poodle: a simple collar with a little gold tag */
+.g-collar { fill: none; stroke: var(--g-bandana); stroke-width: 2.2; stroke-linecap: round; }
+.g-collar-tag { fill: #f2c460; }
+
+/* trophy in her hands */
+.g-trophy { fill: #f0c050; } .g-trophy-d { fill: #d39b2c; } .g-trophy-star { fill: #fff7dc; }
+.g-trophy-h { fill: none; stroke: #d9a43a; stroke-width: 1.6; stroke-linecap: round; }
+/* winners' podium */
+:root { --pd-1: #fbf4ea; --pd-2: #f1e5d4; --pd-3: #ead9c4; --pd-top: #e0763f; --pd-num: #c9a27c; }
+:root[data-theme="dark"] { --pd-1: #4a443f; --pd-2: #403a36; --pd-3: #39332f; --pd-top: #c4653a; --pd-num: #8a7562; }
+.pd-step1 { fill: var(--pd-1); } .pd-step2 { fill: var(--pd-2); } .pd-step3 { fill: var(--pd-3); } .pd-top { fill: var(--pd-top); }
+.pd-num { fill: var(--pd-num); font-family: var(--serif, serif); font-size: 26px; text-anchor: middle; }
+.pd-num.one { font-size: 34px; }
+.pd-pole { fill: none; stroke: #a98d74; stroke-width: 4; stroke-linecap: round; } .pd-knob { fill: #e0b765; }
+.pd-string { fill: none; stroke: #a98d74; stroke-width: 1.6; }
+.pd-flag0 { fill: #e0763f; } .pd-flag1 { fill: #f3c45f; } .pd-flag2 { fill: #8fb38a; }
+.pd-conf0 { fill: #e0763f; } .pd-conf1 { fill: #f3c45f; } .pd-conf2 { fill: #f2a9b7; }
+
+/* Awards night stage */
+:root { --st-wall: #f3e1cf; --st-drape: #ecd2bd; --st-drape-fold: #e2c3ab; --st-curtain: #c9604a; --st-fold: #b2503c; --st-valance: #b54f3b;
+  --st-trim: #e7bd6b; --st-floor: #d9b18b; --st-plank: #c99f78; --st-lip: #b98b64; --st-beam: #fff6dc; --st-bulb: #ffe7a8; }
+:root[data-theme="dark"] { --st-wall: #2b2530; --st-drape: #352d38; --st-drape-fold: #3d3440; --st-curtain: #7d3428; --st-fold: #682a20; --st-valance: #6e2c22;
+  --st-trim: #b8955a; --st-floor: #3d3029; --st-plank: #4a3a30; --st-lip: #2f251f; --st-beam: #ffe9b0; --st-bulb: #ffd98a; }
+.st-wall { fill: var(--st-wall); } .st-drape { fill: var(--st-drape); } .st-drape-fold { fill: none; stroke: var(--st-drape-fold); stroke-width: 6; }
+.st-string { fill: none; stroke: #b99a7c; stroke-width: 1.4; } .st-star0 { fill: #f2c460; } .st-star1 { fill: #e9845a; }
+.st-floor { fill: var(--st-floor); } .st-plank { fill: none; stroke: var(--st-plank); stroke-width: 1.5; } .st-lip { fill: var(--st-lip); }
+.st-bulb { fill: var(--st-bulb); filter: drop-shadow(0 0 4px var(--st-bulb)); }
+.st-beam { fill: var(--st-beam); opacity: .35; } :root[data-theme="dark"] .st-beam { opacity: .14; }
+.st-pool { fill: var(--st-beam); opacity: .5; } :root[data-theme="dark"] .st-pool { opacity: .16; }
+.st-curtain { fill: var(--st-curtain); } .st-fold { fill: none; stroke: var(--st-fold); stroke-width: 3; opacity: .7; }
+.st-tie { fill: var(--st-trim); } .st-valance { fill: var(--st-valance); } .st-trim { fill: none; stroke: var(--st-trim); stroke-width: 3; }
+.st-conf { animation: stConf linear infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes stConf { from { transform: translate(0, 0) rotate(0); } to { transform: translate(-30px, 380px) rotate(420deg); } }
+@media (prefers-reduced-motion: reduce) { .st-conf { animation: none; display: none; } }
+
+/* Contact: town street */
+:root { --tn-far: #e3d6c6; --tn-far-win: #efe5d8; --tn-wall1: #f2d3bd; --tn-wall2: #dfe6d3; --tn-wall3: #d9e2ea; --tn-roof3: #c9765a; --tn-cornice: #e8dccb;
+  --tn-shop: #f8efe2; --tn-win: #b9cbd0; --tn-glass: #cfdde0; --tn-door: #9b6f57; --tn-awn1: #e0763f; --tn-awn2: #8fb38a; --tn-walk: #e6dccd; --tn-slab: #d6cab8;
+  --tn-curb: #cfc2ae; --tn-road: #c9c0b3; --tn-lane: #f4efe6; --tn-box: #d9583f; }
+:root[data-theme="dark"] { --tn-far: #232a36; --tn-far-win: #c9a35e; --tn-wall1: #3d3230; --tn-wall2: #2f3a33; --tn-wall3: #2c3540; --tn-roof3: #5e3328; --tn-cornice: #3a3433;
+  --tn-shop: #2f2b2b; --tn-win: #f0b46c; --tn-glass: #e9bd78; --tn-door: #4a3328; --tn-awn1: #b45a30; --tn-awn2: #4f6a4c; --tn-walk: #34302f; --tn-slab: #2a2726;
+  --tn-curb: #3d3836; --tn-road: #262322; --tn-lane: #4a4542; --tn-box: #a8402e; }
+.tn-far { fill: var(--tn-far); } .tn-far-win { fill: var(--tn-far-win); }
+.tn-wall1 { fill: var(--tn-wall1); } .tn-wall2 { fill: var(--tn-wall2); } .tn-wall3 { fill: var(--tn-wall3); } .tn-roof3 { fill: var(--tn-roof3); }
+.tn-cornice { fill: var(--tn-cornice); } .tn-shop { fill: var(--tn-shop); } .tn-win { fill: var(--tn-win); } .tn-sill { fill: none; stroke: var(--tn-cornice); stroke-width: 3; stroke-linecap: round; }
+.tn-glass { fill: var(--tn-glass); } .tn-door { fill: var(--tn-door); } .tn-door2 { fill: #7f9a76; }
+.tn-awn1 { fill: var(--tn-awn1); } .tn-awn1-b { fill: #fbefe2; } .tn-awn2 { fill: var(--tn-awn2); } .tn-awn2-b { fill: #f3f0e4; }
+.tn-sign { fill: #fff8ee; stroke: var(--tn-awn1); stroke-width: 2; } .tn-sign-t { fill: #b85a32; font-family: var(--serif, serif); font-size: 18px; text-anchor: middle; }
+.tn-sign2 { fill: #5d7891; } .tn-sign-t2 { fill: #fff; font-family: var(--mono, monospace); font-size: 13px; letter-spacing: .12em; text-anchor: middle; }
+.tn-arch { fill: #8a6450; } .tn-env { fill: #fffaf2; stroke: #c9765a; stroke-width: 1.6; stroke-linejoin: round; }
+.tn-cup { fill: #fff8ee; } .tn-table { fill: #a98d74; } .tn-table-leg { stroke: #a98d74; stroke-width: 3; }
+.tn-bucket { fill: #a3b6c2; } .tn-bloom0 { fill: #f2a9b7; } .tn-bloom1 { fill: #f3c45f; } .tn-bloom2 { fill: #e0763f; }
+.tn-walk { fill: var(--tn-walk); } .tn-slab { fill: none; stroke: var(--tn-slab); stroke-width: 2; } .tn-curb { fill: var(--tn-curb); }
+.tn-road { fill: var(--tn-road); } .tn-lane { fill: none; stroke: var(--tn-lane); stroke-width: 4; stroke-linecap: round; }
+.tn-box-body, .tn-box-top { fill: var(--tn-box); } .tn-box-post { fill: #6d625a; } .tn-box-slot { fill: #5a2a20; } .tn-box-band { fill: #b8462f; }
+.tn-plane path { fill: #fffdf8; stroke: #d8cbb8; stroke-width: 1; stroke-linejoin: round; }
+.tn-plane { animation: tnPlane 9s ease-in-out infinite; opacity: 0; }
+@keyframes tnPlane { 0% { transform: translate(0, 0) rotate(-10deg); opacity: 0; } 8% { opacity: 1; } 60% { transform: translate(-260px, -150px) rotate(-22deg); opacity: 1; }
+  100% { transform: translate(-560px, -210px) rotate(-6deg); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .tn-plane { animation: none; opacity: 0; } }
+
+/* her living room (Contact) */
+.lr-knob { fill: #e0b765; } .lr-wreath { fill: #7f9c6d; } .lr-bow { fill: #e0763f; }
+.lr-mat { fill: #d9a58e; } .lr-hookrail { fill: none; stroke: var(--hr-wood-d); stroke-width: 6; stroke-linecap: round; }
+.lr-leash { fill: none; stroke: #e0763f; stroke-width: 3; stroke-linecap: round; }
+.lr-tote { fill: #efe4d0; } .lr-tote-h { fill: none; stroke: #d8c8ad; stroke-width: 2.5; }
+.lr-sun { fill: #f6c27a; } :root[data-theme="dark"] .lr-sun { fill: #f3ead6; }
+.lr-mug { fill: #7d8fa6; } .lr-mug-h { fill: none; stroke: #7d8fa6; stroke-width: 2.5; } .lr-letter { fill: #fffaf2; stroke: #d9a58e; stroke-width: 1; }
+.lr-sofa { fill: var(--g-sofa); } .lr-sofa-back { fill: var(--g-sofa-back); } .lr-sofa-arm { fill: var(--g-sofa-arm); }
+.lr-cushion { fill: var(--g-cushion); } .lr-cushion2 { fill: #f2d9a8; }
+
+/* front door details */
+.lr-plate { fill: #c9a24e; } .lr-mat-line { fill: none; stroke: #c98f78; stroke-width: 2; stroke-dasharray: 6 5; }
