@@ -1,0 +1,436 @@
+/* Illustration styles: colors and shapes for the scenes, characters, hall and room. Layout lives in style.css. */
+/* Sky tint and sun (day) / moon (dark mode) */
+.g-far { fill: var(--g-far); transition: fill 1.2s; }
+.g-mid { fill: var(--g-mid); transition: fill 1.2s; }
+.g-mist { fill: #fff; opacity: var(--mist); filter: blur(12px); transition: opacity 2s; }
+.g-tree { fill: var(--g-tree); }
+.g-tree2 { fill: var(--g-tree2); }
+.g-trunk { fill: none; stroke: var(--g-trunk); stroke-width: 3; stroke-linecap: round; }
+.g-village { fill: var(--g-village); }
+.g-village-roof { fill: var(--g-village-roof); }
+.g-grass { fill: var(--g-grass); }
+.g-grass2 { fill: var(--g-grass2); }
+.g-path { fill: var(--g-path); }
+.g-path-edge { fill: none; stroke: var(--g-path-edge); stroke-width: 2; }
+.g-tuft { fill: none; stroke: var(--g-tuft); stroke-width: 1.6; stroke-linecap: round; }
+.g-stem { fill: none; stroke: var(--g-tuft); stroke-width: 1.4; }
+.g-bloom { fill: var(--g-bloom); }
+.g-bloom2 { fill: var(--g-bloom2); }
+.g-bloom3 { fill: var(--g-bloom3); }
+.g-cloud { fill: var(--g-cloud); }
+.g-bird { fill: none; stroke: var(--g-ink); stroke-width: 1.4; stroke-linecap: round; opacity: .5; }
+.g-birds { animation: glide 18s ease-in-out infinite alternate; }
+.g-day { opacity: calc(1 - var(--night)); transition: opacity 1s; }
+.g-night { opacity: var(--night); transition: opacity 1.2s; }
+.g-star { fill: var(--fg); animation: twinkle 3.5s ease-in-out infinite; }
+.g-cloud-drift { animation: drift linear infinite alternate; }
+/* Home */
+.g-wall { fill: var(--g-wall); }
+.g-roof { fill: var(--g-roof); }
+.g-window { fill: var(--g-window); transition: fill 1s; }
+.g-mullion { fill: none; stroke: var(--g-wall); stroke-width: 3; }
+.g-door { fill: var(--g-door); }
+.g-knob { fill: var(--g-gold); }
+.g-fence { fill: var(--g-fence); }
+.g-fence-rail { fill: none; stroke: var(--g-fence); stroke-width: 4; }
+.g-planter { fill: var(--g-planter); }
+.g-mailpost { fill: none; stroke: var(--g-door); stroke-width: 3; }
+.g-mailbox { fill: var(--g-mailbox); }
+/* Studio */
+.g-wall2 { fill: var(--g-wall2); }
+.g-roofline { fill: var(--g-roofline); }
+.g-sign { fill: var(--g-sign); }
+.g-sign-text { font-family: var(--mono); font-size: 10px; font-weight: 500; fill: #fff6ec; letter-spacing: .14em; }
+.g-glass { fill: var(--g-glass); transition: fill 1s; }
+.g-mullion2 { fill: none; stroke: var(--g-wall2); stroke-width: 3; }
+.g-desk { fill: var(--g-desk); }
+.g-desk-leg { fill: none; stroke: var(--g-desk); stroke-width: 3; }
+.g-monitor { fill: var(--g-monitor); }
+.g-screen { fill: #f6efe3; animation: screen 9s steps(1) infinite; }
+.g-screen-ui { fill: none; stroke: #c4693f; stroke-width: 3; stroke-linecap: round; opacity: .55; }
+.monitor.flip .g-screen { animation: screen 9s steps(1) infinite, blink .4s; }
+.g-lamp-arm { fill: none; stroke: var(--g-monitor); stroke-width: 2.4; stroke-linecap: round; }
+.g-lamp-shade { fill: var(--g-lamp); }
+.g-pot { fill: var(--g-roof); }
+.g-door2 { fill: var(--g-door2); }
+.g-bench { fill: var(--g-desk); }
+/* Stage */
+.g-string { fill: none; stroke: var(--g-string); stroke-width: 1.4; }
+.g-bulb { fill: var(--g-bulb); animation: bulb 2.4s ease-in-out infinite; }
+.g-pole2 { fill: none; stroke: var(--g-string); stroke-width: 3; }
+.g-backdrop { fill: var(--g-backdrop); }
+.g-banner-text { font-family: var(--serif); font-size: 22px; fill: #fbeee0; letter-spacing: .1em; }
+.g-laurel { fill: none; stroke: #f3d9a8; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 4 3; }
+.g-platform { fill: var(--g-platform); }
+.g-platform-line { fill: none; stroke: var(--g-path-edge); stroke-width: 2; }
+.g-podium { fill: var(--g-podium); }
+.g-podium-text { font-family: var(--serif); font-size: 22px; fill: var(--g-backdrop); }
+.g-gold { fill: var(--g-gold); }
+.g-handle { fill: none; stroke: var(--g-gold2); stroke-width: 2.5; stroke-linecap: round; }
+.g-glow { fill: var(--g-gold); filter: blur(14px); opacity: calc(.22 + var(--night) * .12); }
+.trophy { animation: hover 3.2s ease-in-out infinite; }
+.g-confetti { opacity: 0; }
+.g-confetti.c0 { fill: #e07a3f; }
+.g-confetti.c1 { fill: #f2c14e; }
+.g-confetti.c2 { fill: #8fb3c4; }
+.g-confetti.c3 { fill: #e9a3b0; }
+.celebrate .g-confetti { animation: confetti 2.6s cubic-bezier(.3, .4, .6, 1) forwards; }
+/* Night room */
+.g-room { fill: var(--g-room); transition: fill 1.2s; }
+.g-room-floor { fill: var(--g-floor); }
+.g-night-window { fill: var(--g-night-window); }
+.g-moon-small { fill: #f3ecd8; opacity: var(--night); }
+.g-mullion3 { fill: none; stroke: var(--g-room); stroke-width: 3; }
+.g-poster { fill: var(--g-poster); }
+.g-poster-dot { fill: var(--g-poster-dot); }
+.g-poster-line { fill: none; stroke: #f3ecd8; stroke-width: 2; opacity: .7; }
+.g-lampshade { fill: var(--g-lampshade); }
+.g-lamp-glow { fill: var(--g-bulb); filter: blur(14px); opacity: calc(.15 + var(--night) * .35); }
+.g-sofa { fill: var(--g-sofa); }
+.g-sofa-back { fill: var(--g-sofa-back); }
+.g-sofa-arm { fill: var(--g-sofa-arm); }
+.g-sofa-leg { fill: none; stroke: var(--g-desk); stroke-width: 3; }
+.g-cushion { fill: var(--g-cushion); }
+.g-tv { fill: var(--g-tv); }
+.g-tv-screen { fill: var(--g-tv-screen); filter: drop-shadow(0 0 calc(4px + var(--night) * 10px) var(--g-tv-screen)); animation: tv 3s ease-in-out infinite; }
+.g-tv-title { font-family: var(--mono); font-size: 7.5px; font-weight: 500; fill: #1f2a3a; letter-spacing: .06em; }
+.g-tv-sub { font-family: var(--sans); font-size: 7.5px; fill: #1f2a3a; }
+.g-tv-stand { fill: var(--g-desk); }
+.g-tv-leg { fill: none; stroke: var(--g-tv); stroke-width: 3; }
+.g-rug { fill: var(--g-rug); }
+/* Sparkles */
+.g-spark { fill: var(--g-spark); }
+.sparkle-in { animation: twinkleScale 2.2s ease-in-out infinite; }
+.sparkle:nth-of-type(3n) .sparkle-in { animation-delay: -.8s; }
+.sparkle:nth-of-type(3n+1) .sparkle-in { animation-delay: -1.5s; }
+.sparkle.pop .sparkle-pop { animation: collect .7s ease-out forwards; }
+.sparkle:not(.pop) .sparkle-pop { animation: respawn .8s ease-out; }
+/* Characters */
+.g-shadow { fill: var(--g-ink); opacity: .12; }
+.g-skin { fill: var(--g-skin); }
+.g-skin.far { fill: color-mix(in srgb, var(--g-skin) 88%, #a06a55); }
+.g-skin-limb { fill: none; stroke: var(--g-skin); stroke-width: 4.6; stroke-linecap: round; stroke-linejoin: round; }
+.g-skin-limb.far { stroke: color-mix(in srgb, var(--g-skin) 88%, #a06a55); }
+.g-hair { fill: var(--g-hair); }
+.g-hair-hi { fill: none; stroke: var(--g-hair-hi); stroke-width: 2; stroke-linecap: round; }
+.g-tee { fill: var(--g-tee); }
+.g-tee-hem { fill: none; stroke: var(--g-tee-dark); stroke-width: 1.6; opacity: .7; }
+.g-tee-sleeve { fill: none; stroke: var(--g-tee); stroke-width: 9; stroke-linecap: round; }
+.g-tee-sleeve.far { stroke: var(--g-tee-dark); }
+.g-strap { fill: none; stroke: var(--g-tote); stroke-width: 3; stroke-linecap: round; }
+.g-tote { fill: var(--g-tote); }
+.g-tote-line { fill: none; stroke: var(--g-tote-line); stroke-width: 1.2; }
+.g-jeans { fill: none; stroke: var(--g-jeans); stroke-width: 10; stroke-linecap: round; stroke-linejoin: round; }
+.g-jeans.far { stroke: var(--g-jeans-far); }
+.g-sneaker { fill: none; stroke: var(--g-sneaker); stroke-width: 6.5; stroke-linecap: round; }
+.g-sole { fill: none; stroke: var(--g-sole); stroke-width: 6.5; stroke-linecap: round; }
+.g-iris { fill: #2a1e1b; }
+.g-eye-hi { fill: #fff; }
+.g-blush { fill: var(--g-blush); opacity: .65; }
+.g-mouth { fill: none; stroke: #a0574a; stroke-width: 1.1; stroke-linecap: round; }
+.g-leash { fill: none; stroke: var(--g-bandana); stroke-width: 1.5; stroke-linecap: round; transition: opacity .3s; }
+.g-poodle { fill: var(--g-poodle); }
+.g-poodle-leg { fill: none; stroke: var(--g-poodle); stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
+.g-poodle-leg.far { stroke: var(--g-poodle-far); }
+.g-poodle-fur { fill: none; stroke: var(--g-poodle); stroke-width: 11.5; stroke-linecap: round; stroke-dasharray: 0 5.5; }
+.g-poodle-fur.far { stroke: var(--g-poodle-far); }
+.g-poodle-stem { fill: none; stroke: var(--g-poodle); stroke-width: 3.6; stroke-linecap: round; }
+.g-poodle-nose, .g-poodle-eye { fill: #120d0e; }
+.g-dog-mouth { fill: none; stroke: var(--g-poodle-hi); stroke-width: 1.3; stroke-linecap: round; }
+.g-dog-blush { fill: var(--g-dog-blush); opacity: .75; }
+.g-curl { fill: none; stroke: var(--g-poodle-hi); stroke-width: 1.1; stroke-linecap: round; opacity: .6; }
+.g-bandana { fill: var(--g-bandana); }
+.g-bandana-knot { fill: none; stroke: var(--g-bandana); stroke-width: 2.4; stroke-linecap: round; }
+.g-bubble { fill: var(--g-bubble); filter: drop-shadow(0 2px 4px rgba(60, 45, 25, .12)); }
+.g-bubble-text { font-family: var(--sans); font-size: 11.5px; font-weight: 500; fill: #3a302b; }
+.bubble { opacity: 0; transition: opacity .3s; }
+.bubble.show { opacity: 1; }
+.hit-hover, .hit-hover * { cursor: pointer !important; }
+/* Chibi characters: flat colors with dark outlines */
+:root {
+  --g-ol: #38251e; --g-hair: #613b28; --g-hair-dark: #442416; --g-hair-hi: #945d44; --g-skin: #fde5d6;
+  --g-jacket: #d5694f; --g-top: #fbf5eb; --g-skirt: #442f26; --g-skirt-shade: #34221a;
+  --g-sock: #ebdcc9; --g-boot: #5a382c; --g-blush: #f89688;
+}
+:root[data-theme="dark"] {
+  --g-ol: #140d0a; --g-hair: #4e2e20; --g-hair-dark: #371d12; --g-hair-hi: #744430; --g-skin: #efd3c2;
+  --g-jacket: #b8543d; --g-top: #42383a; --g-skirt: #2c1e18; --g-skirt-shade: #1e1410;
+  --g-sock: #534540; --g-boot: #432a21; --g-blush: #e2887a;
+}
+.ol, .ol-fill { stroke: var(--g-ol); stroke-width: 1.6; stroke-linejoin: round; }
+.lo { fill: none; stroke: var(--g-ol); stroke-linecap: round; stroke-linejoin: round; }
+.arm-o { stroke-width: 7.6; }
+.leg-o { stroke-width: 8; }
+.boot-o { stroke-width: 9.4; }
+.g-sleeve { fill: none; stroke: var(--g-jacket); stroke-width: 4.4; stroke-linecap: round; stroke-linejoin: round; }
+.g-leg { fill: none; stroke: var(--g-skin); stroke-width: 4.8; stroke-linecap: round; stroke-linejoin: round; }
+.g-leg.far { stroke: color-mix(in srgb, var(--g-skin) 90%, #a06a55); }
+path.g-sock { fill: none; stroke: var(--g-sock); stroke-width: 4.8; stroke-linecap: round; }
+rect.g-sock { fill: var(--g-sock); }
+path.g-boot { fill: none; stroke: var(--g-boot); stroke-width: 6.2; stroke-linecap: round; }
+path.g-boot.ol-fill { fill: var(--g-boot); }
+.g-jacket { fill: var(--g-jacket); }
+.g-skirt { fill: var(--g-skirt); }
+.g-skirt-pleats { fill: none; stroke: var(--g-skirt-shade); stroke-width: 1.1; stroke-linecap: round; }
+.g-top { fill: var(--g-top); }
+.g-button { fill: var(--g-top); }
+.g-hair { fill: var(--g-hair); }
+.g-skin { fill: var(--g-skin); }
+.g-eye { fill: var(--g-ol); }
+.g-eyebrow { fill: none; stroke: var(--g-hair-dark); stroke-width: 1.1; stroke-linecap: round; }
+.g-eyelash { fill: none; stroke: var(--g-ol); stroke-width: 1.35; stroke-linecap: round; }
+.g-eyelash-flick { fill: none; stroke: var(--g-ol); stroke-width: 1.0; stroke-linecap: round; }
+.g-hair-curl { fill: none; stroke: var(--g-hair-hi); stroke-width: 1.2; stroke-linecap: round; opacity: .75; }
+.g-smile { fill: none; stroke: var(--g-ol); stroke-width: 1.25; stroke-linecap: round; }
+.g-blush { fill: var(--g-blush); opacity: .55; }
+.g-blush-h { stroke: #ea7667; stroke-width: 0.6; stroke-linecap: round; opacity: .5; }
+.view-front { display: none; animation: breathe 3.2s ease-in-out infinite; }
+.facing .view-front { display: inline; }
+.facing .view-side { display: none; }
+.blink { transform-box: fill-box; transform-origin: center; animation: eyeblink 4.6s infinite; }
+.dog-sil * { fill: var(--g-ol) !important; stroke: var(--g-ol) !important; stroke-width: 3.2; }
+.dog-sil .g-dleg { stroke-width: 8.6; }
+.dog-sil .g-dstem { stroke-width: 6.4; }
+.g-dleg { fill: none; stroke: var(--g-poodle); stroke-width: 5.4; stroke-linecap: round; stroke-linejoin: round; }
+.g-dstem { fill: none; stroke: var(--g-poodle); stroke-width: 3; stroke-linecap: round; }
+.g-leash { stroke: var(--g-bandana); stroke-width: 1.3; }
+@keyframes breathe { 50% { transform: translateY(-.6px); } }
+@keyframes eyeblink { 0%, 94%, 100% { transform: scaleY(1); } 97% { transform: scaleY(.1); } }
+/* Xiamen University Malaysia */
+:root { --g-uni-wall: #f4ece0; --g-uni-roof: #c4553d; --g-uni-roof2: #b2492f; --g-uni-win: #8a5a48; --g-uni-glass: #a9c6d3; --g-uni-band: #e3d6c2; --g-palm: #8fa877; }
+:root[data-theme="dark"] { --g-uni-wall: #3a3632; --g-uni-roof: #6e3427; --g-uni-roof2: #5c2c21; --g-uni-win: #f0b46c; --g-uni-glass: #e9bd78; --g-uni-band: #2e2b28; --g-palm: #34463a; }
+.g-uni-wall { fill: var(--g-uni-wall); }
+.g-uni-band { fill: var(--g-uni-band); }
+.g-uni-win { fill: var(--g-uni-win); opacity: .8; }
+.g-uni-glass { fill: var(--g-uni-glass); }
+.g-uni-mullion { fill: none; stroke: var(--g-uni-wall); stroke-width: 2.4; }
+.g-uni-col { fill: var(--g-uni-wall); stroke: var(--g-uni-band); stroke-width: 1; }
+.g-uni-roof { fill: var(--g-uni-roof); }
+.g-uni-roof2 { fill: var(--g-uni-roof2); }
+.g-uni-ridge { fill: none; stroke: var(--g-uni-roof2); stroke-width: 3; stroke-linecap: round; }
+.g-uni-stairs { fill: var(--g-uni-band); }
+.g-uni-step { fill: none; stroke: var(--g-uni-wall); stroke-width: 1.4; }
+.g-uni-sign { fill: var(--g-uni-roof); }
+.g-uni-text { font-family: var(--mono); font-size: 5.6px; font-weight: 500; fill: #fff4e6; letter-spacing: .06em; }
+.g-palm-trunk { fill: none; stroke: var(--g-trunk); stroke-width: 3; stroke-linecap: round; }
+.g-palm-leaf { fill: none; stroke: var(--g-palm); stroke-width: 4; stroke-linecap: round; }
+.g-hair-shine { fill: none; stroke: color-mix(in srgb, var(--g-hair) 60%, #fff); stroke-width: 1.8; stroke-linecap: round; opacity: .7; }
+/* Illustrated world: layered blue-green mountains, leafy greens, meadow, paper grain */
+:root {
+  --g-mtn1: #c9d5ce; --g-mtn2: #a9bfb4; --g-hill: #93ae8f;
+  --g-leaf0: #7f9c6d; --g-leaf1: #93ad7e; --g-leaf2: #6b8b60; --g-branch: #58704d; --g-trunk2: #7a6654;
+  --g-meadow: #aec48f; --g-meadow2: #9db882; --g-path: #eddcc0; --g-path-edge: #dfcaa8; --g-daisy: #fbf6ea;
+  --g-fg0: #587856; --g-fg1: #6b8d62; --g-fg2: #48684b; --g-fg-rib: #87a67a;
+  --g-cumulus: #fcf7ef; --g-cumulus-shade: #efe4d3; --g-lamp-post: #5d5650; --g-lamp-head: #f4e2b8; --mist: .35;
+}
+:root[data-theme="dark"] {
+  --g-mtn1: #232d38; --g-mtn2: #1f2932; --g-hill: #1f2b29;
+  --g-leaf0: #2c3d33; --g-leaf1: #34473a; --g-leaf2: #27372e; --g-branch: #1a251e; --g-trunk2: #2d2a27;
+  --g-meadow: #23312a; --g-meadow2: #1f2c26; --g-path: #302d2b; --g-path-edge: #383432; --g-daisy: #77746a;
+  --g-fg0: #17231c; --g-fg1: #1e2d24; --g-fg2: #121c16; --g-fg-rib: #2a3a2f;
+  --g-cumulus: #262f3c; --g-cumulus-shade: #202836; --g-lamp-post: #8a8278; --g-lamp-head: #ffd98a; --mist: .06;
+}
+.g-mtn1 { fill: var(--g-mtn1); }
+.g-mtn2 { fill: var(--g-mtn2); }
+.g-hill { fill: var(--g-hill); }
+.g-leaf0 { fill: var(--g-leaf0); }
+.g-leaf1 { fill: var(--g-leaf1); }
+.g-leaf2 { fill: var(--g-leaf2); }
+.g-branch { fill: none; stroke: var(--g-branch); stroke-width: 2; stroke-linecap: round; opacity: .7; }
+.g-trunk2 { fill: none; stroke: var(--g-trunk2); stroke-width: 4; stroke-linecap: round; }
+.g-meadow { fill: var(--g-meadow); }
+.g-meadow2 { fill: var(--g-meadow2); }
+.g-daisy { fill: var(--g-daisy); }
+.g-cumulus { fill: var(--g-cumulus); }
+.g-cumulus-shade { fill: var(--g-cumulus-shade); }
+.g-fg0 { fill: var(--g-fg0); }
+.g-fg1 { fill: var(--g-fg1); }
+.g-fg2 { fill: var(--g-fg2); }
+.g-fg-rib { fill: none; stroke: var(--g-fg-rib); stroke-width: 1.6; stroke-linecap: round; opacity: .8; }
+.g-lamp-post2 { fill: none; stroke: var(--g-lamp-post); stroke-width: 2.6; stroke-linecap: round; }
+.g-lamp-head { fill: var(--g-lamp-head); }
+.g-lamp-glow2 { fill: var(--g-bulb); filter: blur(8px); opacity: calc(var(--night) * .7); }
+.g-tuft { stroke: var(--g-leaf2); }
+/* Matching the reference illustration: no outlines, soft flat shading */
+:root {
+  --sky: #f4e3cf;
+  --g-mtn1: #c6d5cf; --g-mtn2: #a7beb5; --g-mtn3: #8ba79b; --g-hill: #86a382;
+  --g-hair: #613b28; --g-hair-dark: #442416; --g-hair-hi: #945d44; --g-skin: #fde5d6;
+  --g-jacket: #d5694f; --g-top: #fbf5eb; --g-skirt: #442f26; --g-skirt-shade: #34221a;
+  --g-sock: #ebdcc9; --g-boot: #5a382c; --g-pack2: #ede1ce;
+  --g-poodle: #2b2627; --g-fg-mound: #6f9165;
+}
+:root[data-theme="dark"] {
+  --sky: #1b2333;
+  --g-mtn1: #24303a; --g-mtn2: #202a33; --g-mtn3: #1c2630; --g-hill: #1d2a27;
+  --g-hair: #4e2e20; --g-hair-dark: #371d12; --g-hair-hi: #744430; --g-skin: #efd3c2;
+  --g-jacket: #b8543d; --g-top: #42383a; --g-skirt: #2c1e18; --g-skirt-shade: #1e1410;
+  --g-sock: #534540; --g-boot: #432a21; --g-pack2: #524744;
+  --g-poodle: #3b3537; --g-fg-mound: #18241c;
+}
+.ol, .ol-fill { stroke: none !important; }
+.lo, .dog-sil { display: none; }
+.g-mtn3 { fill: var(--g-mtn3); }
+.g-fg-mound { fill: var(--g-fg-mound); }
+.g-leaf-shade { fill: #24391f; opacity: .16; }
+.g-shade { fill: #000; opacity: .14; }
+.g-hair-dark { fill: var(--g-hair-dark); }
+.g-boot2 { fill: var(--g-boot); }
+.g-sock2 { fill: var(--g-sock); }
+.g-pack2 { fill: var(--g-pack2); }
+.g-pack2-flap { fill: none; stroke: #d9cdb8; stroke-width: 1.3; stroke-linecap: round; }
+.g-eye { fill: #2b201c; }
+.view-back { display: none; }
+.backing .view-back { display: inline; }
+.backing .view-side { display: none; }
+.g-curl { opacity: .35; }
+/* Consistent outfit pieces for all views */
+.g-sleeve-f { fill: none; stroke: var(--g-jacket); stroke-width: 4.6; stroke-linecap: round; }
+.g-sleeve { stroke-width: 4.6; }
+.g-pack-strap2 { fill: none; stroke: var(--g-pack2); stroke-width: 2.2; stroke-linecap: round; }
+.g-neck { fill: var(--g-skin); }
+.g-leg { stroke-width: 4.4; }
+/* Awards hall (fades in on the Awards panel) */
+:root {
+  --h-wall: #f5ebde; --h-floor: #ecdcc8; --h-line: #e6d4bf; --h-window: #fbf5ec; --h-pillar: #f1e3d2;
+  --h-banner: #c96a55; --h-banner-edge: #e09a84; --h-gold: #e3bb72; --h-gold2: #c99a4a; --h-alcove: #f2e5d4; --h-niche: #e8d6c0;
+  --h-pedestal: #f1e5d6; --h-vase: #eaddcb; --h-leaf: #8ea47a; --h-leaf2: #74905f; --h-bloom: #fbf4ea; --h-bloom2: #f4c2ab;
+  --h-pot: #c98a6c; --h-step: #f3e7d9; --h-step2: #eedfcd; --h-step3: #e8d6c1; --h-carpet: #d07560; --h-carpet-edge: #e7a08c;
+  --h-seat: #b38c70; --h-seat-back: #c39c80; --h-seat-top: #d2ad92; --h-petal: #f1b4a0; --h-beam: rgba(255, 255, 255, .38);
+}
+:root[data-theme="dark"] {
+  --h-wall: #24222a; --h-floor: #2a2629; --h-line: #34303a; --h-window: #2c3550; --h-pillar: #2e2b33;
+  --h-banner: #7a3b30; --h-banner-edge: #9a5546; --h-gold: #e7c06e; --h-gold2: #b48a3e; --h-alcove: #2c2932; --h-niche: #221f27;
+  --h-pedestal: #34303a; --h-vase: #3c3742; --h-leaf: #3d5236; --h-leaf2: #33452e; --h-bloom: #8c867c; --h-bloom2: #9a6a5c;
+  --h-pot: #6a4434; --h-step: #35303a; --h-step2: #302b35; --h-step3: #2b2730; --h-carpet: #7d3a2e; --h-carpet-edge: #9a5546;
+  --h-seat: #3e3138; --h-seat-back: #4a3a42; --h-seat-top: #574650; --h-petal: #9a5f52; --h-beam: rgba(160, 180, 230, .08);
+}
+.h-wall { fill: var(--h-wall); }
+.h-floor { fill: var(--h-floor); }
+.h-arch { fill: none; stroke: var(--h-line); stroke-width: 16; }
+.h-window { fill: var(--h-window); }
+.h-frame { fill: none; stroke: var(--h-line); stroke-width: 8; }
+.h-beam { fill: var(--h-beam); }
+.h-pillar { fill: var(--h-pillar); }
+.h-pillar-cap { fill: var(--h-line); }
+.h-rod { fill: none; stroke: #9a7a66; stroke-width: 3; }
+.h-rod-knob { fill: #9a7a66; }
+.h-banner { fill: var(--h-banner); }
+.h-banner-edge { fill: none; stroke: var(--h-banner-edge); stroke-width: 1.6; opacity: .7; }
+.h-gold { fill: var(--h-gold); }
+.h-handle { fill: none; stroke: var(--h-gold2); stroke-width: 5; stroke-linecap: round; }
+.h-shine { fill: none; stroke: #fff; stroke-width: 4; stroke-linecap: round; opacity: .6; }
+.h-trophy { animation: hover 3.4s ease-in-out infinite; }
+.h-trophy-glow { fill: var(--h-gold); filter: blur(26px); opacity: .32; }
+.h-sparkle { fill: var(--h-gold); opacity: .8; }
+.h-alcove { fill: var(--h-alcove); }
+.h-niche { fill: var(--h-niche); }
+.h-pedestal { fill: var(--h-pedestal); }
+.h-pedestal-top { fill: var(--h-line); }
+.h-vase { fill: var(--h-vase); }
+.h-leaf { fill: var(--h-leaf); }
+.h-leaf2 { fill: var(--h-leaf2); }
+.h-bloom { fill: var(--h-bloom); }
+.h-bloom2 { fill: var(--h-bloom2); }
+.h-bloom-c { fill: #e8b45e; }
+.h-pot { fill: var(--h-pot); }
+.h-step { fill: var(--h-step); }
+.h-step2 { fill: var(--h-step2); }
+.h-step3 { fill: var(--h-step3); }
+.h-step-edge { fill: none; stroke: var(--h-line); stroke-width: 2.5; }
+.h-carpet { fill: var(--h-carpet); }
+.h-carpet-edge { fill: none; stroke: var(--h-carpet-edge); stroke-width: 6; }
+.h-seat { fill: var(--h-seat); }
+.h-seat-back { fill: var(--h-seat-back); }
+.h-seat-shade { fill: var(--h-seat-top); }
+.h-petal { fill: var(--h-petal); animation: petal linear infinite; }
+.g-cert { fill: #fff8ec; }
+.g-cert-line { fill: none; stroke: #c9b79e; stroke-width: 1.1; stroke-linecap: round; }
+.g-cert-seal { fill: #d07560; }
+@keyframes petal { from { transform: translate(0, 0) rotate(0); } to { transform: translate(var(--dx), 960px) rotate(540deg); } }
+/* Compact awards list so the stage stays visible below it */
+@media (prefers-reduced-motion: reduce) { .h-petal { display: none; } }
+/* Hall uses the live characters: only the outdoor scenery fades, she and the poodle stay */
+.cert-hold { display: none; }
+.holding .cert-hold { display: inline; }
+.holding .arm-l, .holding .wave-arm { display: none; }
+/* Awards: narrower list with a soft glow so it reads clearly over the hall */
+.h-arch { opacity: .45; }
+/* Projects room */
+:root {
+  --r-wall: #efe5d7; --r-wall2: #e6d9c7; --r-floor: #d8b994; --r-plank: #c9a57f; --r-skirting: #f6efe4; --r-frame: #fffaf2;
+  --r-sky: #cfe0e2; --r-hill: #9db882; --r-tree: #7f9c6d; --r-sun: #f4c79a; --r-wood: #b88b62; --r-wood-dark: #9d7350;
+  --r-case: #c9a07a; --r-case-in: #e8d7c2; --r-rug: #e6c9a8; --r-lid: #b9bdc4; --r-base: #d7dade; --r-glow: #bfe0ff;
+  --r-mug: #f3ece2; --r-chair: #4a4644; --r-pot: #c98a6c; --r-leaf: #7f9c6d;
+}
+:root[data-theme="dark"] {
+  --r-wall: #2a2729; --r-wall2: #252225; --r-floor: #3a2e25; --r-plank: #31261f; --r-skirting: #343033; --r-frame: #3a3638;
+  --r-sky: #1b2333; --r-hill: #22302a; --r-tree: #2c3d33; --r-sun: #ece6d6; --r-wood: #5a4433; --r-wood-dark: #4a382b;
+  --r-case: #4a3a2e; --r-case-in: #2e2826; --r-rug: #4a3a30; --r-lid: #6b6f76; --r-base: #8a8e94; --r-glow: #8fc3ff;
+  --r-mug: #8c867c; --r-chair: #1f1c1c; --r-pot: #6a4434; --r-leaf: #34473a;
+}
+.r-wall { fill: var(--r-wall); }
+.r-wall2 { fill: var(--r-wall2); }
+.r-floor { fill: var(--r-floor); }
+.r-plank { fill: none; stroke: var(--r-plank); stroke-width: 1.5; }
+.r-skirting { fill: var(--r-skirting); }
+.r-window-frame { fill: var(--r-frame); }
+.r-sky { fill: var(--r-sky); }
+.r-hill { fill: var(--r-hill); }
+.r-tree { fill: var(--r-tree); }
+.r-sun { fill: var(--r-sun); }
+.r-mullion { fill: none; stroke: var(--r-frame); stroke-width: 4; }
+.r-sill { fill: var(--r-frame); }
+.r-shelf-board { fill: var(--r-wood); }
+.r-frame { fill: var(--r-wood); }
+.r-canvas { fill: var(--g-cloud); }
+.r-case { fill: var(--r-case); }
+.r-case-in { fill: var(--r-case-in); }
+.r-case-shelf { fill: none; stroke: var(--r-case); stroke-width: 4; }
+.r-rug { fill: var(--r-rug); }
+.r-desk { fill: var(--r-wood); }
+.r-desk-leg, .r-drawer { fill: var(--r-wood-dark); }
+.r-drawer-line { fill: none; stroke: var(--r-wood); stroke-width: 1.5; stroke-linecap: round; }
+.r-lid { fill: var(--r-lid); }
+.r-base { fill: var(--r-base); }
+.r-logo { fill: #fff; opacity: .7; }
+.r-glow { fill: var(--r-glow); filter: blur(10px); opacity: calc(.28 + var(--night) * .3); animation: tv 3s ease-in-out infinite; }
+.r-mug { fill: var(--r-mug); stroke: var(--r-wood-dark); stroke-width: 1; }
+.r-steam { fill: none; stroke: #fff; stroke-width: 1.5; stroke-linecap: round; opacity: .6; animation: hover 2.4s ease-in-out infinite; }
+.r-lamp-arm { fill: none; stroke: #4a4644; stroke-width: 2.6; stroke-linecap: round; }
+.r-lamp-shade { fill: #d9733f; }
+.r-lamp-glow { fill: #ffd98a; filter: blur(12px); opacity: calc(.15 + var(--night) * .5); }
+.r-pot { fill: var(--r-pot); }
+.r-leaf { fill: var(--r-leaf); }
+.r-chair-back, .r-chair-seat, .r-chair-pole { fill: var(--r-chair); }
+.r-chair-base { fill: none; stroke: var(--r-chair); stroke-width: 3; stroke-linecap: round; }
+.r-wheel { fill: var(--r-chair); }
+/* Tiny project paintings */
+.g-art-sea { fill: #9db3bb; }
+.g-art-ink { fill: #4a4140; }
+.g-art-sun { fill: #e3a08a; }
+.g-art-screen { fill: #f6f1e8; }
+.g-art-tomato { fill: #d9705a; }
+.g-art-leaf { fill: #8fa477; }
+/* Home park */
+.p-post { fill: #8a6a50; }
+.p-board { fill: #b88b62; }
+.p-board-text { font-family: var(--mono); font-size: 8.5px; font-weight: 500; fill: #fff6ea; letter-spacing: .08em; }
+.p-bench { fill: #9d7350; }
+.p-bed { fill: #8a6a50; opacity: .35; }
+:root[data-theme="dark"] .p-post, :root[data-theme="dark"] .p-bench { fill: #4a3a2e; }
+:root[data-theme="dark"] .p-board { fill: #5a4433; }
+/* HUD sparkle counter */
+@keyframes twinkle { 50% { opacity: .25; } }
+@keyframes drift { to { transform: translateX(120px); } }
+@keyframes glide { to { transform: translate(60px, -10px); } }
+@keyframes hover { 50% { transform: translateY(-5px); } }
+@keyframes bulb { 50% { opacity: .55; } }
+@keyframes screen { 0% { fill: #f6efe3; } 33% { fill: #e3eef2; } 66% { fill: #f4e1d6; } }
+@keyframes blink { 50% { opacity: .2; } }
+@keyframes tv { 50% { opacity: .85; } }
+@keyframes confetti { 0% { opacity: 1; transform: translate(0, 0) rotate(0); } 85% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx), 230px) rotate(var(--rot)); } }
+@keyframes twinkleScale { 50% { transform: scale(.7) rotate(20deg); opacity: .75; } }
+@keyframes collect { 0% { transform: none; opacity: 1; } 100% { transform: translateY(-34px) scale(1.4); opacity: 0; } }
+@keyframes respawn { from { opacity: 0; transform: scale(.3); } }
+@keyframes bump { 40% { transform: scale(1.1); } }

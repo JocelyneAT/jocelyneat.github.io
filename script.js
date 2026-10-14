@@ -12,8 +12,8 @@ const projects = [
     facts: { Engine: 'Unity 3D', Team: '6 members' } },
   { id: 'code-eternis', cat: 'game', title: 'Code Eternis', subtitle: 'Sci-fi FPS arena prototype', badge: '1st Place · Most Popular Booth', award: true,
     img: 'codeeternis',
-    desc: 'A Unity-based 3D FPS adventure. Took 1st Place and the Most Popular Booth Award at the RenDify DMT Student Showcase 2025, with the highest number of votes from participants and lecturers.',
-    facts: { Engine: 'Unity 3D', Event: 'RenDify DMT Showcase 2025' } },
+    desc: 'A Unity-based 3D FPS adventure built by a 5-member team. Won 1st Place for Best Advanced and Creative 3D FPS Adventure Game at GD-XMUM 2025, plus 1st Prize and the Popular Booth Award at the RenDify DMT Student Showcase 2025.',
+    facts: { Engine: 'Unity 3D', Team: '5 members', Events: 'GD-XMUM 2025 · RenDify DMT Showcase 2025' } },
   { id: 'lost-tomato', cat: 'game', title: 'The Lost Tomato', subtitle: '3D physics adventure', badge: 'Physics Platformer',
     img: 'tomato', video: 'game_videos/tomato_gameplay.mp4', youtube: 'https://youtu.be/utgsa_6fV0M',
     desc: 'A physics-driven 3D platformer where you guide a runaway tomato through playful obstacle courses.' },
@@ -76,75 +76,154 @@ const projects = [
     desc: 'Quadruped motion: scapula mechanics, pelvic tilt and footfall patterns across walking and galloping gaits.', facts: { Tool: 'Autodesk Maya' } }
 ];
 
+// Tools / role line shown under each project (from the project write-ups on the desk version)
+const TOOLS = {
+  'sea-vagabond': ['Unity', 'Level design', 'Cutscenes', 'Team of 6'],
+  'code-eternis': ['Unity', 'FPS', 'Level design', 'Team of 5'],
+  'lost-tomato': ['Unity', 'Blender', 'Physics'],
+  'runaway-timmy': ['Unity', 'Blender', 'Mobile'],
+  'we-were-mummies': ['Unity', 'Online co-op', 'Puzzle design'],
+  'mario-arena': ['Unity', 'Boss AI', 'Combat'],
+  'pirate-harbor': ['Unity', 'Level design'],
+  'abandoned-school': ['Unity', 'Lighting', 'Level design'],
+  'dwarf-hut': ['Unity', 'Modular props'],
+  'kitchin': ['Figma', 'HCI', 'Usability test'],
+  'best-rate': ['Figma', 'Design system'],
+  'codu': ['Figma', 'Gamified UX'],
+  'asian-cuisine': ['Canva', 'Game UI', 'Pixel art'],
+  'nba-infovis': ['Tableau', 'Data viz'],
+  'inner-thoughts': ['Autodesk Maya', 'Lip-sync', 'Team of 4'],
+  'lily': ['Adobe Animate', '2D animation'],
+  'ball-study': ['Autodesk Maya', 'Keyframe'],
+  'human-walk': ['Autodesk Maya', 'Body mechanics'],
+  'animal-walk': ['Autodesk Maya', 'Creature motion']
+};
+
+// Awards, each with its certificate / ceremony photos (img/awards/)
 const awards = [
-  { date: '2025', title: 'Best Creative Third-Person Action-Adventure Game', desc: 'Sea Vagabond, EGDAD-XMUM 2025 (6-member team).', tag: 'Game' },
-  { date: '2025', title: '1st Place, Most Popular Booth', desc: 'Code Eternis, RenDify DMT Student Showcase 2025. Highest votes from participants and lecturers.', tag: 'Game' },
-  { date: '2025', title: '1st Place, Code Eternis', desc: 'Unity 3D FPS adventure, recognized for creativity and technical execution.', tag: 'Game' },
-  { date: '2025/09', title: 'Top CGPA Achiever', desc: 'Highest CGPA in Digital Media Technology.', tag: 'Academic' },
-  { date: '2025/09', title: "Dean's List", desc: 'GPA 3.81', tag: 'Academic' },
-  { date: '2025/04', title: "Dean's List", desc: 'GPA 3.95', tag: 'Academic' },
-  { date: '2024/09', title: "Dean's List", desc: 'GPA 3.81', tag: 'Academic' }
+  { date: '2025', title: 'Best Creative Third-Person Action-Adventure Game', desc: 'Sea Vagabond · EGDAD-XMUM 2025',
+    photos: ['seavagabond-cert'] },
+  { date: '2025', title: '1st Prize + Popular Booth Award', desc: 'Code Eternis · RenDify DMT Student Showcase 2025',
+    photos: ['award2-1', 'award2-2', 'award2-3'] },
+  { date: '2025', title: '1st Place · Best Advanced & Creative 3D FPS Adventure Game', desc: 'Code Eternis · GD-XMUM 2025',
+    photos: ['code-cert'] },
+  { date: '2025', title: 'Top CGPA Achiever (DMT)', desc: 'September 2025 semester · School of Computing and Data Science',
+    photos: ['award5-1', 'award5-2'] },
+  { date: '2024–25', title: "Dean's List ×3", desc: '2024/04 · 2025/04 · 2025/09 semesters · GPA 3.81 · 3.95 · 3.81',
+    photos: ['award1-1', 'award1-2', 'award3-1', 'award3-2', 'award4-1', 'award4-2'] }
 ];
 
+// Organizations, clubs and activities. Add entries like:
+// { role: 'Head of Design', org: 'XMUM Game Dev Club', place: 'Sepang, Malaysia', date: 'Sep 2024 – Present', note: 'Optional one-liner' },
+const experience = [];
+
+// Software I use, grouped by what I use it for (logos in img/tools/)
+const toolGroups = [
+  { title: 'Game Development', tools: [['unity', 'Unity 6']] },
+  { title: '3D & Animation', tools: [['maya', 'Autodesk Maya'], ['animate', 'Adobe Animate']] },
+  { title: 'UI/UX & Visual Design', tools: [['figma', 'Figma'], ['canva', 'Canva'], ['illustrator', 'Adobe Illustrator']] },
+  { title: 'Video & Audio', tools: [['capcut', 'CapCut'], ['audition', 'Adobe Audition']] }
+];
+
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const arrowIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>';
 
-/* ---------- Projects ---------- */
-const grid = $('#projectGrid');
+/* ---------- Projects: a featured card + grid, with muted video previews on hover ---------- */
+const grid = $('#projectGrid'), moreBtn = $('#moreBtn');
+const FIRST = 9;
+let filter = 'all', expanded = false;
+const canHover = matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-function renderProjects(filter = 'all') {
-  const list = filter === 'all' ? projects : projects.filter(p => p.cat === filter);
-  grid.innerHTML = list.map((p, i) => `
-    <button class="card spot" data-id="${p.id}" style="animation-delay:${i * 40}ms" aria-label="Open ${esc(p.title)}">
-      <div class="card-thumb">
-        <img src="img/${p.img}.webp" alt="" loading="lazy" decoding="async">
-        ${p.video ? '<span class="play" aria-hidden="true"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z"/></svg></span>' : ''}
-      </div>
-      <div class="card-info">
-        <div class="card-meta"><span>${CATEGORY_LABELS[p.cat]}</span><span class="card-badge${p.award ? ' is-award' : ''}">${esc(p.badge)}</span></div>
-        <h3>${esc(p.title)}</h3>
-        <p>${esc(p.subtitle)}</p>
-      </div>
+function renderProjects() {
+  const all = filter === 'all' ? projects : projects.filter(p => p.cat === filter);
+  const shown = expanded ? all : all.slice(0, FIRST);
+  $('#workCount').textContent = all.length;
+  grid.innerHTML = shown.map((p, i) => `
+    <button class="pcard${i === 0 ? ' feature' : ''}" data-id="${p.id}" style="--i:${i}" aria-label="Open ${esc(p.title)}">
+      <span class="pcard-media">
+        <img src="img/${p.img}.webp" alt="" loading="${i < 3 ? 'eager' : 'lazy'}" decoding="async">
+        <span class="pcard-chip">${CATEGORY_LABELS[p.cat]}</span>
+        ${p.award ? '<span class="pcard-award">★ Award</span>' : ''}
+        ${p.video ? '<span class="pcard-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>' : ''}
+      </span>
+      <span class="pcard-info">
+        <span class="pcard-title">${esc(p.title)}</span>
+        <span class="pcard-sub">${esc(p.subtitle)}</span>
+        <span class="pcard-tools">${(TOOLS[p.id] || []).map(esc).join(' · ')}</span>
+      </span>
+      <span class="pcard-arrow" aria-hidden="true">${arrowIcon}</span>
     </button>`).join('');
+  moreBtn.hidden = all.length <= FIRST;
+  moreBtn.textContent = expanded ? 'Show fewer' : `Show all ${all.length} projects`;
+}
+grid.addEventListener('click', e => { const c = e.target.closest('.pcard'); if (c) openProject(c.dataset.id); });
+moreBtn.addEventListener('click', () => { expanded = !expanded; renderProjects(); if (!expanded) $('#projects').scrollIntoView(); });
+function setFilter(f) {
+  filter = f; expanded = false;
+  $$('.filter').forEach(b => { const on = b.dataset.filter === f; b.classList.toggle('active', on); b.setAttribute('aria-selected', on); });
+  renderProjects();
+}
+$$('.filter').forEach(btn => btn.addEventListener('click', () => setFilter(btn.dataset.filter)));
+
+// Hover: soft 3D tilt toward the cursor, and a muted video preview after a short pause
+if (canHover && !reducedMotion) {
+  grid.addEventListener('pointermove', e => {
+    const c = e.target.closest('.pcard');
+    if (!c) return;
+    const r = c.getBoundingClientRect();
+    c.style.setProperty('--rx', `${((e.clientY - r.top) / r.height - 0.5) * -5}deg`);
+    c.style.setProperty('--ry', `${((e.clientX - r.left) / r.width - 0.5) * 6}deg`);
+  });
+  grid.addEventListener('pointerover', e => {
+    const c = e.target.closest('.pcard');
+    if (!c || c.contains(e.relatedTarget)) return;
+    const p = projects.find(x => x.id === c.dataset.id);
+    if (!p?.video) return;
+    c._hover = setTimeout(() => {
+      const v = document.createElement('video');
+      Object.assign(v, { muted: true, loop: true, playsInline: true, preload: 'auto' });
+      v.className = 'pcard-video';
+      v.src = MEDIA + p.video.split('/').map(encodeURIComponent).join('/');
+      v.addEventListener('playing', () => v.classList.add('on'), { once: true });
+      v.addEventListener('error', () => v.remove());
+      $('.pcard-media', c).append(v);
+      v.play().catch(() => {});
+    }, 350);
+  });
+  grid.addEventListener('pointerout', e => {
+    const c = e.target.closest('.pcard');
+    if (!c || c.contains(e.relatedTarget)) return;
+    clearTimeout(c._hover);
+    c.style.removeProperty('--rx'); c.style.removeProperty('--ry');
+    const v = $('.pcard-video', c);
+    if (v) { v.pause(); v.removeAttribute('src'); v.load(); v.remove(); }
+  });
 }
 
-grid.addEventListener('click', e => {
-  const card = e.target.closest('.card');
-  if (card) openProject(card.dataset.id);
-});
-
-/* Filters with sliding indicator */
-const indicator = $('#filterIndicator');
-function moveIndicator(btn) {
-  indicator.style.width = btn.offsetWidth + 'px';
-  indicator.style.transform = `translateX(${btn.offsetLeft}px)`;
-}
-$$('.filter').forEach(btn => btn.addEventListener('click', () => {
-  $$('.filter').forEach(b => { b.classList.toggle('active', b === btn); b.setAttribute('aria-selected', b === btn); });
-  moveIndicator(btn);
-  renderProjects(btn.dataset.filter);
-}));
-window.addEventListener('resize', () => moveIndicator($('.filter.active')));
-
-/* Cursor spotlight */
-document.addEventListener('pointermove', e => {
-  const el = e.target.closest?.('.spot');
-  if (!el) return;
-  const r = el.getBoundingClientRect();
-  el.style.setProperty('--mx', `${e.clientX - r.left}px`);
-  el.style.setProperty('--my', `${e.clientY - r.top}px`);
-});
-
-/* ---------- Modal ---------- */
+/* ---------- Project modal ---------- */
 const modal = $('#modal');
 let lastFocus = null;
+
+function openModal(m) {
+  lastFocus = document.activeElement;
+  m.classList.add('open'); m.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  $('.modal-close', m).focus({ preventScroll: true });
+}
+function closeModal(m) {
+  if (!m.classList.contains('open')) return false;
+  m.classList.remove('open'); m.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  lastFocus?.focus({ preventScroll: true });
+  return true;
+}
 
 function openProject(id) {
   const p = projects.find(x => x.id === id);
   if (!p) return;
-  lastFocus = document.activeElement;
-
   const media = $('#modalMedia');
   if (p.video) {
     media.innerHTML = `<video controls playsinline preload="metadata" poster="img/${p.img}.webp"></video>`;
@@ -158,64 +237,93 @@ function openProject(id) {
   } else {
     media.innerHTML = `<img src="img/${p.img}.webp" alt="${esc(p.title)}">`;
   }
-
-  const facts = Object.entries(p.facts || {}).map(([k, v]) => `<div class="fact"><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join('');
-  const links = [
-    p.youtube && `<a class="btn" href="${p.youtube}" target="_blank" rel="noopener">Watch on YouTube ↗</a>`,
-    p.extra && `<a class="btn" href="${p.extra.url}" target="_blank" rel="noopener">${esc(p.extra.label)} ↗</a>`,
-    p.figma && `<a class="btn" href="${p.figma}" target="_blank" rel="noopener">Open Figma prototype ↗</a>`,
-    p.tableau && `<a class="btn" href="${p.tableau}" target="_blank" rel="noopener">Open Tableau dashboard ↗</a>`
-  ].filter(Boolean).join('');
-
+  const facts = Object.entries(p.facts || {}).map(([k, v]) => `<div class="fact"><span>${esc(k)}</span><div>${esc(v)}</div></div>`).join('');
+  const link = (url, label) => `<a class="ulink" href="${url}" target="_blank" rel="noopener">${esc(label)} ${arrowIcon}</a>`;
+  const links = [p.youtube && link(p.youtube, 'YouTube'), p.extra && link(p.extra.url, p.extra.label),
+    p.figma && link(p.figma, 'Figma prototype'), p.tableau && link(p.tableau, 'Tableau dashboard')].filter(Boolean).join('');
   $('#modalBody').innerHTML = `
-    <div class="card-meta"><span>${CATEGORY_LABELS[p.cat]}</span><span class="card-badge${p.award ? ' is-award' : ''}">${esc(p.badge)}</span></div>
+    <p class="modal-kicker">${CATEGORY_LABELS[p.cat]} · ${p.award ? '★ ' : ''}${esc(p.badge)}</p>
     <h2 id="modalTitle">${esc(p.title)}</h2>
     <p class="modal-sub">${esc(p.subtitle)}</p>
     <p class="modal-desc">${esc(p.desc)}</p>
     ${facts ? `<div class="modal-facts">${facts}</div>` : ''}
     ${links ? `<div class="modal-links">${links}</div>` : ''}`;
-
-  modal.classList.add('open');
-  modal.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
+  openModal(modal);
   history.replaceState(null, '', '#' + p.id);
-  $('.modal-close', modal).focus({ preventScroll: true });
 }
-
 function closeProject() {
-  if (!modal.classList.contains('open')) return;
   const v = $('video', modal);
   if (v) { v.pause(); v.removeAttribute('src'); v.load(); }
-  modal.classList.remove('open');
-  modal.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
-  history.replaceState(null, '', location.pathname);
-  lastFocus?.focus({ preventScroll: true });
+  if (closeModal(modal)) history.replaceState(null, '', location.pathname);
 }
-
 modal.addEventListener('click', e => { if (e.target.closest('[data-close]')) closeProject(); });
 
-/* ---------- Awards ---------- */
-$('#awardList').innerHTML = awards.map(a => `
-  <li class="award reveal">
-    <span class="award-date">${esc(a.date)}</span>
-    <div><h3>${esc(a.title)}</h3><p>${esc(a.desc)}</p></div>
-    <span class="award-tag">${esc(a.tag)}</span>
+/* ---------- About: software logos ---------- */
+$('#toolGroups').innerHTML = toolGroups.map(g => `
+  <div class="tool-group reveal">
+    <h4>${esc(g.title)}</h4>
+    <ul>${g.tools.map(([file, name]) => `<li><span class="tool-logo"><img src="img/tools/${file}.png" alt="" width="56" height="56" loading="lazy"></span><span>${esc(name)}</span></li>`).join('')}</ul>
+  </div>`).join('');
+
+/* ---------- Organizations & activities ---------- */
+$('#expList').innerHTML = experience.length
+  ? experience.map(x => `
+    <li class="row reveal">
+      <div class="row-main"><h3>${esc(x.role)}</h3><p>${esc(x.org)}${x.place ? ' · ' + esc(x.place) : ''}</p>${x.note ? `<p class="muted">${esc(x.note)}</p>` : ''}</div>
+      <span class="row-date">${esc(x.date)}</span>
+    </li>`).join('')
+  : `<li class="row empty reveal"><div class="row-main"><h3>Clubs &amp; organizations</h3><p class="muted">Coming soon: student clubs, committees and events I've been part of.</p></div></li>`;
+
+/* ---------- Awards with certificate photos ---------- */
+$('#awardCount').textContent = awards.length;
+$('#awardList').innerHTML = awards.map((a, i) => `
+  <li class="row award reveal">
+    <span class="row-date">${esc(a.date)}</span>
+    <div class="row-main"><h3>${esc(a.title)}</h3><p>${esc(a.desc)}</p></div>
+    <button class="cert-btn" data-award="${i}" aria-label="View certificate photos for ${esc(a.title)}">
+      <img src="img/awards/${a.photos[0]}.jpg" alt="" loading="lazy">
+      ${a.photos.length > 1 ? `<span>${a.photos.length}</span>` : ''}
+    </button>
   </li>`).join('');
+
+const lb = $('#lightbox');
+let lbSet = [], lbI = 0, lbTitle = '';
+function showLb() {
+  $('#lbImg').src = `img/awards/${lbSet[lbI]}.jpg`;
+  $('#lbImg').alt = lbTitle;
+  $('#lbCap').textContent = lbTitle;
+  $('#lbCount').textContent = lbSet.length > 1 ? `${lbI + 1} / ${lbSet.length}` : '';
+  $('.lb-nav', lb).hidden = lbSet.length < 2;
+}
+$('#awardList').addEventListener('click', e => {
+  const b = e.target.closest('.cert-btn');
+  if (!b) return;
+  const a = awards[+b.dataset.award];
+  lbSet = a.photos; lbI = 0; lbTitle = a.title;
+  showLb(); openModal(lb);
+});
+$('#lbPrev').addEventListener('click', () => { lbI = (lbI - 1 + lbSet.length) % lbSet.length; showLb(); });
+$('#lbNext').addEventListener('click', () => { lbI = (lbI + 1) % lbSet.length; showLb(); });
+lb.addEventListener('click', e => { if (e.target.closest('[data-lb-close]')) closeModal(lb); });
 
 /* ---------- Command palette ---------- */
 const cmd = $('#cmd'), cmdInput = $('#cmdInput'), cmdList = $('#cmdList');
-const sections = [
-  { label: 'Work', hint: 'Section', run: () => location.hash = '#work' },
-  { label: 'Awards & honors', hint: 'Section', run: () => location.hash = '#awards' },
-  { label: 'Toolkit', hint: 'Section', run: () => location.hash = '#skills' },
-  { label: 'Contact', hint: 'Section', run: () => location.hash = '#contact' },
+const jump = id => () => document.getElementById(id).scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
+const commands = [
+  { label: 'Projects', hint: 'Section', run: jump('projects') },
+  { label: 'About me', hint: 'Section', run: jump('about') },
+  { label: 'Software I use', hint: 'Section', run: jump('about') },
+  { label: 'Organizations & activities', hint: 'Section', run: jump('experience') },
+  { label: 'Education', hint: 'Section', run: jump('education') },
+  { label: 'Awards & certificates', hint: 'Section', run: jump('awards') },
+  { label: 'Contact', hint: 'Section', run: jump('contact') },
+  { label: 'Résumé', hint: 'Link', run: () => window.open('resume.pdf', '_blank') },
+  { label: 'Toggle dark mode', hint: 'Action', run: () => toggleTheme() },
   { label: 'Copy email address', hint: 'Action', run: () => copyEmail() },
-  { label: 'Open interactive desk version', hint: 'Link', run: () => window.open('https://jocelyneat.github.io/portofolio/', '_blank') }
+  { label: 'Open interactive desk version', hint: 'Link', run: () => window.open('https://jocelyneat.github.io/portofolio/', '_blank') },
+  ...projects.map(p => ({ label: p.title, hint: CATEGORY_LABELS[p.cat], run: () => openProject(p.id) }))
 ];
-const commands = [...sections, ...projects.map(p => ({ label: p.title, hint: CATEGORY_LABELS[p.cat], run: () => openProject(p.id) }))];
 let cmdItems = [], sel = 0;
-
 function renderCmd() {
   const q = cmdInput.value.trim().toLowerCase();
   cmdItems = commands.filter(c => (c.label + ' ' + c.hint).toLowerCase().includes(q));
@@ -226,14 +334,13 @@ function renderCmd() {
   $('.sel', cmdList)?.scrollIntoView({ block: 'nearest' });
 }
 function openCmd() {
-  closeProject();
+  closeProject(); closeModal(lb);
   cmd.classList.add('open'); cmd.setAttribute('aria-hidden', 'false');
   cmdInput.value = ''; sel = 0; renderCmd();
   cmdInput.focus();
 }
 function closeCmd() { cmd.classList.remove('open'); cmd.setAttribute('aria-hidden', 'true'); }
 function runCmd(i) { const c = cmdItems[i]; if (!c) return; closeCmd(); c.run(); }
-
 $('#cmdOpen').addEventListener('click', openCmd);
 cmd.addEventListener('click', e => { if (e.target.closest('[data-cmd-close]')) closeCmd(); });
 cmdInput.addEventListener('input', () => { sel = 0; renderCmd(); });
@@ -243,10 +350,10 @@ cmdInput.addEventListener('keydown', e => {
   else if (e.key === 'ArrowUp') { e.preventDefault(); sel = Math.max(sel - 1, 0); renderCmd(); }
   else if (e.key === 'Enter') { e.preventDefault(); runCmd(sel); }
 });
-
 document.addEventListener('keydown', e => {
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); cmd.classList.contains('open') ? closeCmd() : openCmd(); }
-  else if (e.key === 'Escape') { closeCmd(); closeProject(); }
+  else if (e.key === 'Escape') { closeCmd(); closeProject(); closeModal(lb); }
+  else if (lb.classList.contains('open') && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) $(e.key === 'ArrowRight' ? '#lbNext' : '#lbPrev').click();
 });
 
 /* ---------- Copy email ---------- */
@@ -255,20 +362,29 @@ function showToast(msg) {
   toast.textContent = msg; toast.classList.add('show');
   clearTimeout(showToast.t); showToast.t = setTimeout(() => toast.classList.remove('show'), 1800);
 }
-function copyEmail() {
-  const email = $('#emailCopy').dataset.email;
+function copyEmail(btn = $('.copy')) {
+  const email = btn.dataset.email, hint = $('.copy-hint', btn);
   navigator.clipboard?.writeText(email).then(() => {
     showToast('Email copied');
-    $('#emailHint').textContent = 'Copied ✓';
-    setTimeout(() => $('#emailHint').textContent = 'Click to copy', 2000);
+    const label = hint.dataset.label ||= hint.textContent;
+    hint.textContent = 'Copied ✓';
+    setTimeout(() => hint.textContent = label, 2000);
   }, () => { location.href = 'mailto:' + email; });
 }
-$('#emailCopy').addEventListener('click', copyEmail);
+$$('.copy').forEach(btn => btn.addEventListener('click', () => copyEmail(btn)));
+
+/* ---------- Theme toggle ---------- */
+function toggleTheme() {
+  const root = document.documentElement;
+  root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+  try { localStorage.setItem('theme', root.dataset.theme); } catch {}
+}
+$('#themeToggle').addEventListener('click', toggleTheme);
 
 /* ---------- Hero word rotator ---------- */
 const words = ['games', '3D worlds', 'UI/UX', 'animations'];
 const rot = $('#rotator');
-if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+if (!reducedMotion) {
   let wi = 0, ci = words[0].length, deleting = true;
   setTimeout(function tick() {
     const w = words[wi];
@@ -281,27 +397,30 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   }, 2200);
 }
 
-/* ---------- Nav state + reveal ---------- */
-const nav = $('.nav');
-window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 8), { passive: true });
+/* ---------- Nav: highlight the section in view; reveal content as it scrolls in ---------- */
+const navLinks = $$('.nav a[href^="#"]');
+const spy = new IntersectionObserver(entries => entries.forEach(en => {
+  if (!en.isIntersecting) return;
+  const id = en.target.id === 'home' ? 'top' : en.target.id;
+  navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+}), { rootMargin: '-45% 0px -50% 0px' });
+$$('main section[id]').forEach(s => spy.observe(s));
 
-const navLinks = $$('.nav-links a');
-const spy = new IntersectionObserver(entries => {
-  entries.forEach(en => {
-    if (en.isIntersecting) navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id));
-  });
-}, { rootMargin: '-45% 0px -50% 0px' });
-$$('section[id]').forEach(s => spy.observe(s));
+const revealer = new IntersectionObserver(entries => entries.forEach(en => {
+  if (en.isIntersecting) { en.target.classList.add('in'); revealer.unobserve(en.target); }
+}), { threshold: 0.12 });
+$$('.reveal').forEach(el => revealer.observe(el));
 
-const io = new IntersectionObserver(entries => {
-  entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
-}, { threshold: 0.12 });
-$$('.reveal').forEach((el, i) => { el.style.transitionDelay = `${Math.min(i, 6) * 60}ms`; io.observe(el); });
+/* ---------- Footer: her local time ---------- */
+const clock = $('#clock');
+function tickClock() {
+  clock.textContent = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'Asia/Kuala_Lumpur' }) + ' in Malaysia';
+}
+tickClock(); setInterval(tickClock, 30000);
 
 /* ---------- Init ---------- */
 $('#year').textContent = new Date().getFullYear();
 renderProjects();
-requestAnimationFrame(() => moveIndicator($('.filter.active')));
 // Deep link: share a URL like .../#sea-vagabond to open a project directly
 const hashId = location.hash.slice(1);
 if (projects.some(p => p.id === hashId)) openProject(hashId);
