@@ -1549,3 +1549,66 @@ kbd { font-family: var(--mono); font-size: .72rem; }
 }
 .nav-btn.active { position: relative; color: var(--fg); background: none; }
 .nav-btn.active::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 1px; height: 2px; border-radius: 2px; background: var(--accent); }
+
+/* ==========================================================================
+   Phones and small tablets: one column everywhere, nothing wider than the screen
+   (kept last so it wins over the desktop rules above)
+   ========================================================================== */
+html, body { overflow-x: clip; }
+@media (max-width: 760px) {
+  .container { padding: 0 18px; }
+
+  /* menu: compact, every section still reachable */
+  .nav-wrap { padding: 0 10px; }
+  .nav { max-width: 100%; gap: 0; padding: 4px; }
+  .nav-links { display: flex; overflow-x: auto; scrollbar-width: none; min-width: 0; }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a, .nav-btn { font-size: .78rem; padding: 6px 8px; }
+  .nav-search span, .nav-sep, .nav > .nav-btn[href="resume.html"] { display: none; }
+  .nav-links a.active::after { left: 8px; right: 8px; }
+  .scroll-prog { width: calc(100vw - 40px); }
+
+  /* hero: name, roles and buttons stacked, the room below */
+  .hero-text { padding-top: 96px; }
+  .hero h1 { font-size: clamp(2.3rem, 11vw, 3rem); line-height: 1; }
+  .hero-intro.big.hero-roles { font-size: .9rem; gap: 2px 10px; }
+  .hero-links { gap: 8px; flex-wrap: wrap; }
+  .hbtn { padding: 9px 16px; font-size: .86rem; }
+
+  /* sections */
+  .section-head h2 { font-size: 1.7rem; }
+  .about { grid-template-columns: 1fr; gap: 24px; }
+  .about-photo { max-width: 240px; }
+  .about-body .skills > div, .skills > div { grid-template-columns: 1fr; gap: 2px; padding: 9px 0; }
+  .skills dd { font-size: .88rem; }
+  .tool-groups { grid-template-columns: 1fr; }
+
+  /* education + organizations: one list after the other, dates under the titles */
+  .split, .edu-block .split, .awards-split { grid-template-columns: 1fr; gap: 0; }
+  .edu-block .split .section { padding-top: 34px; }
+  .edu-block .split .section:first-child { padding-top: 18px; }
+  .edu-rule { margin-top: 30px; }
+  .row { flex-wrap: wrap; gap: 4px 14px; }
+  .row .row-main { flex: 1 1 calc(100% - 70px); min-width: 0; }
+  .row-date { order: -1; width: 100%; padding: 0 0 0 58px; white-space: normal; }
+  .row-logo { flex: none; }
+  .edu-block { --campus-h: 230px; padding-bottom: 210px; }
+
+  /* projects list */
+  .plist-row { grid-template-columns: 30px minmax(0, 1fr) 20px; padding: 18px 0; }
+  .plist-title { font-size: 1.05rem; gap: 8px; }
+  .plist-meta { font-size: .8rem; }
+
+  /* contact */
+  #contact .contact-grid { grid-template-columns: 1fr; gap: 22px; }
+  #contact .contact-intro h2 { font-size: 2.3rem; }
+  #contact .c-value { font-size: .88rem; }
+  .scene-home { height: 260px; }
+  .footer { flex-direction: column; gap: 4px; }
+
+  /* pop-ups fit the screen */
+  .modal, .cmd { padding: 12px; }
+  .modal-panel, .cmd-panel { width: 100%; }
+  .modal-body { padding: 18px; }
+}
+@media (max-width: 760px) { .pp { padding-top: 84px; } }

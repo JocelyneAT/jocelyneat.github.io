@@ -1389,9 +1389,11 @@
       const nameBottom = below('h1'), textBottom = below('.hero-links');
       // the window and calendar reach up to y≈30, the shelf, trophy and clock up to y≈138 (room units, floor at 420)
       let s = Math.min(W / 1580, Hh / 860, (Hh - textBottom - 14) / (420 - 138), (Hh - nameBottom - 14) / (420 - 30));
-      s = Math.max(s, 0.6);
+      s = W < 700 ? 0.85 : Math.max(s, 0.6);
       const w = W / s, h = Hh / s;
-      svg.setAttribute('viewBox', `${f(720 - w / 2)} ${f(420 - h)} ${f(w)} ${f(h)}`);
+      // on phones only part of the room fits: centre it on her desk, bookshelf and clock
+      const cx = W < 700 ? 380 : 720;
+      svg.setAttribute('viewBox', `${f(cx - w / 2)} ${f(420 - h)} ${f(w)} ${f(h)}`);
     }
     fitRoom();
     addEventListener('resize', fitRoom);
