@@ -169,4 +169,3 @@ function toggleTheme() {
   try { localStorage.setItem('theme', root.dataset.theme); } catch {}
 }
 $('#themeToggle')?.addEventListener('click', toggleTheme);
-

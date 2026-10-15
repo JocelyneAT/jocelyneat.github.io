@@ -1496,3 +1496,56 @@ kbd { font-family: var(--mono); font-size: .72rem; }
 
 /* the ball has no focus ring when clicked or grabbed */
 .hr-ball { outline: none; }
+
+/* Search button in the nav */
+.nav-search { display: inline-flex; align-items: center; gap: 6px; }
+.nav-search svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+
+
+/* Résumé page: the CV as a printable A4 sheet on a soft grey desk */
+.resume-page { background: color-mix(in srgb, var(--bg) 82%, #9a948c); }
+.rs { max-width: 860px; margin: 0 auto; padding: 108px 24px 40px; }
+.rs-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+.rs-note { display: inline-flex; align-items: center; gap: 9px; font-size: .86rem; color: var(--muted); }
+.rs-dot { width: 8px; height: 8px; border-radius: 50%; background: #6aa86a; }
+.rs-dl { display: inline-flex; align-items: center; gap: 9px; font-size: .88rem; font-weight: 500; padding: 10px 18px; border-radius: 999px; background: var(--fg); color: var(--bg); transition: transform .2s, background .2s; }
+.rs-dl:hover { transform: translateY(-1px); background: var(--accent); color: #fff; }
+.rs-dl svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.sheet { background: #fff; color: #1d1c1a; padding: 52px 56px 56px; box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 20px 50px rgba(40, 30, 20, .14); font-family: var(--sans); font-size: 13px; line-height: 1.45; }
+.sheet a { color: inherit; }
+.sheet a:hover { color: var(--accent); }
+.sheet i { font-style: normal; color: #9a948c; margin: 0 3px; }
+.cv-head h1 { font-size: 28px; font-weight: 600; letter-spacing: -.01em; line-height: 1.1; }
+.cv-role { font-size: 15px; margin-top: 4px; }
+.cv-links { font-size: 12.5px; color: #4a4744; margin-top: 4px; }
+.sheet section { margin-top: 16px; }
+.sheet h2 { font-size: 13.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .02em; padding-bottom: 3px; border-bottom: 1px solid #1d1c1a; margin-bottom: 7px; }
+.cv-item + .cv-item { margin-top: 7px; }
+.cv-line { display: flex; flex-wrap: wrap; align-items: baseline; }
+.cv-line b { font-weight: 600; }
+.cv-muted { color: #6b6762; }
+.cv-date { margin-left: auto; padding-left: 16px; white-space: nowrap; }
+.sheet ul { margin: 2px 0 0; padding-left: 18px; }
+.sheet li { margin-top: 1px; }
+.sheet li::marker { color: #9a948c; }
+.cv-skill b { font-weight: 600; }
+.cv-refs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.cv-refs p { display: flex; flex-direction: column; font-size: 12px; }
+.cv-refs b { font-weight: 600; font-size: 12.5px; }
+.cv-refs span { color: #6b6762; }
+@media (max-width: 720px) {
+  .rs { padding: 96px 12px 32px; }
+  .sheet { padding: 28px 22px; font-size: 12.5px; }
+  .cv-date { margin-left: 0; padding-left: 0; width: 100%; color: #6b6762; }
+  .cv-refs { grid-template-columns: 1fr; }
+}
+/* printing the page gives a clean A4 CV */
+@media print {
+  @page { size: A4; margin: 12mm; }
+  .resume-page { background: #fff; }
+  .resume-page .nav-wrap, .resume-page .rs-bar, .resume-page .footer, .resume-page .modal { display: none !important; }
+  .rs { padding: 0; max-width: none; }
+  .sheet { box-shadow: none; padding: 0; }
+}
+.nav-btn.active { position: relative; color: var(--fg); background: none; }
+.nav-btn.active::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 1px; height: 2px; border-radius: 2px; background: var(--accent); }

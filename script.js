@@ -64,7 +64,7 @@ const commands = [
   { label: 'Organizations & activities', hint: 'Section', run: jump('experience') },
   { label: 'Education', hint: 'Section', run: jump('education') },
   { label: 'Contact', hint: 'Section', run: jump('contact') },
-  { label: 'Résumé', hint: 'Link', run: () => window.open('resume.pdf', '_blank') },
+  { label: 'Résumé', hint: 'View', run: () => { location.href = 'resume.html'; } },
   { label: 'Toggle dark mode', hint: 'Action', run: () => toggleTheme() },
   { label: 'Copy email address', hint: 'Action', run: () => copyEmail() },
   { label: 'Open interactive desk version', hint: 'Link', run: () => window.open('https://jocelyneat.github.io/portofolio/', '_blank') },
